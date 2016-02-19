@@ -32,7 +32,7 @@ public class ClockworkGUI extends Application {
 	public static final Text userCommandInputText = new Text("Type Command: ");
 	
 	public static final ArrayList<String> commandList = new ArrayList<String>(
-			Arrays.asList("Add", "Delete", "Undo"));
+			Arrays.asList("Add", "Delete", "Undo, Etc"));
 	public static final ArrayList<String> taskList = new ArrayList<String>(
 			Arrays.asList("Do Meeting Notes", "Have fun with CS2103"));
 	public static final ArrayList<String> displayList = new ArrayList<String>(
