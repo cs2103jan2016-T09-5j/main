@@ -84,7 +84,6 @@ public class ClockworkGUI extends Application {
 
 	/** Add User Display and Input in Bottom Row
 	 *
-	 *
 	 */
 	private GridPane addDisplayAndInputSection(ArrayList<String> displayList) {
 		GridPane grid = new GridPane();
