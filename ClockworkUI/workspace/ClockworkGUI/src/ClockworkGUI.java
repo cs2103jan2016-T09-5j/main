@@ -37,6 +37,10 @@ public class ClockworkGUI extends Application {
 			Arrays.asList("Do Meeting Notes", "Have fun with CS2103"));
 	public static final ArrayList<String> displayList = new ArrayList<String>(
 			Arrays.asList("Add 12th Jan 2016", "Delete 12, Testing", "Mark 3", "Undo"));
+	
+	//themes the user can call to change
+	public static final String customTheme = new String();
+	
 
 	public static void main(String[] args) {
 		Application.launch(args);
@@ -45,7 +49,26 @@ public class ClockworkGUI extends Application {
 	@Override
 	public void start(Stage window) {
 		window.setTitle("Clockwork");
+		Scene scene;
+		switch (customTheme) {
+		  case "DARK":
+		        scene = darkTheme();
+		        break;
+		  default:
+		       	scene = defaultTheme();
+		        break;
+		}
+		window.setScene(scene);
+		window.show();
+	}
+	
+	public Scene darkTheme() {
+		return null;
+	}
+
+	public Scene defaultTheme(){
 		BorderPane defaultLayout = new BorderPane();
+		
 		defaultLayout.setPadding(new Insets(10));
 
 		/** Formatting Bottom Region 
@@ -76,9 +99,8 @@ public class ClockworkGUI extends Application {
 		defaultLayout.setRight(btnRight);
 
 		/** Setting Default Scene */
-		Scene scene = new Scene(defaultLayout, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
-		window.setScene(scene);
-		window.show();
+		Scene defaultScene = new Scene(defaultLayout, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+		return defaultScene;
 	}
 
 
