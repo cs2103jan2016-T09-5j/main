@@ -1,0 +1,58 @@
+package main;
+
+public class SearchList {
+	private String listedInput;
+	private String delimeter;
+	
+	public SearchList(String listedInput, String delimeter) {
+		this.listedInput = listedInput;
+	}
+	
+	public SearchList(String listedInput) {
+		this(listedInput, "\n");
+	}
+	
+	public SearchList() {
+		this(null, "\n");
+	}
+	
+	public String getListedInput() {
+		return listedInput;
+	}
+	
+	public void setListedInput(String listedInput) {
+		this.listedInput = listedInput;
+	}
+	
+	public String getDelimeter() {
+		return delimeter;
+	}
+	
+	public void setDelimeter(String delimeter) {
+		this.delimeter = delimeter;
+	}
+	
+	public String[] searchCurrent(String targetWord) {
+		if(listedInput != null) {
+			String[] tokensAfterDelimeter = listedInput.split(delimeter);
+			int targetWordHit = 0;
+			for(String s: tokensAfterDelimeter) {
+				if(s.contains(targetWord)) {
+					targetWordHit++;
+				}
+			}
+			
+			if(targetWordHit > 0) {
+				String[] itemsContainingWord = new String[targetWordHit];
+				targetWordHit = 0;
+				for(String s: tokensAfterDelimeter) {
+					if(s.contains(targetWord)) {
+						itemsContainingWord[targetWordHit] = s;
+					}
+				}
+				
+			}
+		}
+	}
+
+}
