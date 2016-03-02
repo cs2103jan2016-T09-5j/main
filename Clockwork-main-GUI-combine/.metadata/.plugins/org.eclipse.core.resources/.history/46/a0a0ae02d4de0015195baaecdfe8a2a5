@@ -1,0 +1,41 @@
+package main;
+
+public class SearchList {
+	private String listedInput;
+	private String delimeter;
+	
+	public SearchList(String listedInput, String delimeter) {
+		this.listedInput = listedInput;
+	}
+	
+	public SearchList(String listedInput) {
+		this(listedInput, "\n");
+	}
+	
+	public SearchList() {
+		this(null, "\n");
+	}
+	
+	public String getListedInput() {
+		return listedInput;
+	}
+	
+	public void setListedInput(String listedInput) {
+		this.listedInput = listedInput;
+	}
+	
+	public String getDelimeter() {
+		return delimeter;
+	}
+	
+	public void setDelimeter(String delimeter) {
+		this.delimeter = delimeter;
+	}
+	
+	public String[] searchCurrent() {
+		if(listedInput != null) {
+			String [] tokensAfterDelimeter = listedInput
+		}
+	}
+
+}

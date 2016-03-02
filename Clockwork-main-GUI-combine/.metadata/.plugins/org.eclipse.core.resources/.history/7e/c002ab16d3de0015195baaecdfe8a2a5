@@ -1,0 +1,27 @@
+package main;
+
+public class SearchList {
+	private String listedInput;
+	private String delimeter;
+	
+	public SearchList(String listedInput, String delimeter) {
+		this.listedInput = listedInput;
+	}
+	
+	public SearchList(String listedInput) {
+		this(listedInput, "\n");
+	}
+	
+	public SearchList() {
+		this(null, "\n");
+	}
+	
+	public getListedInput() {
+		return listedInput;
+	}
+	
+	public setListedInput(String listedInput) {
+		this.listedInput = listedInput;
+	}
+
+}
