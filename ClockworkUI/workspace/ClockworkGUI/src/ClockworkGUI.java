@@ -22,8 +22,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-//TESTING HERE! hi
-
 public class ClockworkGUI extends Application {
 
 	public static final int DEFAULT_WINDOW_WIDTH = 600;
@@ -42,7 +40,6 @@ public class ClockworkGUI extends Application {
 	
 	//themes the user can call to change
 	public static final String customTheme = new String();
-	public int lol;
 
 	public static void main(String[] args) {
 		Application.launch(args);
