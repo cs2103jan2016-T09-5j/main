@@ -22,6 +22,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+//TESTING HERE!
+
 public class ClockworkGUI extends Application {
 
 	public static final int DEFAULT_WINDOW_WIDTH = 600;
