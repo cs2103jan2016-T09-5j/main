@@ -36,6 +36,9 @@ public class ClockworkGUI extends Application {
 	
 	/** Static variables */
 	public static final ArrayList<String> prevCommandsList = new ArrayList<String>();
+	public static final ArrayList<String> currentInputList = new ArrayList<String>();
+	public static final ArrayList<String> helpList = new ArrayList<String>();
+	public static final ArrayList<String> taskList = new ArrayList<String>();
 	public static BorderPane defaultLayout = new BorderPane();
 	public static Scene defaultScene = new Scene(defaultLayout, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 	
@@ -230,10 +233,24 @@ public class ClockworkGUI extends Application {
 	        @Override
 	        public void handle(KeyEvent ke)
 	        {
+	        	//Start Comment - You can try seeing how this part works, not sure if you'll need
+	        	//it for the function to see if the user input matches the help list so you can
+	        	//change it later
+//	        	currentInputList.add(userInput.getText());
+//	        	System.out.println(currentInputList);
+	        	//End Comment
 	            if (ke.getCode().equals(KeyCode.ENTER))
 	            {
 	            	if ((userInput.getText() != null && !userInput.getText().isEmpty())) {
 	            		prevCommandsList.add(userInput.getText());
+	            		//Start Comment - This part is just to show that when you press enter
+	            		//the display will change. Need to add logic function here to add stuff
+	            		//to helpList and taskList instead of helpListTest and taskListTest. 
+	            		//After that, just change the parameter taken in at setCenterSection and
+	            		//setLeftSection to helpList and taskList to display the actual arraylist.
+	            		helpListTest.add("SOMETHING?");
+	            		taskListTest.add("NEW TASK!");
+	            		//End Comment
 	            		refresh();
 	            		System.out.println("This is what you typed: " + userInput.getText());
 	            	}
@@ -299,7 +316,7 @@ public class ClockworkGUI extends Application {
 		leftSection.setPadding(new Insets(5, 12, 15, 12));
 		leftSection.setSpacing(10);
 		leftSection.setStyle("-fx-background-color: #FFFFFF;");
-		commandListView.setPrefSize(70, 150);
+		commandListView.setPrefSize(80, 150);
 	}
 	
 	/** Styling top section containing welcome text */
