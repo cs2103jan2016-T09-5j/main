@@ -24,22 +24,26 @@ import javafx.stage.Stage;
 
 public class ClockworkGUI extends Application {
 	
-	/** Application window dimensions*/
+	/** Application window dimensions */
 	public static final int DEFAULT_WINDOW_WIDTH = 600;
 	public static final int DEFAULT_WINDOW_HEIGHT = 400;
 
-	/** Static messages to display*/
+	/** Static messages to display */
 	public static final Text welcomeText = new Text("Welcome to Clockwork (:");
 	public static final Text helpText = new Text("Help: ");
 	public static final Text userCommandText = new Text("Command: ");
 	public static final Text userInputText = new Text("Type Command: ");
 	
+	/** Static variables */
+	public static final ArrayList<String> prevCommandsList = new ArrayList<String>();
+	public static boolean isRefresh = false;
+	
 	/** Test arrays to display */
-	public static final ArrayList<String> helpList = new ArrayList<String>(
+	public static final ArrayList<String> helpListTest = new ArrayList<String>(
 			Arrays.asList("Add", "Delete", "Undo, Etc"));
-	public static final ArrayList<String> taskList = new ArrayList<String>(
+	public static final ArrayList<String> taskListTest = new ArrayList<String>(
 			Arrays.asList("Do Meeting Notes", "Have fun with CS2103"));
-	public static final ArrayList<String> prevCommandsList = new ArrayList<String>(
+	public static final ArrayList<String> prevCommandsListTest = new ArrayList<String>(
 			Arrays.asList("Add 12th Jan 2016", "Delete 12, Testing", "Mark 3", "Undo"));
 
 	/*
@@ -58,6 +62,10 @@ public class ClockworkGUI extends Application {
 		Scene scene = defaultScene();
 		window.setScene(scene);
 		window.show();
+		if (isRefresh){
+			window.setScene(scene);
+			window.show();
+		}
 	}
 	
 	/*
@@ -69,8 +77,8 @@ public class ClockworkGUI extends Application {
 	/** 
 	 * Creates a default scene to show on GUI 
 	 * 
-	 * @return defaultScene		Scene containing messages and task list 
-	 * 							to display in various regions
+	 * @return defaultScene			Scene containing messages and task list 
+	 * 								to display in various regions
 	 */
 	public Scene defaultScene(){
 		BorderPane defaultLayout = new BorderPane();
@@ -96,13 +104,13 @@ public class ClockworkGUI extends Application {
 	
 	/** Set left region to display help list */
 	private void setLeftRegion(BorderPane defaultLayout) {
-		VBox leftSection = displayHelpList(helpList);
+		VBox leftSection = displayHelpList(helpListTest);
 		defaultLayout.setLeft(leftSection);
 	}
 	
 	/** Set center region to display task list */
 	private void setCenterRegion(BorderPane defaultLayout) {
-		VBox centerSection = displayTaskList(taskList);
+		VBox centerSection = displayTaskList(taskListTest);
 		defaultLayout.setCenter(centerSection);
 	}
 	
@@ -149,8 +157,8 @@ public class ClockworkGUI extends Application {
 	/** 
 	 * Display welcome message in top section [Static message, for now]
 	 * 
-	 * @param welcomeText	Text to welcome user in top section
-	 * @return topSection	Top section to display welcome text
+	 * @param welcomeText			Text to welcome user in top section
+	 * @return topSection			Top section to display welcome text
 	 */
 	public HBox displayWelcomeText(Text welcomeText) {
 		HBox topSection = new HBox();
@@ -165,8 +173,8 @@ public class ClockworkGUI extends Application {
 	/** 
 	 * Display help list in left section
 	 * 
-	 * @param helpList		Help list of commands to show in left section
-	 * @return leftSection	Left section to display help list
+	 * @param helpList				Help list of commands to show in left section
+	 * @return leftSection			Left section to display help list
 	 */
 	public VBox displayHelpList(ArrayList<String> helpList) {
 		VBox leftSection = new VBox();
@@ -182,8 +190,8 @@ public class ClockworkGUI extends Application {
 	/** 
 	 * Display task list in center section
 	 * 
-	 * @param taskList		Task list to show in center section
-	 * @return centerSection	Left section to display task list
+	 * @param taskList				Task list to show in center section
+	 * @return centerSection		Left section to display task list
 	 */
 	private VBox displayTaskList(ArrayList<String> taskList) {
 		VBox centerSection = new VBox();
@@ -199,13 +207,12 @@ public class ClockworkGUI extends Application {
 	/** 
 	 * Display previous commands entered by user in top subsection in bottom section
 	 * 
-	 * @param prevCommandsList			Previous user commands for display in ArrayList
-	 * @return prevCommandsListView		Previous user commands for display in ListView
+	 * @param prevCommandsList		Previous user commands for display in ArrayList
+	 * @return prevCommandsListView	Previous user commands for display in ListView
 	 */
 	private ListView<String> setTopSubsection(ArrayList<String> prevCommandsList) {
 		ListView<String> prevCommandsListView = formatArrayList(prevCommandsList);
 		prevCommandsListView.setPrefSize(600, 250);
-		prevCommandsListView.setEditable(false);
 		prevCommandsListView.setCellFactory(TextFieldListCell.forListView());
 		
 		GridPane.setConstraints(userCommandText, 0, 0); // column=0 row=0
@@ -217,7 +224,7 @@ public class ClockworkGUI extends Application {
 	/** 
 	 * Input user command in bottom subsection in bottom section
 	 * 
-	 * @return TextField		Text field for user to input commands
+	 * @return TextField			Text field for user to input commands
 	 */
 	private TextField setBottomSubsection() {
 		final TextField userInput = new TextField();
@@ -233,7 +240,7 @@ public class ClockworkGUI extends Application {
 	/** 
 	 * Handle event after enter is pressed
 	 * 
-	 * @param userInput			User input to be handled
+	 * @param userInput				User input to be handled
 	 */
 	private void handleUserInput(final TextField userInput) {
 		userInput.setOnKeyPressed(new EventHandler<KeyEvent>()
@@ -243,13 +250,13 @@ public class ClockworkGUI extends Application {
 	        {
 	            if (ke.getCode().equals(KeyCode.ENTER))
 	            {
-	            	System.out.println("YAY ENTER WORKS!");
 	            	if ((userInput.getText() != null && !userInput.getText().isEmpty())) {
+	            		prevCommandsList.add(userInput.getText());
+	            		isRefresh = true;
 	            		System.out.println("This is what you typed: " + userInput.getText());
 	            	}
 	            	userInput.clear();
-	            }
-	            
+	            } 
 	        }
 	    });
 	}
@@ -257,8 +264,8 @@ public class ClockworkGUI extends Application {
 	/** 
 	 * Set list format from ArrayList to ListView so that list can be seen on GUI
 	 * 
-	 * @param arrayList			List of ArrayList String type
-	 * @return listView			List of ListView String type
+	 * @param arrayList				List of type ArrayList String 
+	 * @return listView				List of type ListView String 
 	 */
 	private ListView<String> formatArrayList(ArrayList<String> arrayList) {
 		ObservableList<String> obsList = FXCollections.observableList(arrayList);
@@ -271,7 +278,7 @@ public class ClockworkGUI extends Application {
 	 * Format grid section in bottom section for displaying previous user commands 
 	 * and user input
 	 * 
-	 * @param grid			Grid in bottom section to be formatted
+	 * @param grid					Grid in bottom section to be formatted
 	 */
 	private void formatBottomSection(GridPane grid) {
 		/** to display previous commands */
