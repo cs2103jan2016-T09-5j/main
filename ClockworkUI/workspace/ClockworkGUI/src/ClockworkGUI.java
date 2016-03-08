@@ -36,15 +36,14 @@ public class ClockworkGUI extends Application {
 	
 	/** Static variables */
 	public static final ArrayList<String> prevCommandsList = new ArrayList<String>();
-	public static boolean isRefresh = false;
+	public static BorderPane defaultLayout = new BorderPane();
+	public static Scene defaultScene = new Scene(defaultLayout, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 	
 	/** Test arrays to display */
 	public static final ArrayList<String> helpListTest = new ArrayList<String>(
 			Arrays.asList("Add", "Delete", "Undo, Etc"));
 	public static final ArrayList<String> taskListTest = new ArrayList<String>(
 			Arrays.asList("Do Meeting Notes", "Have fun with CS2103"));
-	public static final ArrayList<String> prevCommandsListTest = new ArrayList<String>(
-			Arrays.asList("Add 12th Jan 2016", "Delete 12, Testing", "Mark 3", "Undo"));
 
 	/*
 	* ===========================================
@@ -59,13 +58,9 @@ public class ClockworkGUI extends Application {
 	@Override
 	public void start(Stage window) {
 		window.setTitle("Clockwork");
-		Scene scene = defaultScene();
-		window.setScene(scene);
+		setDisplayRegions(defaultLayout);
+		window.setScene(defaultScene);
 		window.show();
-		if (isRefresh){
-			window.setScene(scene);
-			window.show();
-		}
 	}
 	
 	/*
@@ -73,19 +68,6 @@ public class ClockworkGUI extends Application {
 	* Creating Basic Layout
 	* ===========================================
 	*/
-	
-	/** 
-	 * Creates a default scene to show on GUI 
-	 * 
-	 * @return defaultScene			Scene containing messages and task list 
-	 * 								to display in various regions
-	 */
-	public Scene defaultScene(){
-		BorderPane defaultLayout = new BorderPane();
-		setDisplayRegions(defaultLayout);
-		Scene defaultScene = new Scene(defaultLayout, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
-		return defaultScene;
-	}
 	
 	/** Set top, left, center, right and bottom region to display information */
 	private void setDisplayRegions(BorderPane defaultLayout) {
@@ -252,7 +234,7 @@ public class ClockworkGUI extends Application {
 	            {
 	            	if ((userInput.getText() != null && !userInput.getText().isEmpty())) {
 	            		prevCommandsList.add(userInput.getText());
-	            		isRefresh = true;
+	            		refresh();
 	            		System.out.println("This is what you typed: " + userInput.getText());
 	            	}
 	            	userInput.clear();
@@ -261,6 +243,11 @@ public class ClockworkGUI extends Application {
 	    });
 	}
 	
+	/** Refreshes the scene so that updated lists and variables can be shown */
+	public void refresh(){
+		setDisplayRegions(defaultLayout);
+	}
+
 	/** 
 	 * Set list format from ArrayList to ListView so that list can be seen on GUI
 	 * 
