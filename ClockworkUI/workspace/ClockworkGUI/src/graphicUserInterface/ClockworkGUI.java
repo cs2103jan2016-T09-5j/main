@@ -1,3 +1,4 @@
+package graphicUserInterface;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -25,27 +26,28 @@ import javafx.stage.Stage;
 public class ClockworkGUI extends Application {
 	
 	/** Application window dimensions */
-	public static final int DEFAULT_WINDOW_WIDTH = 600;
-	public static final int DEFAULT_WINDOW_HEIGHT = 400;
+	private static final int DEFAULT_WINDOW_WIDTH = 600;
+	private static final int DEFAULT_WINDOW_HEIGHT = 400;
 
 	/** Static messages to display */
-	public static final Text welcomeText = new Text("Welcome to Clockwork (:");
-	public static final Text helpText = new Text("Help: ");
-	public static final Text userCommandText = new Text("Command: ");
-	public static final Text userInputText = new Text("Type Command: ");
+	private static final Text welcomeText = new Text("Welcome to Clockwork (:");
+	private static final Text helpText = new Text("Help: ");
+	private static final Text userCommandText = new Text("Command: ");
+	private static final Text userInputText = new Text("Type Command: ");
 	
 	/** Static variables */
-	public static final ArrayList<String> prevCommandsList = new ArrayList<String>();
-	public static final ArrayList<String> currentInputList = new ArrayList<String>();
-	public static final ArrayList<String> helpList = new ArrayList<String>();
-	public static final ArrayList<String> taskList = new ArrayList<String>();
-	public static BorderPane defaultLayout = new BorderPane();
-	public static Scene defaultScene = new Scene(defaultLayout, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+	private static final ArrayList<String> prevCommandsList = new ArrayList<String>();
+	private static final ArrayList<String> currentInputList = new ArrayList<String>();
+	private static final ArrayList<String> helpList = new ArrayList<String>();
+	private static final ArrayList<String> taskList = new ArrayList<String>();
+	private static BorderPane defaultLayout = new BorderPane();
+	private static Scene defaultScene = new Scene(defaultLayout, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+	private String rawInputString = new String();
 	
 	/** Test arrays to display */
-	public static final ArrayList<String> helpListTest = new ArrayList<String>(
+	private static final ArrayList<String> helpListTest = new ArrayList<String>(
 			Arrays.asList("Add", "Delete", "Undo", "Search", "Display", "Mark", "Edit"));
-	public static final ArrayList<String> taskListTest = new ArrayList<String>(
+	private static final ArrayList<String> taskListTest = new ArrayList<String>(
 			Arrays.asList("Do Meeting Notes", "Have fun with CS2103"));
 
 	/*
@@ -55,6 +57,15 @@ public class ClockworkGUI extends Application {
 	*/
 	
 	public static void main(String[] args) {
+		//Start Comment - tldr; getCurrentState which is what logic API is supposed to return 
+		// to GUI, so I can unpack it to get the arrayLists I need to display.
+		//Aka, taskList for now.
+		//Cos the GUI is not supposed to have any memory storing 
+		//arraylists or whatever cos that belongs to logic. GUI is only supposed to output
+		//out whatever the logic API gives.
+//		ClockWork clockWork = new ClockWork();
+//		taskList = clockWork.getCurrentState();
+		//End Comment
 		Application.launch(args);
 	}
 	
@@ -113,7 +124,7 @@ public class ClockworkGUI extends Application {
 	
 	/*
 	* ===========================================
-	* Class Methods to integrate with Logic API
+	* Private Class Methods
 	* ===========================================
 	*/
 	
@@ -145,7 +156,7 @@ public class ClockworkGUI extends Application {
 	 * @param welcomeText			Text to welcome user in top section
 	 * @return topSection			Top section to display welcome text
 	 */
-	public HBox displayWelcomeText(Text welcomeText) {
+	private HBox displayWelcomeText(Text welcomeText) {
 		HBox topSection = new HBox();
 		
 		styleTopSection(welcomeText, topSection);
@@ -161,7 +172,7 @@ public class ClockworkGUI extends Application {
 	 * @param helpList				Help list of commands to show in left section
 	 * @return leftSection			Left section to display help list
 	 */
-	public VBox displayHelpList(ArrayList<String> helpList) {
+	private VBox displayHelpList(ArrayList<String> helpList) {
 		VBox leftSection = new VBox();
 		
 		ListView<String> helpListView = formatArrayList(helpList);
@@ -227,40 +238,47 @@ public class ClockworkGUI extends Application {
 	 * 
 	 * @param userInput				User input to be handled
 	 */
-	private void handleUserInput(final TextField userInput) {
+	private void handleUserInput(TextField userInput) {
 		userInput.setOnKeyPressed(new EventHandler<KeyEvent>()
 	    {
 	        @Override
 	        public void handle(KeyEvent ke)
 	        {
-	        	//Start Comment - You can try seeing how this part works, not sure if you'll need
+	        	//IGNORE FOR NOW - You can try seeing how this part works, not sure if you'll need
 	        	//it for the function to see if the user input matches the help list so you can
 	        	//change it later
 //	        	currentInputList.add(userInput.getText());
 //	        	System.out.println(currentInputList);
+//	        	System.out.println(userInput.getText());
 	        	//End Comment
 	            if (ke.getCode().equals(KeyCode.ENTER))
 	            {
 	            	if ((userInput.getText() != null && !userInput.getText().isEmpty())) {
-	            		prevCommandsList.add(userInput.getText());
-	            		//Start Comment - This part is just to show that when you press enter
-	            		//the display will change. Need to add logic function here to add stuff
-	            		//to helpList and taskList instead of helpListTest and taskListTest. 
-	            		//After that, just change the parameter taken in at setCenterSection and
-	            		//setLeftSection to helpList and taskList to display the actual arraylist.
-	            		taskListTest.add("NEW TASK!");
-	            		//End Comment
-	            		refresh();
-	            		System.out.println("This is what you typed: " + userInput.getText());
+	            		handleUserEnter(userInput.getText());
+		            	userInput.clear();
 	            	}
-	            	userInput.clear();
 	            } 
 	        }
 	    });
 	}
 	
+	//*********** REGINE WORK ON THIS PART! ************************
+	private void handleUserEnter(String userInput){
+		rawInputString = userInput;
+		prevCommandsList.add(userInput);
+		//Start Comment - Call Logic API here to handle the String user entered.
+		//Eg. ('Cos idk the actual API you're gonna call here)
+//		clockWork.handleCommand(rawInputString);
+		//, where handleCommand is the logic API that processes the string and returns me 
+		//the arraylist of tasks I should display on the GUI. That means that
+		//the prevCommandsList should not be stored in the GUI, but it should be in logic.
+		taskListTest.add("NEW TASK!");
+		//End Comment
+		refresh();
+		System.out.println("This is what you typed: " + userInput);
+	}
 	/** Refreshes the scene so that updated lists and variables can be shown */
-	public void refresh(){
+	private void refresh(){
 		setDisplayRegions(defaultLayout);
 	}
 
