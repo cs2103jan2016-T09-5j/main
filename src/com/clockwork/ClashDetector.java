@@ -13,7 +13,6 @@ public class ClashDetector {
 		this.attemptedTodo = attemptedTodo;
 	}
 	
-	//Main API method where user can detect if the supplied todo clashes with an existing todo in persistent memory
 	public boolean verifyTodoClash() {
 		boolean todoClashExists = false;
 		
