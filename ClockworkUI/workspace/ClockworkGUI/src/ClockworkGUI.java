@@ -44,7 +44,7 @@ public class ClockworkGUI extends Application {
 	
 	/** Test arrays to display */
 	public static final ArrayList<String> helpListTest = new ArrayList<String>(
-			Arrays.asList("Add", "Delete", "Undo, Etc"));
+			Arrays.asList("Add", "Delete", "Undo", "Search", "Display", "Mark", "Edit"));
 	public static final ArrayList<String> taskListTest = new ArrayList<String>(
 			Arrays.asList("Do Meeting Notes", "Have fun with CS2103"));
 
@@ -248,7 +248,6 @@ public class ClockworkGUI extends Application {
 	            		//to helpList and taskList instead of helpListTest and taskListTest. 
 	            		//After that, just change the parameter taken in at setCenterSection and
 	            		//setLeftSection to helpList and taskList to display the actual arraylist.
-	            		helpListTest.add("SOMETHING?");
 	            		taskListTest.add("NEW TASK!");
 	            		//End Comment
 	            		refresh();
