@@ -321,6 +321,7 @@ public class ClockworkGUI extends Application {
 	            {
 	            	if ((userInput.getText() != null && !userInput.getText().isEmpty())) {
 	            		System.out.println("This is what you typed: " + userInput.getText());
+	            		displayList.add(userInput.getText());
 	            		SignalHandler.printCommandPrefix();
 	            		String input = userInput.getText();
 	            		clearConsole();
