@@ -120,17 +120,7 @@ public class Signal {
 			+ "\t Supported format:"
 			+ System.lineSeparator()
 			+ "\t search [<keyword>] [ -n <keyword> ] [ -dt <dateKeyword> ] [ -d <dayKeyword] [-t <timeKeyword>] [-m <monthKeyword>]";
-	
-	/**
-	 * Time Clash Signals
-	 */
-	public static final String CLASH_DOES_NOT_EXIST = "";
-	public static final String CLASH_DEADLINE_DOES_EXIST = "The deadline you're attempting to add overlaps with \"%1$s\" at \"%2$s\"";
-	public static final String CLASH_EVENT_DOES_EXIST = "The event you're attempting to add overlaps with \"%1$s\" at \"%2$s\"";
-	public static final String CLASH_CONTINUE_PROPOSITION = "Would you still like to add the overlapping entry? (y/n)";
-	public static final String CLASH_USER_OVERRIDE = "The overlapping entry has been added.";
-	public static final String CLASH_USER_VOID_TASK = "The entry has not been added, remove using 'delete' conflict to continue,";
-	
+
 	/**
 	 * Generic Signals
 	 */
