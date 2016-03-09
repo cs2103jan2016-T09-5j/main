@@ -1,5 +1,6 @@
 package com.clockwork;
 
+import java.util.Collection;
 
 /**
  * The AddCommand class handles all user commands with "add" as the first
@@ -81,7 +82,8 @@ public class AddCommand extends Command {
 			}
 
 			int numberOfDates = dateTimes.size();
-			
+			Collection<Todo> listOnSameDay;
+			ClashDetector eventOverlapDetector;
 			
 			switch (numberOfDates) {
 			// No dates = floating task
@@ -95,6 +97,15 @@ public class AddCommand extends Command {
 			case 1:
 				Todo timedTodo = new Todo(memory.obtainFreshId(), todoName,
 						dateTimes);
+				
+				//ClashDetector object warns user of an impending time overlap
+				listOnSameDay = SearchCommand.getTodosOfSameDay(Keywords.DAY, 
+						timedTodo.endTime, memory);
+				eventOverlapDetector = new ClashDetector(listOnSameDay, timedTodo);
+				if(eventOverlapDetector.verifyTodoClash()) {
+					return new Signal(Signal.CLASH_USER_VOID_TASK, false);
+				}
+				
 				memory.userAdd(timedTodo);
 				memory.saveToFile();
 				return new Signal(String.format(
@@ -103,6 +114,15 @@ public class AddCommand extends Command {
 			case 2:
 				timedTodo = new Todo(memory.obtainFreshId(), todoName,
 						dateTimes);
+				
+				//ClashDetector object warns user of an impending time overlap
+				listOnSameDay = SearchCommand.getTodosOfSameDay(Keywords.DAY, 
+						timedTodo.endTime, memory);
+				eventOverlapDetector = new ClashDetector(listOnSameDay, timedTodo);
+				if(eventOverlapDetector.verifyTodoClash()) {
+					return new Signal(Signal.CLASH_USER_VOID_TASK, false);
+				}
+				
 				// Start-time is after end-time
 				if (dateTimes.get(0).isAfter(dateTimes.get(1))) {
 					memory.saveToFile();
