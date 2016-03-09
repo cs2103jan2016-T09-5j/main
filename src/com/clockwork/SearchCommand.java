@@ -246,7 +246,7 @@ public class SearchCommand extends Command {
 		Collection<Todo> queriedTodos = new ArrayList<Todo>();
 		
 		for(Todo item: todos) {
-			if(searchDate.getDayOfYear() == item.startTime.getDayOfYear()) {
+			if(item.endTime != null && searchDate.getDayOfYear() == item.endTime.getDayOfYear()) {
 				queriedTodos.add(item);
 			}
 		}
