@@ -1,4 +1,3 @@
-
 package com.clockwork;
 
 import java.util.ArrayList;
@@ -227,29 +226,6 @@ public class SearchCommand extends Command {
 			}
 		}
 		return todos;
-	}	
-	/**
-	 * Operation queries all of memory and returns events that occur on a specific day of the year. Useful for
-	 * operations including time collisions and time comparators.
-	 * 
-	 * @param typeKey
-	 * @param searchDate
-	 * @param memory
-	 * @return Collection of Todo
-	 * @throws InvalidParamException
-	 */
-	public static Collection<Todo> getTodosOfSameDay(Keywords typeKey, 
-			DateTime searchDate, Memory memory) {
-		
-		Collection<Todo> todos = memory.getAllTodos();
-		Collection<Todo> queriedTodos = new ArrayList<Todo>();
-		
-		for(Todo item: todos) {
-			if(item.endTime != null && searchDate.getDayOfYear() == item.endTime.getDayOfYear()) {
-				queriedTodos.add(item);
-			}
-		}
-
-		return queriedTodos;	
 	}
+
 }

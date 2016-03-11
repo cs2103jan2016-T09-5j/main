@@ -13,7 +13,6 @@ public class ClashDetector {
 		this.attemptedTodo = attemptedTodo;
 	}
 	
-	//Main API method where user can detect if the supplied todo clashes with an existing todo in persistent memory
 	public boolean verifyTodoClash() {
 		boolean todoClashExists = false;
 		
@@ -21,15 +20,15 @@ public class ClashDetector {
 			case DEADLINE:
 				todoClashExists = isDeadlineClash();
 				if(todoClashExists) {
-					System.out.println(String.format(Signal.CLASH_DEADLINE_DOES_EXIST,
-							attemptedTodo.name, attemptedTodo.endTime));
+//					System.out.println(String.format(Signal.CLASH_DEADLINE_DOES_EXIST,
+//							attemptedTodo.name, attemptedTodo.endTime));
 				}
 				break;
 			case EVENT:
 				todoClashExists = isEventClash();
 				if(todoClashExists) {
-					System.out.println(String.format(Signal.CLASH_EVENT_DOES_EXIST,
-							attemptedTodo.name, attemptedTodo.endTime));
+//					System.out.println(String.format(Signal.CLASH_EVENT_DOES_EXIST,
+//							attemptedTodo.name, attemptedTodo.endTime));
 				}
 				break;
 			default:
@@ -45,14 +44,14 @@ public class ClashDetector {
 	}
 	
 	private boolean isUserVoidingTodo() {
-		System.out.println(String.format(Signal.CLASH_CONTINUE_PROPOSITION));
+//		System.out.println(String.format(Signal.CLASH_CONTINUE_PROPOSITION));
 		String userResponse = scn.nextLine().trim().toLowerCase();
 		if(userResponse.equals("yes") || userResponse.equals("y")) {
-			System.out.println(String.format(Signal.CLASH_USER_OVERRIDE));
+//			System.out.println(String.format(Signal.CLASH_USER_OVERRIDE));
 			return false;
 		}
 		else {
-			System.out.println(String.format(Signal.CLASH_USER_VOID_TASK));	
+//			System.out.println(String.format(Signal.CLASH_USER_VOID_TASK));	
 			return true;
 		}
 	}

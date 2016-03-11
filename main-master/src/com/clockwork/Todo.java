@@ -1,5 +1,3 @@
-
-
 package com.clockwork;
 
 import java.util.ArrayList;
@@ -24,7 +22,7 @@ import com.clockwork.exceptions.NotRecurringException;
 
 public class Todo implements UndoableRedoable<Todo> {
 
-	public enum TYPE {
+	public static enum TYPE {
 		TASK, DEADLINE, EVENT;
 	}
 
