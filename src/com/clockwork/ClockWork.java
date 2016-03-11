@@ -64,7 +64,7 @@ public class ClockWork {
 
     
 	/**
-	 * The main logic unit of Zeitgeist. Reads the input from Zeitgeist and
+	 * The main logic unit of ClockWork. Reads the input from ClockWork and
 	 * passes it to the Parser, the first element in the flow of component calls
 	 * present in all operations.
 	 * 
