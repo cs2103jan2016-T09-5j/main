@@ -60,9 +60,23 @@ public class ClashDetector {
 	private boolean isDeadlineClash() {
 		DateTime deadlineTime = attemptedTodo.endTime;
 		for (Todo item : onDateTodos) {
-			if(deadlineTime.isBefore(item.endTime) && deadlineTime.isAfter(item.startTime)) {
-				return true;
+			
+			if(item.type == Todo.TYPE.DEADLINE) {
+				if(deadlineTime.isEqual(item.endTime)) {
+					return true;
+				}	
 			}
+			
+			if(item.type == Todo.TYPE.EVENT) {
+				if(deadlineTime.isBefore(item.endTime) && deadlineTime.isAfter(item.startTime)) {
+					return true;
+				}
+				
+				if(deadlineTime.isEqual(item.endTime) || deadlineTime.isEqual(item.startTime)) {
+					return true;
+				}	
+			}
+			
 		}
 		return false;
 	}
@@ -71,15 +85,27 @@ public class ClashDetector {
 		DateTime startTime = attemptedTodo.startTime;
 		DateTime endTime = attemptedTodo.endTime;
 		for (Todo item : onDateTodos) {
-			if(startTime.isBefore(item.startTime) && endTime.isAfter(item.startTime)) {
-				return true;
+			
+			if(item.type == Todo.TYPE.EVENT) {
+				if(startTime.isBefore(item.startTime) && endTime.isAfter(item.startTime)) {
+					return true;
+				}
+				
+				if(endTime.isAfter(item.endTime) && startTime.isBefore(item.endTime)) {
+					return true;
+				}
+				
+				if(startTime.isEqual(item.startTime) || endTime.isEqual(item.endTime)) {
+					return true;
+				}
 			}
-			if(endTime.isAfter(item.endTime) && startTime.isBefore(item.endTime)) {
-				return true;
+			
+			if(item.type == Todo.TYPE.DEADLINE) {
+				if(item.endTime.isAfter(startTime) && item.endTime.isBefore(endTime)) {
+					return true;
+				}
 			}
-			if(startTime.isEqual(item.startTime) || endTime.isEqual(item.endTime)) {
-				return true;
-			}
+			
 		}
 		return false;
 	}

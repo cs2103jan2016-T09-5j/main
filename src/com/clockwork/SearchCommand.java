@@ -253,6 +253,4 @@ public class SearchCommand extends Command {
 
 		return queriedTodos;	
 	}
-
-
 }
