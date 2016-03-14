@@ -7,9 +7,9 @@
 	<classpathentry exported="true" kind="lib" path="lib/gunit-3.5.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ical4j-1.0.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/joda-time-2.7.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.7.10.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/slf4j-simple-1.7.10.jar"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry exported="true" kind="lib" path="lib/gson-2.3.1.jar" sourcepath="lib/gson-2.3.1.jar"/>
+	<classpathentry kind="lib" path="main-master/lib/slf4j-simple-1.7.18.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-1.7.18/slf4j-api-1.7.18.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
