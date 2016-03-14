@@ -1,0 +1,436 @@
+{
+  "allTodos": {
+    "0": {
+      "id": 0,
+      "name": "taskA",
+      "createdOn": "2016-03-12T17:19:42.364+08:00",
+      "modifiedOn": "2016-03-12T17:22:25.427+08:00",
+      "startTime": "2016-04-01T13:00:00.000+08:00",
+      "endTime": "2016-04-01T14:00:00.000+08:00",
+      "isDone": false,
+      "type": "EVENT"
+    },
+    "1": {
+      "id": 1,
+      "name": "do homework",
+      "createdOn": "2016-03-12T17:21:10.062+08:00",
+      "modifiedOn": "2016-03-12T17:21:10.062+08:00",
+      "startTime": "2016-04-01T15:00:00.000+08:00",
+      "endTime": "2016-04-01T21:00:00.000+08:00",
+      "isDone": false,
+      "type": "EVENT"
+    },
+    "2": {
+      "id": 2,
+      "name": "this",
+      "createdOn": "2016-03-12T19:13:10.095+08:00",
+      "modifiedOn": "2016-03-12T19:13:10.095+08:00",
+      "isDone": false,
+      "type": "TASK"
+    },
+    "3": {
+      "id": 3,
+      "name": "this",
+      "createdOn": "2016-03-12T19:13:24.045+08:00",
+      "modifiedOn": "2016-03-12T19:13:24.045+08:00",
+      "startTime": "2016-03-12T01:00:00.000+08:00",
+      "endTime": "2016-03-12T03:00:00.000+08:00",
+      "isDone": false,
+      "type": "EVENT"
+    },
+    "4": {
+      "id": 4,
+      "name": "do cs",
+      "createdOn": "2016-03-13T01:53:32.108+08:00",
+      "modifiedOn": "2016-03-13T01:53:32.108+08:00",
+      "startTime": "2016-03-13T14:00:00.000+08:00",
+      "endTime": "2016-03-13T16:00:00.000+08:00",
+      "isDone": false,
+      "type": "EVENT"
+    },
+    "6": {
+      "id": 6,
+      "name": "do fc",
+      "createdOn": "2016-03-13T01:54:29.194+08:00",
+      "modifiedOn": "2016-03-13T01:54:29.194+08:00",
+      "startTime": "2016-03-13T14:00:00.000+08:00",
+      "endTime": "2016-03-13T16:00:00.000+08:00",
+      "isDone": false,
+      "type": "EVENT"
+    },
+    "7": {
+      "id": 7,
+      "name": "this",
+      "createdOn": "2016-03-14T22:27:57.873+08:00",
+      "modifiedOn": "2016-03-14T22:27:57.873+08:00",
+      "isDone": false,
+      "type": "TASK"
+    }
+  },
+  "recurringRules": {},
+  "idBuffer": {
+    "buffer": [
+      8,
+      9
+    ],
+    "minFreeId": 8,
+    "memory": {
+      "0": {
+        "id": 0,
+        "name": "taskA",
+        "createdOn": "2016-03-12T17:19:42.364+08:00",
+        "modifiedOn": "2016-03-12T17:22:25.427+08:00",
+        "startTime": "2016-04-01T13:00:00.000+08:00",
+        "endTime": "2016-04-01T14:00:00.000+08:00",
+        "isDone": false,
+        "type": "EVENT"
+      },
+      "1": {
+        "id": 1,
+        "name": "do homework",
+        "createdOn": "2016-03-12T17:21:10.062+08:00",
+        "modifiedOn": "2016-03-12T17:21:10.062+08:00",
+        "startTime": "2016-04-01T15:00:00.000+08:00",
+        "endTime": "2016-04-01T21:00:00.000+08:00",
+        "isDone": false,
+        "type": "EVENT"
+      },
+      "2": {
+        "id": 2,
+        "name": "this",
+        "createdOn": "2016-03-12T19:13:10.095+08:00",
+        "modifiedOn": "2016-03-12T19:13:10.095+08:00",
+        "isDone": false,
+        "type": "TASK"
+      },
+      "3": {
+        "id": 3,
+        "name": "this",
+        "createdOn": "2016-03-12T19:13:24.045+08:00",
+        "modifiedOn": "2016-03-12T19:13:24.045+08:00",
+        "startTime": "2016-03-12T01:00:00.000+08:00",
+        "endTime": "2016-03-12T03:00:00.000+08:00",
+        "isDone": false,
+        "type": "EVENT"
+      },
+      "4": {
+        "id": 4,
+        "name": "do cs",
+        "createdOn": "2016-03-13T01:53:32.108+08:00",
+        "modifiedOn": "2016-03-13T01:53:32.108+08:00",
+        "startTime": "2016-03-13T14:00:00.000+08:00",
+        "endTime": "2016-03-13T16:00:00.000+08:00",
+        "isDone": false,
+        "type": "EVENT"
+      },
+      "6": {
+        "id": 6,
+        "name": "do fc",
+        "createdOn": "2016-03-13T01:54:29.194+08:00",
+        "modifiedOn": "2016-03-13T01:54:29.194+08:00",
+        "startTime": "2016-03-13T14:00:00.000+08:00",
+        "endTime": "2016-03-13T16:00:00.000+08:00",
+        "isDone": false,
+        "type": "EVENT"
+      },
+      "7": {
+        "id": 7,
+        "name": "this",
+        "createdOn": "2016-03-14T22:27:57.873+08:00",
+        "modifiedOn": "2016-03-14T22:27:57.873+08:00",
+        "isDone": false,
+        "type": "TASK"
+      }
+    }
+  },
+  "recurringIdBuffer": {
+    "buffer": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "minFreeId": 0,
+    "memory": {}
+  },
+  "vMem": {
+    "undoIsRule": [
+      false
+    ],
+    "redoIsRule": [],
+    "todoStacks": {
+      "undoStack": [
+        {
+          "id": 7,
+          "isDone": false
+        }
+      ],
+      "redoStack": [],
+      "memory": {
+        "0": {
+          "id": 0,
+          "name": "taskA",
+          "createdOn": "2016-03-12T17:19:42.364+08:00",
+          "modifiedOn": "2016-03-12T17:22:25.427+08:00",
+          "startTime": "2016-04-01T13:00:00.000+08:00",
+          "endTime": "2016-04-01T14:00:00.000+08:00",
+          "isDone": false,
+          "type": "EVENT"
+        },
+        "1": {
+          "id": 1,
+          "name": "do homework",
+          "createdOn": "2016-03-12T17:21:10.062+08:00",
+          "modifiedOn": "2016-03-12T17:21:10.062+08:00",
+          "startTime": "2016-04-01T15:00:00.000+08:00",
+          "endTime": "2016-04-01T21:00:00.000+08:00",
+          "isDone": false,
+          "type": "EVENT"
+        },
+        "2": {
+          "id": 2,
+          "name": "this",
+          "createdOn": "2016-03-12T19:13:10.095+08:00",
+          "modifiedOn": "2016-03-12T19:13:10.095+08:00",
+          "isDone": false,
+          "type": "TASK"
+        },
+        "3": {
+          "id": 3,
+          "name": "this",
+          "createdOn": "2016-03-12T19:13:24.045+08:00",
+          "modifiedOn": "2016-03-12T19:13:24.045+08:00",
+          "startTime": "2016-03-12T01:00:00.000+08:00",
+          "endTime": "2016-03-12T03:00:00.000+08:00",
+          "isDone": false,
+          "type": "EVENT"
+        },
+        "4": {
+          "id": 4,
+          "name": "do cs",
+          "createdOn": "2016-03-13T01:53:32.108+08:00",
+          "modifiedOn": "2016-03-13T01:53:32.108+08:00",
+          "startTime": "2016-03-13T14:00:00.000+08:00",
+          "endTime": "2016-03-13T16:00:00.000+08:00",
+          "isDone": false,
+          "type": "EVENT"
+        },
+        "6": {
+          "id": 6,
+          "name": "do fc",
+          "createdOn": "2016-03-13T01:54:29.194+08:00",
+          "modifiedOn": "2016-03-13T01:54:29.194+08:00",
+          "startTime": "2016-03-13T14:00:00.000+08:00",
+          "endTime": "2016-03-13T16:00:00.000+08:00",
+          "isDone": false,
+          "type": "EVENT"
+        },
+        "7": {
+          "id": 7,
+          "name": "this",
+          "createdOn": "2016-03-14T22:27:57.873+08:00",
+          "modifiedOn": "2016-03-14T22:27:57.873+08:00",
+          "isDone": false,
+          "type": "TASK"
+        }
+      },
+      "idBuffer": {
+        "buffer": [
+          8,
+          9
+        ],
+        "minFreeId": 8,
+        "memory": {
+          "0": {
+            "id": 0,
+            "name": "taskA",
+            "createdOn": "2016-03-12T17:19:42.364+08:00",
+            "modifiedOn": "2016-03-12T17:22:25.427+08:00",
+            "startTime": "2016-04-01T13:00:00.000+08:00",
+            "endTime": "2016-04-01T14:00:00.000+08:00",
+            "isDone": false,
+            "type": "EVENT"
+          },
+          "1": {
+            "id": 1,
+            "name": "do homework",
+            "createdOn": "2016-03-12T17:21:10.062+08:00",
+            "modifiedOn": "2016-03-12T17:21:10.062+08:00",
+            "startTime": "2016-04-01T15:00:00.000+08:00",
+            "endTime": "2016-04-01T21:00:00.000+08:00",
+            "isDone": false,
+            "type": "EVENT"
+          },
+          "2": {
+            "id": 2,
+            "name": "this",
+            "createdOn": "2016-03-12T19:13:10.095+08:00",
+            "modifiedOn": "2016-03-12T19:13:10.095+08:00",
+            "isDone": false,
+            "type": "TASK"
+          },
+          "3": {
+            "id": 3,
+            "name": "this",
+            "createdOn": "2016-03-12T19:13:24.045+08:00",
+            "modifiedOn": "2016-03-12T19:13:24.045+08:00",
+            "startTime": "2016-03-12T01:00:00.000+08:00",
+            "endTime": "2016-03-12T03:00:00.000+08:00",
+            "isDone": false,
+            "type": "EVENT"
+          },
+          "4": {
+            "id": 4,
+            "name": "do cs",
+            "createdOn": "2016-03-13T01:53:32.108+08:00",
+            "modifiedOn": "2016-03-13T01:53:32.108+08:00",
+            "startTime": "2016-03-13T14:00:00.000+08:00",
+            "endTime": "2016-03-13T16:00:00.000+08:00",
+            "isDone": false,
+            "type": "EVENT"
+          },
+          "6": {
+            "id": 6,
+            "name": "do fc",
+            "createdOn": "2016-03-13T01:54:29.194+08:00",
+            "modifiedOn": "2016-03-13T01:54:29.194+08:00",
+            "startTime": "2016-03-13T14:00:00.000+08:00",
+            "endTime": "2016-03-13T16:00:00.000+08:00",
+            "isDone": false,
+            "type": "EVENT"
+          },
+          "7": {
+            "id": 7,
+            "name": "this",
+            "createdOn": "2016-03-14T22:27:57.873+08:00",
+            "modifiedOn": "2016-03-14T22:27:57.873+08:00",
+            "isDone": false,
+            "type": "TASK"
+          }
+        }
+      },
+      "maxStates": 5
+    },
+    "ruleStacks": {
+      "undoStack": [],
+      "redoStack": [],
+      "memory": {},
+      "idBuffer": {
+        "buffer": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "minFreeId": 0,
+        "memory": {}
+      },
+      "maxStates": 5
+    }
+  },
+  "searchMap": {
+    "nameMap": {
+      "cs": [
+        4
+      ],
+      "homework": [
+        1
+      ],
+      "this": [
+        2,
+        3,
+        7
+      ],
+      "do": [
+        1,
+        4,
+        6
+      ],
+      "taskA": [
+        0
+      ],
+      "fc": [
+        6
+      ]
+    },
+    "dateMap": {
+      "2016-03-13": [
+        4,
+        6
+      ],
+      "2016-04-01": [
+        1,
+        0
+      ],
+      "2016-03-12": [
+        3
+      ]
+    },
+    "timeMap": {
+      "13:00:00.000": [
+        0
+      ],
+      "16:00:00.000": [
+        4,
+        6
+      ],
+      "21:00:00.000": [
+        1
+      ],
+      "15:00:00.000": [
+        1
+      ],
+      "03:00:00.000": [
+        3
+      ],
+      "01:00:00.000": [
+        3
+      ],
+      "14:00:00.000": [
+        0,
+        4,
+        6
+      ]
+    },
+    "monthMap": {
+      "3": [
+        3,
+        4,
+        6
+      ],
+      "4": [
+        1,
+        0
+      ]
+    },
+    "dayMap": {
+      "5": [
+        1,
+        0
+      ],
+      "6": [
+        3
+      ],
+      "7": [
+        4,
+        6
+      ]
+    },
+    "yearMap": {
+      "2016": [
+        1,
+        0,
+        3,
+        4,
+        6
+      ]
+    }
+  },
+  "storage": {
+    "storageFile": {
+      "path": "C:\\Users\\Regine\\Desktop\\CS2103\\GROUP CS2103\\ClockworkV0.1Demo\\storageFile.json"
+    }
+  }
+}
