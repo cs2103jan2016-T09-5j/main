@@ -122,7 +122,7 @@ public class ClockworkGUI extends Application {
 	
 	/** Set right region to display calendar widget [INCOMPLETE]*/
 	private void setRightRegion(BorderPane defaultLayout) {
-		Button rightSection = new Button("INSERT CALENDAR WIDGET");
+		RightDisplay rightSection = new RightDisplay();
 		defaultLayout.setRight(rightSection);
 	}
 	
