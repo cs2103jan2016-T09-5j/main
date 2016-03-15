@@ -26,8 +26,8 @@ import javafx.stage.Stage;
 public class ClockworkGUI extends Application {
 	
 	/** Application window dimensions */
-	private static final int DEFAULT_WINDOW_WIDTH = 600;
-	private static final int DEFAULT_WINDOW_HEIGHT = 400;
+	private static final int DEFAULT_WINDOW_WIDTH = 900;
+	private static final int DEFAULT_WINDOW_HEIGHT = 600;
 
 	/** Static messages to display */
 	private static final Text welcomeText = new Text("Welcome to Clockwork (:");
@@ -208,7 +208,7 @@ public class ClockworkGUI extends Application {
 	 */
 	private ListView<String> setTopSubsection(ArrayList<String> prevCommandsList) {
 		ListView<String> prevCommandsListView = formatArrayList(prevCommandsList);
-		prevCommandsListView.setPrefSize(600, 250);
+		prevCommandsListView.setPrefSize(900, 250);
 		prevCommandsListView.setCellFactory(TextFieldListCell.forListView());
 		
 		GridPane.setConstraints(userCommandText, 0, 0); // column=0 row=0
@@ -312,8 +312,8 @@ public class ClockworkGUI extends Application {
 		grid.setVgap(5);
 		grid.setHgap(5);
 		
-		grid.getRowConstraints().add(new RowConstraints(5)); // row 0 is 5 high
-		grid.getRowConstraints().add(new RowConstraints(100)); // row 0 is 100 high
+		grid.getRowConstraints().add(new RowConstraints(10)); // row 0 is 10 high
+		grid.getRowConstraints().add(new RowConstraints(280)); // row 0 is 280 high
 		grid.getRowConstraints().add(new RowConstraints(10)); // row 1 is 10 high
 		grid.getRowConstraints().add(new RowConstraints(30)); // row 1 is 30 high
 	}
@@ -325,7 +325,7 @@ public class ClockworkGUI extends Application {
 		centerSection.setPadding(new Insets(10, 12, 15, 12));
 		centerSection.setSpacing(10);
 		centerSection.setStyle("-fx-background-color: #FFFFFF;");
-		taskListView.setPrefSize(70, 150);
+		taskListView.setPrefSize(100, 200);
 	}
 
 	/** Styling left section containing help list */
@@ -333,7 +333,7 @@ public class ClockworkGUI extends Application {
 		leftSection.setPadding(new Insets(5, 12, 15, 12));
 		leftSection.setSpacing(10);
 		leftSection.setStyle("-fx-background-color: #FFFFFF;");
-		commandListView.setPrefSize(80, 150);
+		commandListView.setPrefSize(100, 200);
 	}
 	
 	/** Styling top section containing welcome text */
