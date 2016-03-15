@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -30,16 +31,16 @@ public class ClockworkGUI extends Application {
 	private static final int DEFAULT_WINDOW_HEIGHT = 600;
 
 	/** Static messages to display */
-	private static final Text welcomeText = new Text("Welcome to Clockwork (:");
-	private static final Text helpText = new Text("Help: ");
-	private static final Text userCommandText = new Text("Command: ");
-	private static final Text userInputText = new Text("Type Command: ");
+	private static final Text TEXT_WELCOME = new Text("Welcome to Clockwork (:");
+	private static final Text TEXT_HELP = new Text("Help: ");
+	private static final Text TEXT_CONSOLE = new Text("Console: ");
+	private static final Text TEXT_INPUT = new Text("Command: ");
 	
 	/** Static variables */
-	private static final ArrayList<String> prevCommandsList = new ArrayList<String>();
-	private static final ArrayList<String> currentInputList = new ArrayList<String>();
-	private static final ArrayList<String> helpList = new ArrayList<String>();
-	private static final ArrayList<String> taskList = new ArrayList<String>();
+	private static ArrayList<String> prevCommandsList = new ArrayList<String>();
+	private static ArrayList<String> currentInputList = new ArrayList<String>();
+	private static ArrayList<String> helpList = new ArrayList<String>();
+	private static ArrayList<String> taskList = new ArrayList<String>();
 	private static BorderPane defaultLayout = new BorderPane();
 	private static Scene defaultScene = new Scene(defaultLayout, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 	private String rawInputString = new String();
@@ -94,7 +95,8 @@ public class ClockworkGUI extends Application {
 	
 	/** Set top region to display welcome text*/
 	private void setTopRegion(BorderPane defaultLayout) {
-		HBox topSection = displayWelcomeText(welcomeText);
+		ClockworkGUITop topSection = new ClockworkGUITop(TEXT_WELCOME);
+//		topSection.changeDisplayText("IF YOU WANNA CHANGE ME");
 		defaultLayout.setTop(topSection);
 	}
 	
@@ -145,25 +147,9 @@ public class ClockworkGUI extends Application {
 		final TextField userInput = setBottomSubsection();
 		
 		grid.getChildren().add(userInput);
-		grid.getChildren().addAll(userCommandText, prevCommandsListView, userInputText);
+		grid.getChildren().addAll(TEXT_CONSOLE, prevCommandsListView, TEXT_INPUT);
 		
 		return grid;
-	}
-
-	/** 
-	 * Display welcome message in top section [Static message, for now]
-	 * 
-	 * @param welcomeText			Text to welcome user in top section
-	 * @return topSection			Top section to display welcome text
-	 */
-	private HBox displayWelcomeText(Text welcomeText) {
-		HBox topSection = new HBox();
-		
-		styleTopSection(welcomeText, topSection);
-		
-		topSection.getChildren().add(welcomeText);
-		
-		return topSection;
 	}
 	
 	/** 
@@ -179,7 +165,7 @@ public class ClockworkGUI extends Application {
 		
 		styleLeftSection(leftSection, helpListView);
 		
-		leftSection.getChildren().addAll(helpText, helpListView);
+		leftSection.getChildren().addAll(TEXT_HELP, helpListView);
 		return leftSection;
 	}
 	
@@ -211,7 +197,7 @@ public class ClockworkGUI extends Application {
 		prevCommandsListView.setPrefSize(900, 250);
 		prevCommandsListView.setCellFactory(TextFieldListCell.forListView());
 		
-		GridPane.setConstraints(userCommandText, 0, 0); // column=0 row=0
+		GridPane.setConstraints(TEXT_CONSOLE, 0, 0); // column=0 row=0
 		GridPane.setConstraints(prevCommandsListView, 0, 1); // column=0 row=1
 		
 		return prevCommandsListView;
@@ -227,7 +213,7 @@ public class ClockworkGUI extends Application {
 		userInput.getText();	
 		handleUserInput(userInput);
 		
-		GridPane.setConstraints(userInputText, 0, 2); // column=0 row=2
+		GridPane.setConstraints(TEXT_INPUT, 0, 2); // column=0 row=2
 		GridPane.setConstraints(userInput, 0, 3); // column=0 row=3
 		
 		return userInput;
@@ -334,13 +320,5 @@ public class ClockworkGUI extends Application {
 		leftSection.setSpacing(10);
 		leftSection.setStyle("-fx-background-color: #FFFFFF;");
 		commandListView.setPrefSize(100, 200);
-	}
-	
-	/** Styling top section containing welcome text */
-	private void styleTopSection(Text welcomeText, HBox topSection) {
-		topSection.setPadding(new Insets(10, 12, 10, 12));
-		topSection.setSpacing(5);
-		topSection.setStyle("-fx-background-color: #336699;");
-		welcomeText.setFill(Color.WHITE);
 	}
 }
