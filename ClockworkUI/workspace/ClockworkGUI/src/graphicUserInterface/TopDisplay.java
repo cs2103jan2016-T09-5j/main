@@ -5,15 +5,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-/** 
- * Displays Text in HBox 
- * To be used for top region of main GUI class
+/**
+ * Display welcome Text for top region of main GUI class
+ * 
+ * @author Rebekah
  */
 
-public class ClockworkGUITop extends HBox {
+public class TopDisplay extends HBox {
 	private Text _displayText;
 	
-	public ClockworkGUITop(Text displayText){
+	public TopDisplay(Text displayText){
 		_displayText = displayText;
 		styleHBox();
 		styleText();

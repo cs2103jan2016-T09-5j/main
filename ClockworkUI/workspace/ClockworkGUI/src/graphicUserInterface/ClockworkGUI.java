@@ -95,15 +95,19 @@ public class ClockworkGUI extends Application {
 	
 	/** Set top region to display welcome text*/
 	private void setTopRegion(BorderPane defaultLayout) {
-		ClockworkGUITop topSection = new ClockworkGUITop(TEXT_WELCOME);
-//		topSection.changeDisplayText("IF YOU WANNA CHANGE ME");
+		TopDisplay topSection = new TopDisplay(TEXT_WELCOME);
 		defaultLayout.setTop(topSection);
+//		Available Methods:
+//		topSection.changeDisplayText("IF YOU WANNA CHANGE ME");
 	}
 	
 	/** Set left region to display help list */
 	private void setLeftRegion(BorderPane defaultLayout) {
-		VBox leftSection = displayHelpList(helpListTest);
+		LeftDisplay leftSection = new LeftDisplay(TEXT_HELP, helpListTest);
 		defaultLayout.setLeft(leftSection);
+//		Available Methods:
+//		ArrayList<String> testArray = new ArrayList(Arrays.asList("HAHAHAHA", "IT WORKS"));
+//		leftSection.changeDisplayList(testArray);
 	}
 	
 	/** Set center region to display task list */
@@ -150,23 +154,6 @@ public class ClockworkGUI extends Application {
 		grid.getChildren().addAll(TEXT_CONSOLE, prevCommandsListView, TEXT_INPUT);
 		
 		return grid;
-	}
-	
-	/** 
-	 * Display help list in left section
-	 * 
-	 * @param helpList				Help list of commands to show in left section
-	 * @return leftSection			Left section to display help list
-	 */
-	private VBox displayHelpList(ArrayList<String> helpList) {
-		VBox leftSection = new VBox();
-		
-		ListView<String> helpListView = formatArrayList(helpList);
-		
-		styleLeftSection(leftSection, helpListView);
-		
-		leftSection.getChildren().addAll(TEXT_HELP, helpListView);
-		return leftSection;
 	}
 	
 	/** 
@@ -312,13 +299,5 @@ public class ClockworkGUI extends Application {
 		centerSection.setSpacing(10);
 		centerSection.setStyle("-fx-background-color: #FFFFFF;");
 		taskListView.setPrefSize(100, 200);
-	}
-
-	/** Styling left section containing help list */
-	private void styleLeftSection(VBox leftSection, ListView<String> commandListView) {
-		leftSection.setPadding(new Insets(5, 12, 15, 12));
-		leftSection.setSpacing(10);
-		leftSection.setStyle("-fx-background-color: #FFFFFF;");
-		commandListView.setPrefSize(100, 200);
 	}
 }
