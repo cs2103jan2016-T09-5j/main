@@ -248,7 +248,7 @@ public class ClockworkGUI extends Application {
 	 * @param arrayList				List of type ArrayList String 
 	 * @return listView				List of type ListView String 
 	 */
-	private ListView<String> formatArrayList(ArrayList<String> arrayList) {
+	protected static ListView<String> formatArrayList(ArrayList<String> arrayList) {
 		ObservableList<String> obsList = FXCollections.observableList(arrayList);
 		ListView<String> listView = new ListView<String>(obsList);
 		listView.setItems(obsList);

@@ -21,7 +21,7 @@ public class LeftDisplay extends VBox {
 	
 	public LeftDisplay(Text header, ArrayList displayList){
 		_displayList = displayList;
-		_displayListView = formatArrayList(displayList);
+		_displayListView = ClockworkGUI.formatArrayList(displayList);
 		styleVBox();
 		styleListView(_displayListView);
 		this.getChildren().addAll(header, _displayListView);
@@ -30,20 +30,7 @@ public class LeftDisplay extends VBox {
 	public void changeDisplayList(ArrayList newList){
 		_displayList.clear();
 		_displayList.addAll(newList);
-		_displayListView = formatArrayList(newList);
-	}
-	
-	/** 
-	 * Set list format from ArrayList to ListView so that list can be seen on GUI
-	 * 
-	 * @param arrayList				List of type ArrayList String 
-	 * @return listView				List of type ListView String 
-	 */
-	private ListView<String> formatArrayList(ArrayList<String> arrayList) {
-		ObservableList<String> obsList = FXCollections.observableList(arrayList);
-		ListView<String> listView = new ListView<String>(obsList);
-		listView.setItems(obsList);
-		return listView;
+		_displayListView = ClockworkGUI.formatArrayList(newList);
 	}
 	
 	private void styleVBox() {
