@@ -16,21 +16,22 @@ import javafx.scene.text.Text;
  */
 
 public class CenterDisplay extends VBox {
-	private ArrayList _displayList;
-	private ListView<String> _displayListView;
+	private Text _taskText = new Text("Tasks: ");
+	private ArrayList _taskList;
+	private ListView<String> _taskListView;
 	
-	public CenterDisplay(Text header, ArrayList displayList){
-		_displayList = displayList;
-		_displayListView = ClockworkGUI.formatArrayList(displayList);
+	public CenterDisplay(ArrayList taskList){
+		_taskList = taskList;
+		_taskListView = ClockworkGUI.formatArrayList(taskList);
 		styleVBox();
-		styleListView(_displayListView);
-		this.getChildren().addAll(header, _displayListView);
+		styleListView(_taskListView);
+		this.getChildren().addAll(_taskText, _taskListView);
 	}
 	
 	public void changeDisplayList(ArrayList newList){
-		_displayList.clear();
-		_displayList.addAll(newList);
-		_displayListView = ClockworkGUI.formatArrayList(newList);
+		_taskList.clear();
+		_taskList.addAll(newList);
+		_taskListView = ClockworkGUI.formatArrayList(newList);
 	}
 	
 	private void styleVBox() {

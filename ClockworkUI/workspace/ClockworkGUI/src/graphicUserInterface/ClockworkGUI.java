@@ -31,9 +31,6 @@ public class ClockworkGUI extends Application {
 	private static final int DEFAULT_WINDOW_HEIGHT = 600;
 
 	/** Static messages to display */
-	private static final Text TEXT_WELCOME = new Text("Welcome to Clockwork (:");
-	private static final Text TEXT_HELP = new Text("Help: ");
-	private static final Text TEXT_TASK = new Text("Tasks: ");
 	private static final Text TEXT_CONSOLE = new Text("Console: ");
 	private static final Text TEXT_INPUT = new Text("Command: ");
 	
@@ -96,7 +93,7 @@ public class ClockworkGUI extends Application {
 	
 	/** Set top region to display welcome text*/
 	private void setTopRegion(BorderPane defaultLayout) {
-		TopDisplay topSection = new TopDisplay(TEXT_WELCOME);
+		TopDisplay topSection = new TopDisplay();
 		defaultLayout.setTop(topSection);
 //		Available Methods:
 //		topSection.changeDisplayText("IF YOU WANNA CHANGE ME");
@@ -104,7 +101,7 @@ public class ClockworkGUI extends Application {
 	
 	/** Set left region to display help list */
 	private void setLeftRegion(BorderPane defaultLayout) {
-		LeftDisplay leftSection = new LeftDisplay(TEXT_HELP, helpListTest);
+		LeftDisplay leftSection = new LeftDisplay(helpListTest);
 		defaultLayout.setLeft(leftSection);
 //		Available Methods:
 //		ArrayList<String> testArray = new ArrayList(Arrays.asList("HAHAHAHA", "IT WORKS"));
@@ -113,7 +110,7 @@ public class ClockworkGUI extends Application {
 	
 	/** Set center region to display task list */
 	private void setCenterRegion(BorderPane defaultLayout) {
-		CenterDisplay centerSection = new CenterDisplay(TEXT_TASK, taskListTest);
+		CenterDisplay centerSection = new CenterDisplay(taskListTest);
 		defaultLayout.setCenter(centerSection);
 //		Available Methods:
 //		ArrayList<String> testArray = new ArrayList(Arrays.asList("HAHAHAHA", "IT WORKS"));

@@ -16,21 +16,22 @@ import javafx.scene.text.Text;
  */
 
 public class LeftDisplay extends VBox {
+	private Text _helpText = new Text("Help: ");
 	private ArrayList _displayList;
-	private ListView<String> _displayListView;
+	private ListView<String> _helpListView;
 	
-	public LeftDisplay(Text header, ArrayList displayList){
-		_displayList = displayList;
-		_displayListView = ClockworkGUI.formatArrayList(displayList);
+	public LeftDisplay(ArrayList helpList){
+		_displayList = helpList;
+		_helpListView = ClockworkGUI.formatArrayList(helpList);
 		styleVBox();
-		styleListView(_displayListView);
-		this.getChildren().addAll(header, _displayListView);
+		styleListView(_helpListView);
+		this.getChildren().addAll(_helpText, _helpListView);
 	}
 	
 	public void changeDisplayList(ArrayList newList){
 		_displayList.clear();
 		_displayList.addAll(newList);
-		_displayListView = ClockworkGUI.formatArrayList(newList);
+		_helpListView = ClockworkGUI.formatArrayList(newList);
 	}
 	
 	private void styleVBox() {

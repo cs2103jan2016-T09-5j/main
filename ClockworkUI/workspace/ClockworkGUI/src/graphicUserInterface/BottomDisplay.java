@@ -17,6 +17,9 @@ public class BottomDisplay extends GridPane{
 		_displayList = displayList;
 		_displayListView = ClockworkGUI.formatArrayList(displayList);
 		styleGrid();
+		BottomTopDisplay botTop = new BottomTopDisplay();
+		BottomBotDisplay botBot = new BottomBotDisplay();
+		this.getChildren().addAll(botBot, botTop);
 	}
 	
 	private void styleGrid() {
