@@ -33,6 +33,7 @@ public class ClockworkGUI extends Application {
 	/** Static messages to display */
 	private static final Text TEXT_WELCOME = new Text("Welcome to Clockwork (:");
 	private static final Text TEXT_HELP = new Text("Help: ");
+	private static final Text TEXT_TASK = new Text("Tasks: ");
 	private static final Text TEXT_CONSOLE = new Text("Console: ");
 	private static final Text TEXT_INPUT = new Text("Command: ");
 	
@@ -112,8 +113,11 @@ public class ClockworkGUI extends Application {
 	
 	/** Set center region to display task list */
 	private void setCenterRegion(BorderPane defaultLayout) {
-		VBox centerSection = displayTaskList(taskListTest);
+		CenterDisplay centerSection = new CenterDisplay(TEXT_TASK, taskListTest);
 		defaultLayout.setCenter(centerSection);
+//		Available Methods:
+//		ArrayList<String> testArray = new ArrayList(Arrays.asList("HAHAHAHA", "IT WORKS"));
+//		leftSection.changeDisplayList(testArray);
 	}
 	
 	/** Set right region to display calendar widget [INCOMPLETE]*/
@@ -154,23 +158,6 @@ public class ClockworkGUI extends Application {
 		grid.getChildren().addAll(TEXT_CONSOLE, prevCommandsListView, TEXT_INPUT);
 		
 		return grid;
-	}
-	
-	/** 
-	 * Display task list in center section
-	 * 
-	 * @param taskList				Task list to show in center section
-	 * @return centerSection		Left section to display task list
-	 */
-	private VBox displayTaskList(ArrayList<String> taskList) {
-		VBox centerSection = new VBox();
-		
-		ListView<String> taskListView = formatArrayList(taskList);
-		
-		styleCenterSection(centerSection, taskListView);
-		
-		centerSection.getChildren().addAll(taskListView);
-		return centerSection;
 	}
 	
 	/** 
@@ -289,15 +276,5 @@ public class ClockworkGUI extends Application {
 		grid.getRowConstraints().add(new RowConstraints(280)); // row 0 is 280 high
 		grid.getRowConstraints().add(new RowConstraints(10)); // row 1 is 10 high
 		grid.getRowConstraints().add(new RowConstraints(30)); // row 1 is 30 high
-	}
-	
-	//STYLING SECTIONS
-	
-	/** Styling center section containing task list */
-	private void styleCenterSection(VBox centerSection, ListView<String> taskListView) {
-		centerSection.setPadding(new Insets(10, 12, 15, 12));
-		centerSection.setSpacing(10);
-		centerSection.setStyle("-fx-background-color: #FFFFFF;");
-		taskListView.setPrefSize(100, 200);
 	}
 }
