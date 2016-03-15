@@ -12,20 +12,20 @@ import javafx.scene.text.Text;
  */
 
 public class TopDisplay extends HBox {
-	private Text _displayText = new Text("Welcome to Clockwork (:");
+	private Text _textDisplay = new Text("Welcome to Clockwork (:");
 	
 	public TopDisplay(){
 		styleHBox();
 		styleText();
-		this.getChildren().add(_displayText);
+		this.getChildren().add(_textDisplay);
 	}
 
 	public void changeDisplayText(String text){
-		_displayText.setText(text);
+		_textDisplay.setText(text);
 	}
 	
 	public Text getDisplayText(){
-		return _displayText;
+		return _textDisplay;
 	}
 
 	private void styleHBox() {
@@ -34,6 +34,6 @@ public class TopDisplay extends HBox {
 		this.setStyle("-fx-background-color: #336699;");
 	}
 	private void styleText() {
-		_displayText.setFill(Color.WHITE);
+		_textDisplay.setFill(Color.WHITE);
 	}
 }

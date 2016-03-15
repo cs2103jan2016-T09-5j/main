@@ -35,7 +35,7 @@ public class ClockworkGUI extends Application {
 	private static final Text TEXT_INPUT = new Text("Command: ");
 	
 	/** Static variables */
-	private static ArrayList<String> prevCommandsList = new ArrayList<String>();
+	private static ArrayList<String> consoleList = new ArrayList<String>();
 	private static ArrayList<String> currentInputList = new ArrayList<String>();
 	private static ArrayList<String> helpList = new ArrayList<String>();
 	private static ArrayList<String> taskList = new ArrayList<String>();
@@ -83,7 +83,7 @@ public class ClockworkGUI extends Application {
 	*/
 	
 	/** Set top, left, center, right and bottom region to display information */
-	private void setDisplayRegions(BorderPane defaultLayout) {
+	private static void setDisplayRegions(BorderPane defaultLayout) {
 		setBottomRegion(defaultLayout);
 		setTopRegion(defaultLayout);
 		setLeftRegion(defaultLayout);
@@ -92,7 +92,7 @@ public class ClockworkGUI extends Application {
 	}
 	
 	/** Set top region to display welcome text*/
-	private void setTopRegion(BorderPane defaultLayout) {
+	private static void setTopRegion(BorderPane defaultLayout) {
 		TopDisplay topSection = new TopDisplay();
 		defaultLayout.setTop(topSection);
 //		Available Methods:
@@ -100,7 +100,7 @@ public class ClockworkGUI extends Application {
 	}
 	
 	/** Set left region to display help list */
-	private void setLeftRegion(BorderPane defaultLayout) {
+	private static void setLeftRegion(BorderPane defaultLayout) {
 		LeftDisplay leftSection = new LeftDisplay(helpListTest);
 		defaultLayout.setLeft(leftSection);
 //		Available Methods:
@@ -109,7 +109,7 @@ public class ClockworkGUI extends Application {
 	}
 	
 	/** Set center region to display task list */
-	private void setCenterRegion(BorderPane defaultLayout) {
+	private static void setCenterRegion(BorderPane defaultLayout) {
 		CenterDisplay centerSection = new CenterDisplay(taskListTest);
 		defaultLayout.setCenter(centerSection);
 //		Available Methods:
@@ -118,14 +118,15 @@ public class ClockworkGUI extends Application {
 	}
 	
 	/** Set right region to display calendar widget [INCOMPLETE]*/
-	private void setRightRegion(BorderPane defaultLayout) {
+	private static void setRightRegion(BorderPane defaultLayout) {
 		RightDisplay rightSection = new RightDisplay();
 		defaultLayout.setRight(rightSection);
 	}
 	
 	/** Set bottom region to display user command and input section*/
-	private void setBottomRegion(BorderPane defaultLayout) {
-		GridPane bottomSection = setBottomSection(prevCommandsList);
+	private static void setBottomRegion(BorderPane defaultLayout) {
+		//GridPane bottomSection = setBottomSection(consoleList);
+		BottomDisplay bottomSection = new BottomDisplay(consoleList);
 		defaultLayout.setBottom(bottomSection);
 	}
 	
@@ -222,7 +223,7 @@ public class ClockworkGUI extends Application {
 	//*********** REGINE WORK ON THIS PART! ************************
 	private void handleUserEnter(String userInput){
 		rawInputString = userInput;
-		prevCommandsList.add(userInput);
+		consoleList.add(userInput);
 		//Start Comment - Call Logic API here to handle the String user entered.
 		//Eg. ('Cos idk the actual API you're gonna call here)
 //		clockWork.handleCommand(rawInputString);
@@ -234,8 +235,9 @@ public class ClockworkGUI extends Application {
 		refresh();
 		System.out.println("This is what you typed: " + userInput);
 	}
+	
 	/** Refreshes the scene so that updated lists and variables can be shown */
-	private void refresh(){
+	protected static void refresh(){
 		setDisplayRegions(defaultLayout);
 	}
 

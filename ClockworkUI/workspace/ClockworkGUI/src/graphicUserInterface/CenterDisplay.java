@@ -16,22 +16,22 @@ import javafx.scene.text.Text;
  */
 
 public class CenterDisplay extends VBox {
-	private Text _taskText = new Text("Tasks: ");
-	private ArrayList _taskList;
-	private ListView<String> _taskListView;
+	private Text _textTask = new Text("Tasks: ");
+	private static ArrayList _taskList;
+	private static ListView<String> _taskListView;
 	
 	public CenterDisplay(ArrayList taskList){
 		_taskList = taskList;
-		_taskListView = ClockworkGUI.formatArrayList(taskList);
+		_taskListView = ClockworkGUI.formatArrayList(_taskList);
 		styleVBox();
 		styleListView(_taskListView);
-		this.getChildren().addAll(_taskText, _taskListView);
+		this.getChildren().addAll(_textTask, _taskListView);
 	}
 	
-	public void changeDisplayList(ArrayList newList){
+	public static void changeTaskList(ArrayList newList){
 		_taskList.clear();
 		_taskList.addAll(newList);
-		_taskListView = ClockworkGUI.formatArrayList(newList);
+		_taskListView = ClockworkGUI.formatArrayList(_taskList);
 	}
 	
 	private void styleVBox() {
@@ -42,6 +42,10 @@ public class CenterDisplay extends VBox {
 	
 	private void styleListView(ListView<String> commandListView) {
 		commandListView.setPrefSize(100, 200);
+	}
+
+	public static ArrayList<String> getTaskList() {
+		return _taskList;
 	}
 }
 
