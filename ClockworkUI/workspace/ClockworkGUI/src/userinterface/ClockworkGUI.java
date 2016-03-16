@@ -43,14 +43,8 @@ public class ClockworkGUI extends Application {
 	*/
 	
 	public static void main(String[] args) {
-		//Start Comment - tldr; getCurrentState which is what logic API is supposed to return 
-		// to GUI, so I can unpack it to get the arrayLists I need to display.
-		//Aka, taskList for now.
-		//Cos the GUI is not supposed to have any memory storing 
-		//arraylists or whatever cos that belongs to logic. GUI is only supposed to output
-		//out whatever the logic API gives.
-//		ClockWork clockWork = new ClockWork();
-//		taskList = clockWork.getCurrentState();
+//		LogicMain clockWork = new LogicMain();
+//		packagedDisplayObj = clockWork.getCurrentState();
 		//End Comment
 		Application.launch(args);
 	}
@@ -65,7 +59,7 @@ public class ClockworkGUI extends Application {
 	
 	/*
 	* ===========================================
-	* Creating Basic Layout
+	* Populating Layout
 	* ===========================================
 	*/
 	
@@ -123,57 +117,21 @@ public class ClockworkGUI extends Application {
 	*/
 	
 	/** 
-	 * Handle event after enter is pressed
+	 * Handle event after key is pressed
 	 * 
 	 * @param textField				User input to be handled
 	 */
-	protected static void handleUserInput(TextField textField) {
+	protected static void implementKeystrokeEvents(TextField textField) {
 		textField.setOnKeyPressed(new EventHandler<KeyEvent>()
 	    {
 	        @Override
 	        public void handle(KeyEvent ke)
 	        {
-	        	//IGNORE FOR NOW - You can try seeing how this part works, not sure if you'll need
-	        	//it for the function to see if the user input matches the help list so you can
-	        	//change it later
-//	        	currentInputList.add(userInput.getText());
-//	        	System.out.println(currentInputList);
-//	        	System.out.println(userInput.getText());
-	        	//End Comment
-	            if (ke.getCode().equals(KeyCode.ENTER))
-	            {
-	            	if ((textField.getText() != null && !textField.getText().isEmpty())) {
-	            		handleUserEnter(textField.getText());
-		            	textField.clear();
-	            	}
-	            } 
+	            executeKeyPress(textField, ke); 
 	        }
 	    });
 	}
 	
-	//*********** REGINE WORK ON THIS PART! ************************
-	protected static void handleUserEnter(String userInput){
-//		rawInputString = userInput;
-		
-		consoleList.add(userInput);
-		
-		//Start Comment - Call Logic API here to handle the String user entered.
-		//Eg. ('Cos idk the actual API you're gonna call here)
-//		clockWork.handleCommand(rawInputString);
-		//, where handleCommand is the logic API that processes the string and returns me 
-		//the arraylist of tasks I should display on the GUI. That means that
-		//the prevCommandsList should not be stored in the GUI, but it should be in logic.
-		taskListTest.add("NEW TASK!");
-		//End Comment
-		refresh();
-		System.out.println("This is what you typed: " + userInput);
-	}
-	
-	/** Refreshes the scene so that updated lists and variables can be shown */
-	protected static void refresh(){
-		setDisplayRegions(defaultLayout);
-	}
-
 	/** 
 	 * Set list format from ArrayList to ListView so that list can be seen on GUI
 	 * 
@@ -186,4 +144,47 @@ public class ClockworkGUI extends Application {
 		listView.setItems(obsList);
 		return listView;
 	}
+	
+	/*
+	* ===========================================
+	* Private Methods
+	* ===========================================
+	*/
+	
+	/**
+	 * Function handles all keyboard presses accordingly
+	 * 
+	 * @param textField				User input to be handled
+	 * @param ke					Key that is pressed
+	 */
+	private static void executeKeyPress(TextField textField, KeyEvent ke) {
+		if (ke.getCode().equals(KeyCode.ENTER))
+        {
+        	if ((textField.getText() != null && !textField.getText().isEmpty())) {
+        		processUserEnter(textField.getText());
+            	textField.clear();
+        	}
+        } else if (ke.getCode().equals(KeyCode.ESCAPE)){
+        	//DO SOMETHING [INCOMPLETE]
+        }
+	}
+	
+	private static void processUserEnter(String userInput){
+		callControllerToAddCommand(userInput);
+	}
+
+	//*********** LOGIC INTEGRATION HERE ************************
+	private static void callControllerToAddCommand(String userInput) {
+		//Call Logic API Here
+		consoleList.add(userInput);
+		taskListTest.add("NEW TASK!");
+		refresh();
+		System.out.println("This is what you typed: " + userInput);
+	}
+	
+	/** Refreshes the scene so that updated lists and variables can be shown */
+	private static void refresh(){
+		setDisplayRegions(defaultLayout);
+	}
+
 }

@@ -2,7 +2,12 @@ package userinterface;
 
 import java.util.ArrayList;
 
-import javafx.collections.FXCollections;
+/**
+ * Display ArrayList containing task list and allow user input in bottom section
+ * 
+ * @author - Rebekah
+ */
+
 import javafx.geometry.Insets;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -23,7 +28,7 @@ public class BottomDisplay extends GridPane{
 		styleListView();
 		
 		_consoleInput = new TextField();
-		ClockworkGUI.handleUserInput(_consoleInput);
+		ClockworkGUI.implementKeystrokeEvents(_consoleInput);
 		
 		setNodePositions(_taskListView, _consoleInput);
 		
