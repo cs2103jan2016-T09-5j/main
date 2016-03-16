@@ -95,9 +95,9 @@ public class ClockworkGUI extends Application {
 //		leftSection.changeDisplayList(testArray);
 	}
 	
-	/** Set center region to display task list */
+	/** Set center region to display console */
 	private static void setCenterRegion(BorderPane defaultLayout) {
-		CenterDisplay centerSection = new CenterDisplay(taskListTest);
+		CenterDisplay centerSection = new CenterDisplay(consoleList);
 		defaultLayout.setCenter(centerSection);
 //		Available Methods:
 //		ArrayList<String> testArray = new ArrayList(Arrays.asList("HAHAHAHA", "IT WORKS"));
@@ -110,9 +110,9 @@ public class ClockworkGUI extends Application {
 		defaultLayout.setRight(rightSection);
 	}
 	
-	/** Set bottom region to display user command and input section*/
+	/** Set bottom region to display task list and input section*/
 	private static void setBottomRegion(BorderPane defaultLayout) {
-		BottomDisplay bottomSection = new BottomDisplay(consoleList);
+		BottomDisplay bottomSection = new BottomDisplay(taskListTest);
 		defaultLayout.setBottom(bottomSection);
 	}
 	

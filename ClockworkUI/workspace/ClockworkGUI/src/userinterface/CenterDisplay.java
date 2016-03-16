@@ -8,28 +8,28 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 /**
- * Display ArrayList containing task strings for center region of main GUI class
+ * Display ArrayList containing console strings for center region of main GUI class
  * 
  * @author Rebekah
  */
 
 public class CenterDisplay extends VBox {
-	private Text _textTask = new Text("Tasks: ");
-	private static ArrayList _taskList;
-	private static ListView<String> _taskListView;
+	private Text _textConsole = new Text("Console: ");
+	private static ArrayList _consoleList;
+	private static ListView<String> _consoleListView;
 	
-	public CenterDisplay(ArrayList taskList){
-		_taskList = taskList;
-		_taskListView = ClockworkGUI.formatArrayList(_taskList);
+	public CenterDisplay(ArrayList consoleList){
+		_consoleList = consoleList;
+		_consoleListView = ClockworkGUI.formatArrayList(_consoleList);
 		styleVBox();
-		styleListView(_taskListView);
-		this.getChildren().addAll(_textTask, _taskListView);
+		styleListView(_consoleListView);
+		this.getChildren().addAll(_textConsole, _consoleListView);
 	}
 	
 	public static void changeTaskList(ArrayList newList){
-		_taskList.clear();
-		_taskList.addAll(newList);
-		_taskListView = ClockworkGUI.formatArrayList(_taskList);
+		_consoleList.clear();
+		_consoleList.addAll(newList);
+		_consoleListView = ClockworkGUI.formatArrayList(_consoleList);
 	}
 	
 	private void styleVBox() {
@@ -38,13 +38,11 @@ public class CenterDisplay extends VBox {
 		this.setStyle("-fx-background-color: #FFFFFF;");
 	}
 	
-	private void styleListView(ListView<String> commandListView) {
-		commandListView.setPrefSize(100, 200);
+	private void styleListView(ListView<String> consoleListView) {
+		consoleListView.setPrefSize(100, 200);
 	}
 
-	public static ArrayList<String> getTaskList() {
-		return _taskList;
+	public static ArrayList<String> getConsoleList() {
+		return _consoleList;
 	}
 }
-
-
