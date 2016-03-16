@@ -1,31 +1,39 @@
-package graphicUserInterface;
+package userinterface;
 
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
 
 public class BottomDisplay extends GridPane{
-	protected Text _textConsole = new Text("Console: ");
-	protected Text _textInput = new Text("Command: ");
+	private Text _textConsole = new Text("Console: ");
+	private Text _textInput = new Text("Command: ");
+	private ListView<String> _consoleListView;
+	private TextField _consoleInput;
 	
 	public  BottomDisplay(ArrayList<String> consoleList){
 		styleGrid();
 		
-		BottomTopDisplay botTop = new BottomTopDisplay(consoleList);
-		BottomBotDisplay botBot = new BottomBotDisplay();
-		botBot.handleUserInput(botBot.getTextField());
+		_consoleListView = ClockworkGUI.formatArrayList(consoleList);
+		styleListView();
 		
-		styleNodes(botTop, botBot);
+		_consoleInput = new TextField();
+		ClockworkGUI.handleUserInput(_consoleInput);
 		
-		this.getChildren().addAll(_textConsole, botBot, _textInput, botTop);
+		setNodePositions(_consoleListView, _consoleInput);
+		
+		this.getChildren().addAll(_textConsole, _consoleInput, _textInput, _consoleListView);
 	}
 	
+	private void styleListView(){
+		_consoleListView.setPrefSize(900, 200);
+	}
+
 	private void styleGrid() {
 		/** to display previous commands */
 		this.setHgap(5);
@@ -43,7 +51,7 @@ public class BottomDisplay extends GridPane{
 		this.getRowConstraints().add(new RowConstraints(30)); // row 1 is 30 high
 	}
 	
-	private void styleNodes(BottomTopDisplay botTop, BottomBotDisplay botBot) {
+	private void setNodePositions(ListView<String> botTop, TextField botBot) {
 		this.setConstraints(_textConsole, 0, 0); // column=0 row=0
 		this.setConstraints(botTop, 0, 1); // column=0 row=1
 		this.setConstraints(_textInput, 0, 2); // column=0 row=2

@@ -1,4 +1,4 @@
-package graphicUserInterface;
+package userinterface;
 
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;

@@ -1,4 +1,4 @@
-package graphicUserInterface;
+package userinterface;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -6,22 +6,12 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class ClockworkGUI extends Application {
@@ -30,18 +20,15 @@ public class ClockworkGUI extends Application {
 	private static final int DEFAULT_WINDOW_WIDTH = 900;
 	private static final int DEFAULT_WINDOW_HEIGHT = 600;
 
-	/** Static messages to display */
-	private static final Text TEXT_CONSOLE = new Text("Console: ");
-	private static final Text TEXT_INPUT = new Text("Command: ");
-	
 	/** Static variables */
 	private static ArrayList<String> consoleList = new ArrayList<String>();
-	private static ArrayList<String> currentInputList = new ArrayList<String>();
-	private static ArrayList<String> helpList = new ArrayList<String>();
-	private static ArrayList<String> taskList = new ArrayList<String>();
+//	private static ArrayList<String> helpList = new ArrayList<String>();
+//	private static ArrayList<String> taskList = new ArrayList<String>();
 	private static BorderPane defaultLayout = new BorderPane();
+	
 	private static Scene defaultScene = new Scene(defaultLayout, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
-	private String rawInputString = new String();
+	
+//	private String rawInputString = new String();
 	
 	/** Test arrays to display */
 	private static final ArrayList<String> helpListTest = new ArrayList<String>(
@@ -114,7 +101,7 @@ public class ClockworkGUI extends Application {
 		defaultLayout.setCenter(centerSection);
 //		Available Methods:
 //		ArrayList<String> testArray = new ArrayList(Arrays.asList("HAHAHAHA", "IT WORKS"));
-//		leftSection.changeDisplayList(testArray);
+//		centerSection.changeDisplayList(testArray);
 	}
 	
 	/** Set right region to display calendar widget [INCOMPLETE]*/
@@ -125,79 +112,23 @@ public class ClockworkGUI extends Application {
 	
 	/** Set bottom region to display user command and input section*/
 	private static void setBottomRegion(BorderPane defaultLayout) {
-		//GridPane bottomSection = setBottomSection(consoleList);
 		BottomDisplay bottomSection = new BottomDisplay(consoleList);
 		defaultLayout.setBottom(bottomSection);
 	}
 	
 	/*
 	* ===========================================
-	* Private Class Methods
+	* Protected Methods
 	* ===========================================
 	*/
 	
 	/** 
-	 * Display previous commands entered by user in top subsection, and take in input
-	 * in bottom subsection in the bottom section
-	 * 
-	 * @param prevCommandsList		Previous test commands entered to show top sub-section
-	 * 								in bottom section
-	 * @return bottomSection		Bottom section to display previous commands and 
-	 * 								for user to input text
-	 */
-	private GridPane setBottomSection(ArrayList<String> prevCommandsList) {
-		GridPane grid = new GridPane();
-		formatBottomSection(grid);
-		
-		ListView<String> prevCommandsListView = setTopSubsection(prevCommandsList);
-		final TextField userInput = setBottomSubsection();
-		
-		grid.getChildren().add(userInput);
-		grid.getChildren().addAll(TEXT_CONSOLE, prevCommandsListView, TEXT_INPUT);
-		
-		return grid;
-	}
-	
-	/** 
-	 * Display previous commands entered by user in top subsection in bottom section
-	 * 
-	 * @param prevCommandsList		Previous user commands for display in ArrayList
-	 * @return prevCommandsListView	Previous user commands for display in ListView
-	 */
-	private ListView<String> setTopSubsection(ArrayList<String> prevCommandsList) {
-		ListView<String> prevCommandsListView = formatArrayList(prevCommandsList);
-		prevCommandsListView.setPrefSize(900, 250);
-		prevCommandsListView.setCellFactory(TextFieldListCell.forListView());
-		
-		GridPane.setConstraints(TEXT_CONSOLE, 0, 0); // column=0 row=0
-		GridPane.setConstraints(prevCommandsListView, 0, 1); // column=0 row=1
-		
-		return prevCommandsListView;
-	}
-	
-	/** 
-	 * Input user command in bottom subsection in bottom section
-	 * 
-	 * @return TextField			Text field for user to input commands
-	 */
-	private TextField setBottomSubsection() {
-		final TextField userInput = new TextField();
-		userInput.getText();	
-		handleUserInput(userInput);
-		
-		GridPane.setConstraints(TEXT_INPUT, 0, 2); // column=0 row=2
-		GridPane.setConstraints(userInput, 0, 3); // column=0 row=3
-		
-		return userInput;
-	}
-	
-	/** 
 	 * Handle event after enter is pressed
 	 * 
-	 * @param userInput				User input to be handled
+	 * @param textField				User input to be handled
 	 */
-	private void handleUserInput(TextField userInput) {
-		userInput.setOnKeyPressed(new EventHandler<KeyEvent>()
+	protected static void handleUserInput(TextField textField) {
+		textField.setOnKeyPressed(new EventHandler<KeyEvent>()
 	    {
 	        @Override
 	        public void handle(KeyEvent ke)
@@ -211,9 +142,9 @@ public class ClockworkGUI extends Application {
 	        	//End Comment
 	            if (ke.getCode().equals(KeyCode.ENTER))
 	            {
-	            	if ((userInput.getText() != null && !userInput.getText().isEmpty())) {
-	            		handleUserEnter(userInput.getText());
-		            	userInput.clear();
+	            	if ((textField.getText() != null && !textField.getText().isEmpty())) {
+	            		handleUserEnter(textField.getText());
+		            	textField.clear();
 	            	}
 	            } 
 	        }
@@ -221,9 +152,11 @@ public class ClockworkGUI extends Application {
 	}
 	
 	//*********** REGINE WORK ON THIS PART! ************************
-	private void handleUserEnter(String userInput){
-		rawInputString = userInput;
+	protected static void handleUserEnter(String userInput){
+//		rawInputString = userInput;
+		
 		consoleList.add(userInput);
+		
 		//Start Comment - Call Logic API here to handle the String user entered.
 		//Eg. ('Cos idk the actual API you're gonna call here)
 //		clockWork.handleCommand(rawInputString);
@@ -252,28 +185,5 @@ public class ClockworkGUI extends Application {
 		ListView<String> listView = new ListView<String>(obsList);
 		listView.setItems(obsList);
 		return listView;
-	}
-	
-	/** 
-	 * Format grid section in bottom section for displaying previous user commands 
-	 * and user input
-	 * 
-	 * @param grid					Grid in bottom section to be formatted
-	 */
-	private void formatBottomSection(GridPane grid) {
-		/** to display previous commands */
-		grid.setHgap(5);
-		grid.setVgap(5);
-		grid.setPadding(new Insets(5, 5, 5, 5));
-		
-		/** for user to key input */
-		grid.setPadding(new Insets(10, 10, 10, 10));
-		grid.setVgap(5);
-		grid.setHgap(5);
-		
-		grid.getRowConstraints().add(new RowConstraints(10)); // row 0 is 10 high
-		grid.getRowConstraints().add(new RowConstraints(280)); // row 0 is 280 high
-		grid.getRowConstraints().add(new RowConstraints(10)); // row 1 is 10 high
-		grid.getRowConstraints().add(new RowConstraints(30)); // row 1 is 30 high
 	}
 }

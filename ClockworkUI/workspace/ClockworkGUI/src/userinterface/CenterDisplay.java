@@ -1,9 +1,7 @@
-package graphicUserInterface;
+package userinterface;
 
 import java.util.ArrayList;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
