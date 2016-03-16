@@ -1,18 +1,16 @@
-package userinterface;
+package userinterface.view;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import userinterface.model.BottomDisplay;
+import userinterface.model.CenterDisplay;
+import userinterface.model.LeftDisplay;
+import userinterface.model.RightDisplay;
+import userinterface.model.TopDisplay;
 
 public class ClockworkGUI extends Application {
 	
@@ -21,7 +19,7 @@ public class ClockworkGUI extends Application {
 	private static final int DEFAULT_WINDOW_HEIGHT = 600;
 
 	/** Static variables */
-	private static ArrayList<String> consoleList = new ArrayList<String>();
+	public static ArrayList<String> consoleList = new ArrayList<String>();
 //	private static ArrayList<String> helpList = new ArrayList<String>();
 //	private static ArrayList<String> taskList = new ArrayList<String>();
 	private static BorderPane defaultLayout = new BorderPane();
@@ -31,9 +29,9 @@ public class ClockworkGUI extends Application {
 //	private String rawInputString = new String();
 	
 	/** Test arrays to display */
-	private static final ArrayList<String> helpListTest = new ArrayList<String>(
+	public static final ArrayList<String> helpListTest = new ArrayList<String>(
 			Arrays.asList("Add", "Delete", "Undo", "Search", "Display", "Mark", "Edit"));
-	private static final ArrayList<String> taskListTest = new ArrayList<String>(
+	public static final ArrayList<String> taskListTest = new ArrayList<String>(
 			Arrays.asList("Do Meeting Notes", "Have fun with CS2103"));
 
 	/*
@@ -110,80 +108,8 @@ public class ClockworkGUI extends Application {
 		defaultLayout.setBottom(bottomSection);
 	}
 	
-	/*
-	* ===========================================
-	* Protected Methods
-	* ===========================================
-	*/
-	
-	/** 
-	 * Handle event after key is pressed
-	 * 
-	 * @param textField				User input to be handled
-	 */
-	protected static void implementKeystrokeEvents(TextField textField) {
-		textField.setOnKeyPressed(new EventHandler<KeyEvent>()
-	    {
-	        @Override
-	        public void handle(KeyEvent ke)
-	        {
-	            executeKeyPress(textField, ke); 
-	        }
-	    });
-	}
-	
-	/** 
-	 * Set list format from ArrayList to ListView so that list can be seen on GUI
-	 * 
-	 * @param arrayList				List of type ArrayList String 
-	 * @return listView				List of type ListView String 
-	 */
-	protected static ListView<String> formatArrayList(ArrayList<String> arrayList) {
-		ObservableList<String> obsList = FXCollections.observableList(arrayList);
-		ListView<String> listView = new ListView<String>(obsList);
-		listView.setItems(obsList);
-		return listView;
-	}
-	
-	/*
-	* ===========================================
-	* Private Methods
-	* ===========================================
-	*/
-	
-	/**
-	 * Function handles all keyboard presses accordingly
-	 * 
-	 * @param textField				User input to be handled
-	 * @param ke					Key that is pressed
-	 */
-	private static void executeKeyPress(TextField textField, KeyEvent ke) {
-		if (ke.getCode().equals(KeyCode.ENTER))
-        {
-        	if ((textField.getText() != null && !textField.getText().isEmpty())) {
-        		processUserEnter(textField.getText());
-            	textField.clear();
-        	}
-        } else if (ke.getCode().equals(KeyCode.ESCAPE)){
-        	//DO SOMETHING [INCOMPLETE]
-        }
-	}
-	
-	private static void processUserEnter(String userInput){
-		callControllerToAddCommand(userInput);
-	}
-
-	//*********** LOGIC INTEGRATION HERE ************************
-	private static void callControllerToAddCommand(String userInput) {
-		//Call Logic API Here
-		consoleList.add(userInput);
-		taskListTest.add("NEW TASK!");
-		refresh();
-		System.out.println("This is what you typed: " + userInput);
-	}
-	
 	/** Refreshes the scene so that updated lists and variables can be shown */
-	private static void refresh(){
+	public static void refresh(){
 		setDisplayRegions(defaultLayout);
 	}
 

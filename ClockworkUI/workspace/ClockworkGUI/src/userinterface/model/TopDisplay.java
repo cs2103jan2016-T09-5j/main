@@ -1,4 +1,4 @@
-package userinterface;
+package userinterface.model;
 
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
@@ -13,18 +13,18 @@ import javafx.scene.text.Text;
 
 public class TopDisplay extends HBox {
 	private Text _textDisplay = new Text("Welcome to Clockwork (:");
-	
-	public TopDisplay(){
+
+	public TopDisplay() {
 		styleHBox();
 		styleText();
 		this.getChildren().add(_textDisplay);
 	}
 
-	public void changeDisplayText(String text){
+	public void changeDisplayText(String text) {
 		_textDisplay.setText(text);
 	}
-	
-	public Text getDisplayText(){
+
+	public Text getDisplayText() {
 		return _textDisplay;
 	}
 
@@ -33,6 +33,7 @@ public class TopDisplay extends HBox {
 		this.setSpacing(5);
 		this.setStyle("-fx-background-color: #336699;");
 	}
+
 	private void styleText() {
 		_textDisplay.setFill(Color.WHITE);
 	}
