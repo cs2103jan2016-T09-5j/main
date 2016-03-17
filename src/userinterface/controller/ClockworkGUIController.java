@@ -20,6 +20,7 @@ import userinterface.view.*;
 public class ClockworkGUIController {
 
 	private static Logger Logger = java.util.logging.Logger.getLogger("ClockworkGUIController");
+	private static String _currentUserInput;
 	public static ClockWork logic;
 
 	/**
@@ -63,6 +64,7 @@ public class ClockworkGUIController {
 	 */
 	public static void executeKeyPress(TextField textField, KeyEvent ke) {
 		if (ke.getCode().equals(KeyCode.ENTER)) {
+			_currentUserInput = textField.getText();
 			if ((textField.getText() != null && !textField.getText().isEmpty())) {
 				processUserEnter(textField.getText());
 				textField.clear();
@@ -87,14 +89,24 @@ public class ClockworkGUIController {
 	public static void callControllerToAddCommand(String userInput) {
 		// Call Logic API Here
 		ClockworkGUI.consoleList.add(userInput);
+		
 		DisplayCommand.clearArrListForGUI();
 		SignalHandler.clearArrListForGUI();
 		ClockWork.ClockworkLogicMain(userInput, logic);
+		
 		ClockworkGUI.taskListTest.clear();
 		ClockworkGUI.taskListTest.addAll(DisplayCommand.getArrListForGUI());
 		ClockworkGUI.consoleList.addAll(SignalHandler.getArrListForGUI());
-		ClockworkGUI.consoleList.addAll(ClashDetector.getArrListForGUI());
+		//ClockworkGUI.consoleList.addAll(ClashDetector.getArrListForGUI());
+		
+		if (!ClashDetector.getArrListForGUI().isEmpty()){
+			//ClashDetector.userResponse = getCurrentUserInput();
+		}
 		ClockworkGUI.refresh();
 		// System.out.println("This is what you typed: " + userInput);
+	}
+	
+	public static String getCurrentUserInput(){
+		return _currentUserInput;
 	}
 }

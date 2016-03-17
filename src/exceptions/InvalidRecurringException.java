@@ -1,5 +1,5 @@
-
 package exceptions;
+
 
 public class InvalidRecurringException extends Exception {
 	private static final long serialVersionUID = 1L;
