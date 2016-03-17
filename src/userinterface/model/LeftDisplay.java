@@ -27,12 +27,6 @@ public class LeftDisplay extends VBox {
 		this.getChildren().addAll(_textHelp, _helpListView);
 	}
 
-	public void changeDisplayList(ArrayList<String> newList) {
-		_helpList.clear();
-		_helpList.addAll(newList);
-		_helpListView = ClockworkGUIController.formatArrayList(_helpList);
-	}
-
 	private void styleVBox() {
 		this.setPadding(new Insets(5, 12, 15, 12));
 		this.setSpacing(10);

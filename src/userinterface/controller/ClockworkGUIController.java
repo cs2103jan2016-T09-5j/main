@@ -15,13 +15,14 @@ import logic.ClashDetector;
 import logic.ClockWork;
 import logic.DisplayCommand;
 import logic.SignalHandler;
+import testcases.UserInterfaceLogicStub;
 import userinterface.view.*;
 
 public class ClockworkGUIController {
 
-	private static Logger Logger = java.util.logging.Logger.getLogger("ClockworkGUIController");
+	private static Logger _logger = java.util.logging.Logger.getLogger("ClockworkGUIController");
 	private static String _currentUserInput;
-	public static ClockWork logic;
+	private static ClockWork _logic;
 
 	/**
 	 * Handle event after key is pressed
@@ -65,8 +66,12 @@ public class ClockworkGUIController {
 	public static void executeKeyPress(TextField textField, KeyEvent ke) {
 		if (ke.getCode().equals(KeyCode.ENTER)) {
 			_currentUserInput = textField.getText();
-			if ((textField.getText() != null && !textField.getText().isEmpty())) {
-				processUserEnter(textField.getText());
+			if ((_currentUserInput != null && !_currentUserInput.isEmpty())) {
+				callLogicController(_currentUserInput);
+				
+//				/** Uncomment to use LogicStub */
+//				UserInterfaceLogicStub.simulateLogic();
+				
 				textField.clear();
 			}
 		} else if (ke.getCode().equals(KeyCode.ESCAPE)) {
@@ -74,39 +79,40 @@ public class ClockworkGUIController {
 		}
 	}
 
-	public static void processUserEnter(String userInput) {
-		Logger.log(Level.INFO, "Going to process enter keypress.");
-		try {
-			callControllerToAddCommand(userInput);
-		} catch (Exception ex) {
-			System.err.println("Enter keypress detected, but failed to process.");
-			Logger.log(Level.WARNING, "processing error");
-		}
-		Logger.log(Level.INFO, "End of processing enter keypress.");
-	}
-
 	// *********** LOGIC INTEGRATION HERE ************************
-	public static void callControllerToAddCommand(String userInput) {
-		// Call Logic API Here
-		ClockworkGUI.consoleList.add(userInput);
-		
-		DisplayCommand.clearArrListForGUI();
-		SignalHandler.clearArrListForGUI();
-		ClockWork.ClockworkLogicMain(userInput, logic);
-		
-		ClockworkGUI.taskListTest.clear();
-		ClockworkGUI.taskListTest.addAll(DisplayCommand.getArrListForGUI());
-		ClockworkGUI.consoleList.addAll(SignalHandler.getArrListForGUI());
-		//ClockworkGUI.consoleList.addAll(ClashDetector.getArrListForGUI());
-		
-		if (!ClashDetector.getArrListForGUI().isEmpty()){
-			//ClashDetector.userResponse = getCurrentUserInput();
+	public static void callLogicController(String userInput) {
+		_logger.log(Level.INFO, "Calling logic to process keypress.");
+		try {
+			DisplayCommand.clearArrListForGUI();
+			SignalHandler.clearArrListForGUI();
+			
+			ClockWork.ClockworkLogicMain(userInput, _logic);
+			
+			ClockworkGUI.setTaskList(DisplayCommand.getArrListForGUI());
+			ClockworkGUI.setConsoleList(SignalHandler.getArrListForGUI());
+	
+			/** Uncomment this if you want console to display userInput in console */
+	//		ClockworkGUI.addToConsoleList(userInput);
+			
+			/** Skeleton for ClashDetector*/
+	//		if (!ClashDetector.getArrListForGUI().isEmpty()){
+	//			ClashDetector.userResponse = getCurrentUserInput();
+	//			//some action
+	//			ClockworkGUI.setConsoleList(ClashDetector.getArrListForGUI());
+	//		}
+			
+			ClockworkGUI.refresh();
+		} catch (Exception ex) {
+			_logger.log(Level.WARNING, "Keypress detected, but failed to process.", ex);
 		}
-		ClockworkGUI.refresh();
-		// System.out.println("This is what you typed: " + userInput);
+		_logger.log(Level.INFO, "Sucessfully called logic to process keypress.");
 	}
 	
 	public static String getCurrentUserInput(){
 		return _currentUserInput;
+	}
+	
+	public static void setLogic(ClockWork l){
+		_logic = l;
 	}
 }

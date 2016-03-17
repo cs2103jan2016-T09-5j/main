@@ -1,7 +1,6 @@
 package userinterface.view;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -9,6 +8,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import logic.ClockWork;
 import storage.StorageUtils;
+import testcases.UserInterfaceLogicStub;
 import userinterface.controller.ClockworkGUIController;
 import userinterface.model.*;
 
@@ -18,21 +18,13 @@ public class ClockworkGUI extends Application {
 	private static final int DEFAULT_WINDOW_WIDTH = 900;
 	private static final int DEFAULT_WINDOW_HEIGHT = 600;
 
-	/** Static variables */
-	public static ArrayList<String> consoleList = new ArrayList<String>();
-//	private static ArrayList<String> helpList = new ArrayList<String>();
-//	private static ArrayList<String> taskList = new ArrayList<String>();
 	private static BorderPane defaultLayout = new BorderPane();
-	
 	private static Scene defaultScene = new Scene(defaultLayout, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 	
-//	private String rawInputString = new String();
-	
-	/** Test arrays to display */
-	public static final ArrayList<String> helpListTest = new ArrayList<String>(
-			Arrays.asList("Add", "Delete", "Undo", "Search", "Display", "Mark", "Edit"));
-	public static final ArrayList<String> taskListTest = new ArrayList<String>(
-			Arrays.asList("Do Meeting Notes", "Have fun with CS2103"));
+	/** Static variables */
+	private static ArrayList<String> _consoleList = new ArrayList<String>();
+	private static ArrayList<String> _taskList = new ArrayList<String>();
+	private static ArrayList<String> _helpList = UserInterfaceLogicStub.getHelpList();
 
 	/*
 	* ===========================================
@@ -41,9 +33,40 @@ public class ClockworkGUI extends Application {
 	*/
 	
 	public static void main(String[] args) {
-//		LogicMain clockWork = new LogicMain();
-//		packagedDisplayObj = clockWork.getCurrentState();
-		//End Comment
+		initialiseLogicPackage(args);
+		Application.launch(args);
+	}
+
+	@Override
+	public void start(Stage window) {
+		window.setTitle("Clockwork");
+		
+//		/** Uncomment to use LogicStub */
+//		UserInterfaceLogicStub.displayRandomArrayLists();
+		
+		setDisplayRegions(defaultLayout);
+		window.setScene(defaultScene);
+		window.show();
+	}
+	
+	/*
+	* ===========================================
+	* Initialise External Packages
+	* ===========================================
+	*/
+	
+	/** 
+	 * Initialise logic package for GUI. Comment out in main and uncomment
+	 * LogicStub methods in ClockworkGUI and ClockworkGUIController to separate 
+	 * Logic and GUI packages.
+	 */
+	private static void initialiseLogicPackage(String[] args) {
+		initialiseStorage(args);
+		ClockworkGUIController.setLogic(ClockWork.getInstance());
+	}
+	
+	/** Initialise storage paths in Logic Package*/
+	private static void initialiseStorage(String[] args) {
 		//Set storage file directory, link with storage file
 		ClockWork.setFileDirectory(ClockWork.getStorageFileDirFromSettings());
 		// Check if a file directory path is passed in through argument
@@ -52,16 +75,6 @@ public class ClockworkGUI extends Application {
 			String customFileDirPath = args[0];
 			ClockWork.setFileDirectory(StorageUtils.processStorageDirectory(customFileDirPath));
 		}
-		ClockworkGUIController.logic = ClockWork.getInstance();
-		Application.launch(args);
-	}
-	
-	@Override
-	public void start(Stage window) {
-		window.setTitle("Clockwork");
-		setDisplayRegions(defaultLayout);
-		window.setScene(defaultScene);
-		window.show();
 	}
 	
 	/*
@@ -76,33 +89,25 @@ public class ClockworkGUI extends Application {
 		setTopRegion(defaultLayout);
 		setLeftRegion(defaultLayout);
 		setCenterRegion(defaultLayout);
-		setRightRegion(defaultLayout);	
+		setRightRegion(defaultLayout);
 	}
 	
 	/** Set top region to display welcome text*/
 	private static void setTopRegion(BorderPane defaultLayout) {
 		TopDisplay topSection = new TopDisplay();
 		defaultLayout.setTop(topSection);
-//		Available Methods:
-//		topSection.changeDisplayText("IF YOU WANNA CHANGE ME");
 	}
 	
 	/** Set left region to display help list */
 	private static void setLeftRegion(BorderPane defaultLayout) {
-		LeftDisplay leftSection = new LeftDisplay(helpListTest);
+		LeftDisplay leftSection = new LeftDisplay(_helpList);
 		defaultLayout.setLeft(leftSection);
-//		Available Methods:
-//		ArrayList<String> testArray = new ArrayList(Arrays.asList("HAHAHAHA", "IT WORKS"));
-//		leftSection.changeDisplayList(testArray);
 	}
 	
 	/** Set center region to display console */
 	private static void setCenterRegion(BorderPane defaultLayout) {
-		CenterDisplay centerSection = new CenterDisplay(consoleList);
+		CenterDisplay centerSection = new CenterDisplay(_consoleList);
 		defaultLayout.setCenter(centerSection);
-//		Available Methods:
-//		ArrayList<String> testArray = new ArrayList(Arrays.asList("HAHAHAHA", "IT WORKS"));
-//		centerSection.changeDisplayList(testArray);
 	}
 	
 	/** Set right region to display calendar widget [INCOMPLETE]*/
@@ -113,7 +118,7 @@ public class ClockworkGUI extends Application {
 	
 	/** Set bottom region to display task list and input section*/
 	private static void setBottomRegion(BorderPane defaultLayout) {
-		BottomDisplay bottomSection = new BottomDisplay(taskListTest);
+		BottomDisplay bottomSection = new BottomDisplay(_taskList);
 		defaultLayout.setBottom(bottomSection);
 	}
 	
@@ -121,4 +126,33 @@ public class ClockworkGUI extends Application {
 	public static void refresh(){
 		setDisplayRegions(defaultLayout);
 	}
+	
+	//Public getter and setter methods
+	public static void setConsoleList(ArrayList<String> newConsoleList){
+		_consoleList = newConsoleList;
+	}
+	
+	public static void setHelpList(ArrayList<String> newHelpList){
+		_helpList = newHelpList;
+	}
+	
+	public static void setTaskList(ArrayList<String> newTaskList){
+		_taskList = newTaskList;
+	}
+	
+	public static void addToConsoleList(String consoleString){
+		_consoleList.add(consoleString);
+	}
+	
+//	public static ArrayList<String> getConsoleList(){
+//		return _consoleList;
+//	}
+//	
+//	public static ArrayList<String> getHelpList(){
+//		return _helpList;
+//	}
+//	
+//	public static ArrayList<String> getTaskList(){
+//		return _taskList;
+//	}
 }

@@ -62,9 +62,9 @@ public class BottomDisplay extends GridPane {
 	}
 
 	private void setNodePositions(ListView<String> botTop, TextField botBot) {
-		this.setConstraints(_textTask, 0, 0); // column=0 row=0
-		this.setConstraints(botTop, 0, 1); // column=0 row=1
-		this.setConstraints(_textInput, 0, 2); // column=0 row=2
-		this.setConstraints(botBot, 0, 3); // column=0 row=3
+		BottomDisplay.setConstraints(_textTask, 0, 0); // column=0 row=0
+		BottomDisplay.setConstraints(botTop, 0, 1); // column=0 row=1
+		BottomDisplay.setConstraints(_textInput, 0, 2); // column=0 row=2
+		BottomDisplay.setConstraints(botBot, 0, 3); // column=0 row=3
 	}
 }

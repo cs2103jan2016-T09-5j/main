@@ -17,21 +17,15 @@ import userinterface.controller.*;
 
 public class CenterDisplay extends VBox {
 	private Text _textConsole = new Text("Console: ");
-	private static ArrayList _consoleList;
+	private static ArrayList<String> _consoleList;
 	private static ListView<String> _consoleListView;
 
-	public CenterDisplay(ArrayList consoleList) {
+	public CenterDisplay(ArrayList<String> consoleList) {
 		_consoleList = consoleList;
 		_consoleListView = ClockworkGUIController.formatArrayList(_consoleList);
 		styleVBox();
 		styleListView(_consoleListView);
 		this.getChildren().addAll(_textConsole, _consoleListView);
-	}
-
-	public static void changeTaskList(ArrayList newList) {
-		_consoleList.clear();
-		_consoleList.addAll(newList);
-		_consoleListView = ClockworkGUIController.formatArrayList(_consoleList);
 	}
 
 	private void styleVBox() {
@@ -42,9 +36,5 @@ public class CenterDisplay extends VBox {
 
 	private void styleListView(ListView<String> consoleListView) {
 		consoleListView.setPrefSize(100, 200);
-	}
-
-	public static ArrayList<String> getConsoleList() {
-		return _consoleList;
 	}
 }
