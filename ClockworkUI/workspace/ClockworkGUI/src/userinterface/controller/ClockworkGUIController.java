@@ -1,6 +1,9 @@
 package userinterface.controller;
 
+import java.io.InvalidClassException;
 import java.util.ArrayList;
+
+import java.util.logging.*;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,11 +15,15 @@ import javafx.scene.input.KeyEvent;
 import userinterface.view.ClockworkGUI;
 
 public class ClockworkGUIController {
+	
+	private static Logger Logger = java.util.logging.Logger.getLogger("ClockworkGUIController");
+	
 	/**
 	 * Handle event after key is pressed
 	 * 
 	 * @param textField		User input to be handled
 	 */
+	
 	public static void implementKeystrokeEvents(TextField textField) {
 		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
@@ -58,12 +65,20 @@ public class ClockworkGUIController {
 	}
 
 	public static void processUserEnter(String userInput) {
-		callControllerToAddCommand(userInput);
+		Logger.log(Level.INFO, "Going to process enter keypress.");
+		try {
+			callControllerToAddCommand(userInput);
+		} catch (Exception ex){
+			System.err.println("Enter keypress detected, but failed to process.");
+			Logger.log(Level.WARNING, "processing error");
+		}
+		Logger.log(Level.INFO, "End of processing enter keypress.");
 	}
 
 	// *********** LOGIC INTEGRATION HERE ************************
 	public static void callControllerToAddCommand(String userInput) {
 		// Call Logic API Here
+		
 		ClockworkGUI.consoleList.add(userInput);
 		ClockworkGUI.taskListTest.add("NEW TASK!");
 		ClockworkGUI.refresh();

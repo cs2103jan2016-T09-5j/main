@@ -12,7 +12,7 @@ import javafx.scene.text.Text;
  */
 
 public class TopDisplay extends HBox {
-	private Text _textDisplay = new Text("Welcome to Clockwork (:");
+	private static Text _textDisplay = new Text("Welcome to Clockwork (:");
 
 	public TopDisplay() {
 		styleHBox();
@@ -20,11 +20,11 @@ public class TopDisplay extends HBox {
 		this.getChildren().add(_textDisplay);
 	}
 
-	public void changeDisplayText(String text) {
+	public static void changeDisplayText(String text) {
 		_textDisplay.setText(text);
 	}
 
-	public Text getDisplayText() {
+	public static Text getDisplayText() {
 		return _textDisplay;
 	}
 

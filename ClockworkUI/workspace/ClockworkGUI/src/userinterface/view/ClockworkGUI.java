@@ -112,5 +112,4 @@ public class ClockworkGUI extends Application {
 	public static void refresh(){
 		setDisplayRegions(defaultLayout);
 	}
-
 }
