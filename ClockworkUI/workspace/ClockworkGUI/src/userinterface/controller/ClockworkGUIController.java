@@ -79,9 +79,14 @@ public class ClockworkGUIController {
 	public static void callControllerToAddCommand(String userInput) {
 		// Call Logic API Here
 		
-		ClockworkGUI.consoleList.add(userInput);
-		ClockworkGUI.taskListTest.add("NEW TASK!");
-		ClockworkGUI.refresh();
-		System.out.println("This is what you typed: " + userInput);
+//		ClockworkGUI.consoleList.add(userInput);
+//		ClockworkGUI.taskListTest.add("NEW TASK!");
+//		ClockworkGUI.refresh();
+//		System.out.println("This is what you typed: " + userInput);
+		
+//		if (!ClockworkGUI.consoleList.isEmpty()){
+//			//update taskList to show the prompt
+//			//feed(userInput)			
+//		}
 	}
 }
