@@ -17,12 +17,10 @@ import userinterface.controller.*;
 
 public class CenterDisplay extends VBox {
 	private Text _textConsole = new Text("Console: ");
-	private static ArrayList<String> _consoleList;
 	private static ListView<String> _consoleListView;
 
 	public CenterDisplay(ArrayList<String> consoleList) {
-		_consoleList = consoleList;
-		_consoleListView = ClockworkGUIController.formatArrayList(_consoleList);
+		_consoleListView = ClockworkGUIController.formatArrayList(consoleList);
 		styleVBox();
 		styleListView(_consoleListView);
 		this.getChildren().addAll(_textConsole, _consoleListView);

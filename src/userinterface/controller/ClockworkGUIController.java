@@ -11,12 +11,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import logic.ClashDetector;
 import logic.ClockWork;
 import logic.DisplayCommand;
 import logic.SignalHandler;
-import testcases.UserInterfaceLogicStub;
-import userinterface.view.*;
 
 public class ClockworkGUIController {
 
@@ -101,7 +98,7 @@ public class ClockworkGUIController {
 	//			ClockworkGUI.setConsoleList(ClashDetector.getArrListForGUI());
 	//		}
 			
-			ClockworkGUI.refresh();
+			ClockworkGUI.updateDisplay();
 		} catch (Exception ex) {
 			_logger.log(Level.WARNING, "Keypress detected, but failed to process.", ex);
 		}

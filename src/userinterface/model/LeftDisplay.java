@@ -16,11 +16,9 @@ import userinterface.controller.*;
 
 public class LeftDisplay extends VBox {
 	private Text _textHelp = new Text("Help: ");
-	private ArrayList<String> _helpList;
 	private ListView<String> _helpListView;
 
 	public LeftDisplay(ArrayList<String> helpList) {
-		_helpList = helpList;
 		_helpListView = ClockworkGUIController.formatArrayList(helpList);
 		styleVBox();
 		styleListView(_helpListView);
