@@ -20,14 +20,6 @@ public class TopDisplay extends HBox {
 		this.getChildren().add(_textDisplay);
 	}
 
-	public static void changeDisplayText(String text) {
-		_textDisplay.setText(text);
-	}
-
-	public static Text getDisplayText() {
-		return _textDisplay;
-	}
-
 	private void styleHBox() {
 		this.setPadding(new Insets(10, 12, 10, 12));
 		this.setSpacing(5);
