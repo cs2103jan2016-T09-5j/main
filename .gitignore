@@ -1,6 +1,5 @@
-/ClockworkUI/workspace/.metadata/
-/ClockworkUI/workspace/ClockworkGUI/.settings/
-/ClockworkUI/workspace/ClockworkGUI/.classpath
-/ClockworkUI/workspace/ClockworkGUI/.project
-/ClockworkUI/workspace/ClockworkGUI/bin/
+bin/*
 /bin/
+*.json
+*.jar
+settings.txt
