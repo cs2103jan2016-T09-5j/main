@@ -2,10 +2,12 @@ package ClockworkGUI;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Stack;
 
 import ClockworkLogic.ClashDetector;
 import ClockworkLogic.ClockWork;
 import ClockworkLogic.DisplayCommand;
+import ClockworkLogic.SearchCommand;
 import ClockworkLogic.SignalHandler;
 import ClockworkStorage.StorageUtils;
 import javafx.application.Application;
@@ -27,7 +29,7 @@ public class ClockworkGUI extends Application {
 	private static final int DEFAULT_WINDOW_HEIGHT = 600;
 
 	/** Static variables */
-	private static ArrayList<String> consoleList = new ArrayList<String>();
+	private static ArrayList<String> consoleList = new ArrayList<String>();			
 //	private static ArrayList<String> helpList = new ArrayList<String>();
 //	private static ArrayList<String> taskList = new ArrayList<String>();
 	private static BorderPane defaultLayout = new BorderPane();
@@ -136,7 +138,7 @@ public class ClockworkGUI extends Application {
 	 * 
 	 * @param textField				User input to be handled
 	 */
-	protected static void implementKeystrokeEvents(final TextField textField) {
+	public static void implementKeystrokeEvents(final TextField textField) {
 		textField.setOnKeyPressed(new EventHandler<KeyEvent>()
 	    {
 	        @Override
@@ -192,12 +194,15 @@ public class ClockworkGUI extends Application {
 	//*********** LOGIC INTEGRATION HERE ************************
 	private static void callControllerToAddCommand(String userInput) {
 		//Call Logic API Here
-		consoleList.add(userInput);
 		DisplayCommand.clearArrListForGUI();
 		SignalHandler.clearArrListForGUI();
+		ClashDetector.clearArrListForGUI();
+		SearchCommand.clearArrListForGUI();
 		ClockWork.ClockworkLogicMain(userInput,logic);
+		consoleList.clear();
 		taskListTest.clear();
 		taskListTest.addAll(DisplayCommand.getArrListForGUI());
+		taskListTest.addAll(SearchCommand.getArrListForGUI());
 		consoleList.addAll(SignalHandler.getArrListForGUI());
 		consoleList.addAll(ClashDetector.getArrListForGUI());
 		refresh();
@@ -205,7 +210,7 @@ public class ClockworkGUI extends Application {
 	}
 	
 	/** Refreshes the scene so that updated lists and variables can be shown */
-	private static void refresh(){
+	public static void refresh(){
 		setDisplayRegions(defaultLayout);
 	}
 

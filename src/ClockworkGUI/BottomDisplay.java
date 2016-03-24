@@ -1,6 +1,8 @@
 package ClockworkGUI;
 import java.util.ArrayList;
 
+import javafx.event.EventHandler;
+
 /**
  * Display ArrayList containing task list and allow user input in bottom section
  * 
@@ -10,6 +12,8 @@ import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
@@ -18,7 +22,7 @@ public class BottomDisplay extends GridPane{
 	private Text _textTask = new Text("Tasks: ");
 	private Text _textInput = new Text("Command: ");
 	private ListView<String> _taskListView;
-	private TextField _consoleInput;
+	private static TextField _consoleInput;
 	
 	public  BottomDisplay(ArrayList<String> taskList){
 		styleGrid();
@@ -33,7 +37,22 @@ public class BottomDisplay extends GridPane{
 		
 		this.getChildren().addAll(_textTask, _consoleInput, _textInput, _taskListView);
 	}
-	
+	public static String getConsoleInput(){
+		_consoleInput.clear();
+		_consoleInput.setOnKeyPressed(new EventHandler<KeyEvent>()
+	    {
+			@Override
+			 public void handle(KeyEvent ke){System.out.println("*****");
+				 while(!ke.getCode().equals(KeyCode.ENTER)){
+					 System.out.println("%%%");
+					 if ((_consoleInput.getText() != null && !_consoleInput.getText().isEmpty())) {
+						 break;
+					 }
+				 }
+		     }
+	    });
+		return _consoleInput.getText();
+	}
 	private void styleListView(){
 		_taskListView.setPrefSize(900, 200);
 	}

@@ -18,7 +18,6 @@ import ClockworkParser.Keywords;
 import ClockworkLogic.RecurringTodoRule;
 import ClockworkLogic.Todo;
 import ClockworkParser.IDBuffer;
-import ClockworkParser.ParsedInput;
 import ClockworkStorage.VolatileMemory;
 /**
  * Stores all Todos and keeps state information allowing Undo and Redo

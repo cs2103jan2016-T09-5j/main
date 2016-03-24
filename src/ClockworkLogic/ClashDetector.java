@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.Scanner;
 import org.joda.time.DateTime;
 
+import ClockworkGUI.BottomDisplay;
+import ClockworkGUI.ClockworkGUI;
+
 public class ClashDetector {
 	private Collection<Todo> onDateTodos;
 	private Todo attemptedTodo;
@@ -24,14 +27,14 @@ public class ClashDetector {
 	public boolean verifyTodoClash() {
 		boolean todoClashExists = false;
 		ArrListForGUI.clear();
-		switch(attemptedTodo.type) {
+	switch(attemptedTodo.type) {
 			case DEADLINE:
 				todoClashExists = isDeadlineClash();
 				if(todoClashExists) {
 					ArrListForGUI.add(String.format(Signal.CLASH_DEADLINE_DOES_EXIST,
 							attemptedTodo.name, attemptedTodo.endTime));
-					System.out.println(String.format(Signal.CLASH_DEADLINE_DOES_EXIST,
-							attemptedTodo.name, attemptedTodo.endTime));
+					//System.out.println(String.format(Signal.CLASH_DEADLINE_DOES_EXIST,
+					//		attemptedTodo.name, attemptedTodo.endTime));
 				}
 				break;
 			case EVENT:
@@ -39,8 +42,8 @@ public class ClashDetector {
 				if(todoClashExists) {
 					ArrListForGUI.add(String.format(Signal.CLASH_EVENT_DOES_EXIST,
 							attemptedTodo.name, attemptedTodo.endTime));
-					System.out.println(String.format(Signal.CLASH_EVENT_DOES_EXIST,
-							attemptedTodo.name, attemptedTodo.endTime));
+					//System.out.println(String.format(Signal.CLASH_EVENT_DOES_EXIST,
+					//		attemptedTodo.name, attemptedTodo.endTime));
 				}
 				break;
 			default:
@@ -49,24 +52,26 @@ public class ClashDetector {
 		
 		//A user may choose to void a time clash and force the system to add the overlapping times
 		if(todoClashExists) {
-			todoClashExists = isUserVoidingTodo();
+			//ClockworkGUI.implementKeystrokeEvents(BottomDisplay.getConsoleInput());
+			todoClashExists = isUserVoidingTodo(BottomDisplay.getConsoleInput());
 		}
 		
 		return todoClashExists;
 	}
 	
-	private boolean isUserVoidingTodo() {
+	private boolean isUserVoidingTodo(String userInput) {
+		userInput +="y";
+		System.out.println(userInput);
 		ArrListForGUI.add(String.format(Signal.CLASH_CONTINUE_PROPOSITION));
-		System.out.println(String.format(Signal.CLASH_CONTINUE_PROPOSITION));
-		String userResponse = scn.nextLine().trim().toLowerCase();
-		if(userResponse.equals("yes") || userResponse.equals("y")) {
+		//System.out.println(String.format(Signal.CLASH_CONTINUE_PROPOSITION));
+		if(userInput.equals("yes") || userInput.equals("y")) {
 			ArrListForGUI.add(String.format(Signal.CLASH_USER_OVERRIDE));
-			System.out.println(String.format(Signal.CLASH_USER_OVERRIDE));
+			//System.out.println(String.format(Signal.CLASH_USER_OVERRIDE));
 			return false;
 		}
 		else {
 			ArrListForGUI.add(String.format(Signal.CLASH_USER_VOID_TASK));
-			System.out.println(String.format(Signal.CLASH_USER_VOID_TASK));	
+			//System.out.println(String.format(Signal.CLASH_USER_VOID_TASK));	
 			return true;
 		}
 	}

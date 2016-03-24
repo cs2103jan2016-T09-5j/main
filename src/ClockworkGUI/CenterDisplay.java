@@ -15,10 +15,10 @@ import javafx.scene.text.Text;
 
 public class CenterDisplay extends VBox {
 	private Text _textConsole = new Text("Console: ");
-	private static ArrayList _consoleList;
+	private static ArrayList<String> _consoleList;
 	private static ListView<String> _consoleListView;
 	
-	public CenterDisplay(ArrayList consoleList){
+	public CenterDisplay(ArrayList<String> consoleList){
 		_consoleList = consoleList;
 		_consoleListView = ClockworkGUI.formatArrayList(_consoleList);
 		styleVBox();
@@ -26,7 +26,7 @@ public class CenterDisplay extends VBox {
 		this.getChildren().addAll(_textConsole, _consoleListView);
 	}
 	
-	public static void changeTaskList(ArrayList newList){
+	public static void changeTaskList(ArrayList<String> newList){
 		_consoleList.clear();
 		_consoleList.addAll(newList);
 		_consoleListView = ClockworkGUI.formatArrayList(_consoleList);

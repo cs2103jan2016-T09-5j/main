@@ -22,7 +22,7 @@ import ClockworkStorage.Memory;
 public class SearchCommand extends Command {
 
 	private static final String REGEX_SPACE = "\\s";
-
+	private static ArrayList<String> arrListForGUI = new ArrayList<String>();
 	/**
 	 * Creates a SearchCommand object.
 	 * 
@@ -81,11 +81,17 @@ public class SearchCommand extends Command {
 
 		// displays the list of todos that were found
 		String displayString = DisplayCommand.getDisplayChrono(todos, 2);
-		System.out.println(displayString);
+		arrListForGUI.add(displayString);
+		//System.out.println(displayString);
 
 		return new Signal(Signal.SEARCH_SUCCESS_SIGNAL, true);
 	}
-
+	public static ArrayList<String> getArrListForGUI(){
+		return arrListForGUI;
+	}
+	public static void clearArrListForGUI(){
+		arrListForGUI.clear();
+	}
 	/**
 	 * Operation generates Collection of Todo Objects based on their ids and
 	 * search date and type

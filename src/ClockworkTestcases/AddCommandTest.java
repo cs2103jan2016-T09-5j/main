@@ -177,8 +177,8 @@ public class AddCommandTest {
 		 * Test for a single-worded, lower-case title, with absolute date and
 		 * time, long-format
 		 */
-		deadlineCommand = "add interview by 0800 on 13 Apr";
-		deadlineString = "Deadline \"interview\" by Mon 13 Apr 2017 at 08:00";
+		deadlineCommand = "add interview by 0800 on 13 Apr 2017";
+		deadlineString = "Deadline \"interview\" by Thu 13 Apr 2017 at 08:00";
 		// Mock Signal object
 		addSuccess = new Signal(String.format(Signal.ADD_SUCCESS_SIGNAL_FORMAT,
 				deadlineString), true);
@@ -191,8 +191,8 @@ public class AddCommandTest {
 		 * Test for a single-worded, lower-case title, absolute date and time,
 		 * short-format with upper-case
 		 */
-		deadlineCommand = "add interview by 8am on 15 Mar";
-		deadlineString = "Deadline \"interview\" by Sun 15 Mar 2017 at 08:00";
+		deadlineCommand = "add interview by 8am on 15 Mar 2017";
+		deadlineString = "Deadline \"interview\" by Wed 15 Mar 2017 at 08:00";
 		// Mock Signal object
 		addSuccess = new Signal(String.format(Signal.ADD_SUCCESS_SIGNAL_FORMAT,
 				deadlineString), true);
@@ -236,8 +236,8 @@ public class AddCommandTest {
 		 * Test for a multiple-worded, mixed-case title, absolute date and time,
 		 * long-format
 		 */
-		deadlineCommand = "add interview with Google by 10am on 17 June";
-		deadlineString = "Deadline \"interview with Google\" by Wed 17 Jun 2017 at 10:00";
+		deadlineCommand = "add interview with Google by 10am on 17 June 2017";
+		deadlineString = "Deadline \"interview with Google\" by Sat 17 Jun 2017 at 10:00";
 		// Mock Signal object
 		addSuccess = new Signal(String.format(Signal.ADD_SUCCESS_SIGNAL_FORMAT,
 				deadlineString), true);
@@ -250,8 +250,8 @@ public class AddCommandTest {
 		 * Test for a multiple-worded, mixed-case title, absolute date and time,
 		 * long-format
 		 */
-		deadlineCommand = "add hand in CS2103T developers guide by 1 April at 6pm";
-		deadlineString = "Deadline \"hand in CS2103T developers guide\" by Wed 01 Apr 2017 at 18:00";
+		deadlineCommand = "add hand in CS2103T developers guide by 1 April 2017 at 6pm";
+		deadlineString = "Deadline \"hand in CS2103T developers guide\" by Sat 01 Apr 2017 at 18:00";
 		// Mock Signal object
 		addSuccess = new Signal(String.format(Signal.ADD_SUCCESS_SIGNAL_FORMAT,
 				deadlineString), true);
@@ -625,20 +625,7 @@ public class AddCommandTest {
 		 * Test for a single-worded, lower-case event, long-format
 		 */
 		eventCommand = "add canoeing from 3pm to 4pm on six april";
-		eventString = "Event \"canoeing\" from Mon 06 Apr 2017 at 15:00 to Mon 06 Apr 2017 at 16:00";
-		// Mock Signal object
-		addSuccess = new Signal(String.format(Signal.ADD_SUCCESS_SIGNAL_FORMAT,
-				eventString), true);
-		try {
-			assertEquals(addSuccess, logic.handleInput(eventCommand));
-		} catch (InvalidRecurringException | InvalidTodoNameException | ParsingFailureException e) {
-		}
-
-		/*
-		 * Test for a single-worded, lower-case event within the same day, short
-		 * format
-		 */
-		eventCommand = "add canoeing from 3pm to 4pm on 6 apr";
+		eventString = "Event \"canoeing\" from Wed 06 Apr 2016 at 15:00 to Wed 06 Apr 2016 at 16:00";
 		// Mock Signal object
 		addSuccess = new Signal(String.format(Signal.ADD_SUCCESS_SIGNAL_FORMAT,
 				eventString), true);
@@ -653,7 +640,7 @@ public class AddCommandTest {
 		 */
 
 		eventCommand = "add climb Mount Everest in Nepal from 3pm to 4pm on 12 Jun";
-		eventString = "Event \"climb Mount Everest in Nepal\" from Fri 12 Jun 2017 at 15:00 to Fri 12 Jun 2017 at 16:00";
+		eventString = "Event \"climb Mount Everest in Nepal\" from Sun 12 Jun 2016 at 15:00 to Sun 12 Jun 2016 at 16:00";
 		// Mock Signal object
 		addSuccess = new Signal(String.format(Signal.ADD_SUCCESS_SIGNAL_FORMAT,
 				eventString), true);
@@ -667,8 +654,8 @@ public class AddCommandTest {
 		 * days, short format
 		 */
 
-		eventCommand = "add climb Mount Everest in Nepal from 5 jun 3pm to 20 jun 4pm";
-		eventString = "Event \"climb Mount Everest in Nepal\" from Fri 05 Jun 2017 at 15:00 to Sat 20 Jun 2017 at 16:00";
+		eventCommand = "add climb Mount Everest in Nepal from 5 jun 2017 3pm to 20 jun 2017 4pm";
+		eventString = "Event \"climb Mount Everest in Nepal\" from Mon 05 Jun 2017 at 15:00 to Tue 20 Jun 2017 at 16:00";
 		// Mock Signal object
 		addSuccess = new Signal(String.format(Signal.ADD_SUCCESS_SIGNAL_FORMAT,
 				eventString), true);
@@ -682,8 +669,8 @@ public class AddCommandTest {
 		 * days, short format
 		 */
 
-		eventCommand = "add climb Mount Everest in Nepal from 3pm on 5 jun to 4pm on 20 jun";
-		eventString = "Event \"climb Mount Everest in Nepal\" from Fri 05 Jun 2017 at 15:00 to Sat 20 Jun 2017 at 16:00";
+		eventCommand = "add climb Mount Everest in Nepal from 3pm on 5 jun 2017 to 4pm on 20 jun 2017";
+		eventString = "Event \"climb Mount Everest in Nepal\" from Mon 05 Jun 2017 at 15:00 to Tue 20 Jun 2017 at 16:00";
 		// Mock Signal object
 		addSuccess = new Signal(String.format(Signal.ADD_SUCCESS_SIGNAL_FORMAT,
 				eventString), true);
@@ -956,7 +943,7 @@ public class AddCommandTest {
 		 * Test for a multiple-worded recurring deadline (monthly), with limit
 		 */
 		recurrenceCommand = "add submit monthly report by 2300pm every month until 8 Dec";
-		recurrenceRule = "Recurrence Rule: \"submit monthly report\" every 1 month(s) until Tue 08 Dec 2017";
+		recurrenceRule = "Recurrence Rule: \"submit monthly report\" every 1 month(s) until Thu 08 Dec 2016";
 		addSuccess = new Signal(String.format(Signal.ADD_SUCCESS_SIGNAL_FORMAT, recurrenceRule), true);
 		try {
 			assertEquals(addSuccess, logic.handleInput(recurrenceCommand));
@@ -989,7 +976,7 @@ public class AddCommandTest {
 		 * Test for a multiple-worded recurring event (daily), with limit
 		 */
 		recurrenceCommand = "add swim at Jurong Swimming Complex from 4pm to 5pm every day until 5 jun";
-		recurrenceRule = "Recurrence Rule: \"swim at Jurong Swimming Complex\" every 1 day(s) until Fri 05 Jun 2017";
+		recurrenceRule = "Recurrence Rule: \"swim at Jurong Swimming Complex\" every 1 day(s) until Sun 05 Jun 2016";
 		addSuccess = new Signal(String.format(Signal.ADD_SUCCESS_SIGNAL_FORMAT, recurrenceRule), true);
 		try {
 			assertEquals(addSuccess, logic.handleInput(recurrenceCommand));
@@ -1011,7 +998,7 @@ public class AddCommandTest {
 		 * Test for a multiple-worded recurring event(weekly), with limit
 		 */
 		recurrenceCommand = "add hiking at BTH from 4pm to 5pm every week until 8 jun";
-		recurrenceRule = "Recurrence Rule: \"hiking at BTH\" every 1 week(s) until Mon 08 Jun 2017";
+		recurrenceRule = "Recurrence Rule: \"hiking at BTH\" every 1 week(s) until Wed 08 Jun 2016";
 		addSuccess = new Signal(String.format(Signal.ADD_SUCCESS_SIGNAL_FORMAT, recurrenceRule), true);
 		try {
 			assertEquals(addSuccess, logic.handleInput(recurrenceCommand));
@@ -1032,8 +1019,8 @@ public class AddCommandTest {
 		/*
 		 * Test for a multiple-worded recurring event(month), with limit
 		 */
-		recurrenceCommand = "add hiking at BTH from 4pm to 5pm every month until 10 dec";
-		recurrenceRule = "Recurrence Rule: \"hiking at BTH\" every 1 month(s) until Thu 10 Dec 2017";
+		recurrenceCommand = "add hiking at BTH from 4pm to 5pm every month until 10 dec 2017";
+		recurrenceRule = "Recurrence Rule: \"hiking at BTH\" every 1 month(s) until Sun 10 Dec 2017";
 		addSuccess = new Signal(String.format(Signal.ADD_SUCCESS_SIGNAL_FORMAT, recurrenceRule), true);
 		try {
 			assertEquals(addSuccess, logic.handleInput(recurrenceCommand));
