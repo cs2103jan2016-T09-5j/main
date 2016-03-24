@@ -25,11 +25,11 @@ public class BottomDisplay extends GridPane {
 	public BottomDisplay(ArrayList<String> taskList) {
 		styleGrid();
 
-		_taskListView = ClockworkGUIController.formatArrayList(taskList);
+		_taskListView = UIController.formatArrayList(taskList);
 		styleListView();
 
 		_consoleInput = new TextField();
-		ClockworkGUIController.implementKeystrokeEvents(_consoleInput);
+		UIController.implementKeystrokeEvents(_consoleInput);
 
 		setNodePositions(_taskListView, _consoleInput);
 

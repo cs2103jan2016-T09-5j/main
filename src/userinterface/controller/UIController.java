@@ -14,8 +14,9 @@ import javafx.scene.input.KeyEvent;
 import logic.ClockWork;
 import logic.DisplayCommand;
 import logic.SignalHandler;
+import testcases.UserInterfaceLogicStub;
 
-public class ClockworkGUIController {
+public class UIController {
 
 	private static Logger _logger = java.util.logging.Logger.getLogger("ClockworkGUIController");
 	private static String _currentUserInput;
@@ -64,10 +65,10 @@ public class ClockworkGUIController {
 		if (ke.getCode().equals(KeyCode.ENTER)) {
 			_currentUserInput = textField.getText();
 			if ((_currentUserInput != null && !_currentUserInput.isEmpty())) {
-				callLogicController(_currentUserInput);
+//				callLogicController(_currentUserInput);
 				
 //				/** Uncomment to use LogicStub */
-//				UserInterfaceLogicStub.simulateLogic();
+				UserInterfaceLogicStub.simulateLogic();
 				
 				textField.clear();
 			}
@@ -89,7 +90,9 @@ public class ClockworkGUIController {
 			
 			ClockWork.ClockworkLogicMain(userInput, _logic);
 			
-			ClockworkGUI.setConsoleTaskList(SignalHandler.getArrListForGUI(), DisplayCommand.getArrListForGUI());
+			//Feedback ArrayList
+//			SignalHandler.getArrListForGUI();
+			Main.setTaskList(DisplayCommand.getArrListForGUI());
 	
 			/** Uncomment this if you want console to display userInput in console */
 	//		ClockworkGUI.addToConsoleList(userInput);
@@ -101,7 +104,7 @@ public class ClockworkGUIController {
 	//			ClockworkGUI.setConsoleList(ClashDetector.getArrListForGUI());
 	//		}
 			
-			ClockworkGUI.updateDisplay();
+			Main.updateDisplay();
 		} catch (Exception ex) {
 			_logger.log(Level.WARNING, "Keypress detected, but failed to process.", ex);
 		}

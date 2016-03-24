@@ -3,7 +3,7 @@ package testcases;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import userinterface.controller.ClockworkGUI;
+import userinterface.controller.Main;
 
 public class UserInterfaceLogicStub {
 	/** Test arrays from Logic API to display on GUI */
@@ -11,9 +11,8 @@ public class UserInterfaceLogicStub {
 			Arrays.asList("Add", "Delete", "Undo", "Search", "Display", "Mark", "Edit"));
 	private static final ArrayList<String> _taskListTest = new ArrayList<String>(
 			Arrays.asList("Do Meeting Notes", "Have fun with CS2103"));
-	private static final ArrayList<String> _consoleListTest = new ArrayList<String>(
-			Arrays.asList("add 2103", "display", "mark 23 "));
-	
+	private static final ArrayList<String> _taskListTestInitial = new ArrayList<String>(
+			Arrays.asList("RAHRAH", "OLALA"));
 	
 	/** 
 	 * Uncomment in ClockworkGUIController.java to simulate logic after pressing enter 
@@ -21,27 +20,16 @@ public class UserInterfaceLogicStub {
 	 * 
 	 */
 	public static void simulateLogic(){
-		ClockworkGUI.setConsoleTaskList(_consoleListTest, _taskListTest);
-		ClockworkGUI.setHelpList(_helpListTest);
-		ClockworkGUI.updateDisplay();
+		Main.setTaskList(_taskListTest);
+		Main.updateDisplay();
 	}
 	
 	/** Set all ArrayLists to test ArrayLists */
-	public static void displayRandomArrayLists(){
-		ClockworkGUI.setConsoleTaskList(_consoleListTest, _taskListTest);
-		ClockworkGUI.setHelpList(_helpListTest);
+	public static void displayRandomList(){
+		Main.setTaskList(_taskListTestInitial);
 	}
 	
-	// Getter methods to display individual test ArrayLists
 	public static ArrayList<String> getHelpList(){
 		return _helpListTest;
-	}
-	
-	public static ArrayList<String> getTaskList(){
-		return _taskListTest;
-	}
-	
-	public static ArrayList<String> getConsoleList(){
-		return _consoleListTest;
 	}
 }

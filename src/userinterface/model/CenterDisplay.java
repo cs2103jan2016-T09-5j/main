@@ -20,7 +20,7 @@ public class CenterDisplay extends VBox {
 	private static ListView<String> _consoleListView;
 
 	public CenterDisplay(ArrayList<String> consoleList) {
-		_consoleListView = ClockworkGUIController.formatArrayList(consoleList);
+		_consoleListView = UIController.formatArrayList(consoleList);
 		styleVBox();
 		styleListView(_consoleListView);
 		this.getChildren().addAll(_textConsole, _consoleListView);
