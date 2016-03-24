@@ -22,7 +22,8 @@ public class ClockworkGUI extends Application {
 	private static ArrayList<String> _helpList = UserInterfaceLogicStub.getHelpList();
 
 	private static ClockworkGUILayout defaultLayout; 
-	private static Scene defaultScene; 
+	private static Scene defaultScene;
+	private static boolean _minimiseFlag = false; 
 	
 	/*
 	* ===========================================
@@ -40,6 +41,9 @@ public class ClockworkGUI extends Application {
 	public void start(Stage window) {
 		window.setTitle("Clockwork");
 		window.setScene(defaultScene);
+		/** START CHANGE */
+		window.setResizable(false);
+		/** END CHANGE */
 		window.show();
 	}
 	
@@ -82,6 +86,24 @@ public class ClockworkGUI extends Application {
 	* Public Methods
 	* ===========================================
 	*/
+	
+	/** START CHANGE */
+	public static void minimise(Stage window){
+	}
+	
+	public static void expand(){
+	}
+	
+	public static void setMinimiseFlag(boolean flag){
+		_minimiseFlag = flag;
+	}
+	
+	public static void setConsoleTaskList(ArrayList<String> newConsoleList, ArrayList<String> newTaskList){
+		_consoleList = newConsoleList;
+		_taskList = newTaskList;
+	}
+	/** END CHANGE */
+	
 	public static void setConsoleList(ArrayList<String> newConsoleList){
 		_consoleList = newConsoleList;
 	}

@@ -21,17 +21,15 @@ public class UserInterfaceLogicStub {
 	 * 
 	 */
 	public static void simulateLogic(){
-		ClockworkGUI.setTaskList(_taskListTest);
+		ClockworkGUI.setConsoleTaskList(_consoleListTest, _taskListTest);
 		ClockworkGUI.setHelpList(_helpListTest);
-		ClockworkGUI.setConsoleList(_consoleListTest);
 		ClockworkGUI.updateDisplay();
 	}
 	
 	/** Set all ArrayLists to test ArrayLists */
 	public static void displayRandomArrayLists(){
-		ClockworkGUI.setTaskList(_taskListTest);
+		ClockworkGUI.setConsoleTaskList(_consoleListTest, _taskListTest);
 		ClockworkGUI.setHelpList(_helpListTest);
-		ClockworkGUI.setConsoleList(_consoleListTest);
 	}
 	
 	// Getter methods to display individual test ArrayLists

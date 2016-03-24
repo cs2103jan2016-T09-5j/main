@@ -72,7 +72,12 @@ public class ClockworkGUIController {
 				textField.clear();
 			}
 		} else if (ke.getCode().equals(KeyCode.ESCAPE)) {
-			// DO SOMETHING [INCOMPLETE]
+			// HIDE/UNNHIDE GUI [INCOMPLETE]
+			ClockworkGUI.setMinimiseFlag(true);
+			System.out.println("UH TESTING");
+		} else if (ke.getCode().equals(KeyCode.T)){
+			// EXPAND TASK LIST
+			// DO CSS
 		}
 	}
 
@@ -80,13 +85,12 @@ public class ClockworkGUIController {
 	public static void callLogicController(String userInput) {
 		_logger.log(Level.INFO, "Calling logic to process keypress.");
 		try {
-			DisplayCommand.clearArrListForGUI();
 			SignalHandler.clearArrListForGUI();
+			DisplayCommand.clearArrListForGUI();
 			
 			ClockWork.ClockworkLogicMain(userInput, _logic);
 			
-			ClockworkGUI.setTaskList(DisplayCommand.getArrListForGUI());
-			ClockworkGUI.setConsoleList(SignalHandler.getArrListForGUI());
+			ClockworkGUI.setConsoleTaskList(SignalHandler.getArrListForGUI(), DisplayCommand.getArrListForGUI());
 	
 			/** Uncomment this if you want console to display userInput in console */
 	//		ClockworkGUI.addToConsoleList(userInput);
