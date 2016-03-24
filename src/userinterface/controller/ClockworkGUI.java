@@ -23,7 +23,6 @@ public class ClockworkGUI extends Application {
 
 	private static ClockworkGUILayout defaultLayout; 
 	private static Scene defaultScene;
-	private static boolean _minimiseFlag = false; 
 	
 	/*
 	* ===========================================
@@ -88,16 +87,6 @@ public class ClockworkGUI extends Application {
 	*/
 	
 	/** START CHANGE */
-	public static void minimise(Stage window){
-	}
-	
-	public static void expand(){
-	}
-	
-	public static void setMinimiseFlag(boolean flag){
-		_minimiseFlag = flag;
-	}
-	
 	public static void setConsoleTaskList(ArrayList<String> newConsoleList, ArrayList<String> newTaskList){
 		_consoleList = newConsoleList;
 		_taskList = newTaskList;

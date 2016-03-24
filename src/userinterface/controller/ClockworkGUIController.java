@@ -73,7 +73,6 @@ public class ClockworkGUIController {
 			}
 		} else if (ke.getCode().equals(KeyCode.ESCAPE)) {
 			// HIDE/UNNHIDE GUI [INCOMPLETE]
-			ClockworkGUI.setMinimiseFlag(true);
 			System.out.println("UH TESTING");
 		} else if (ke.getCode().equals(KeyCode.T)){
 			// EXPAND TASK LIST
