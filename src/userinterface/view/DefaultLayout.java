@@ -27,16 +27,16 @@ import userinterface.controller.UIController;
 import userinterface.model.FeedbackBox;
 import userinterface.model.HeaderBox;
 
-public class BorderPaneLayout extends BorderPane {
+public class DefaultLayout extends BorderPane {
 	
 	private ArrayList<String> _taskList;
 	private String _feedback;
 	private GlyphFont fontAwesome = GlyphFontRegistry.font("FontAwesome");
 	
-	public BorderPaneLayout(){
+	public DefaultLayout(){
 		this.setDisplayRegions();
 	};
-	public BorderPaneLayout(ArrayList<String> taskList, String feedback) {
+	public DefaultLayout(ArrayList<String> taskList, String feedback) {
 		_taskList = taskList;
 		_feedback = feedback;
 		this.setDisplayRegions();

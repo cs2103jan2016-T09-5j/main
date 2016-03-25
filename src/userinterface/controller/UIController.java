@@ -26,7 +26,7 @@ public class UIController {
 	 * Handle event after key is pressed
 	 * 
 	 * @param textField
-	 *            User input to be handled
+	 *        User input to be handled
 	 */
 
 	public static void implementKeystrokeEvents(final TextField textField) {
@@ -69,11 +69,17 @@ public class UIController {
 				textField.clear();
 			}
 		} else if (ke.getCode().equals(KeyCode.ESCAPE)) {
-			// HIDE/UNNHIDE GUI [INCOMPLETE]
+			// DEFAULT SCENE
+			Main.displayDefaultScene();
+		} else if (ke.getCode().equals(KeyCode.F1)){
+			// HELP SCENE
+			Main.displayHelpScene();
+		} else if (ke.getCode().equals(KeyCode.F2)) {
+			// DISPLAY CALENDAR
 			System.out.println("UH TESTING");
-		} else if (ke.getCode().equals(KeyCode.T)){
-			// EXPAND TASK LIST
-			// DO CSS
+		} else if (ke.getCode().equals(KeyCode.F3)) {
+			// MINIMISE
+			System.out.println("UH TESTING");
 		}
 	}
 

@@ -21,12 +21,8 @@ import javafx.util.Callback;
 
 public class TaskBox extends StackPane {
 	public TaskBox() {
-		this.setStyle("-fx-background-color: #323749;");
+		this.setStyle("-fx-background-color: #182733;");
 		this.setPadding(new Insets(10,10,10,10));
-		Rectangle rect = new Rectangle(750,380,750,380);
-		Color c = Color.web("#135d62");
-		rect.setFill(c);
-		this.getChildren().add(rect);
 	}
 
 }
