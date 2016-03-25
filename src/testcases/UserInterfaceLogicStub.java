@@ -27,6 +27,7 @@ public class UserInterfaceLogicStub {
 	/** Set all ArrayLists to test ArrayLists */
 	public static void displayRandomList(){
 		Main.setTaskList(_taskListTestInitial);
+		
 	}
 	
 	public static ArrayList<String> getHelpList(){

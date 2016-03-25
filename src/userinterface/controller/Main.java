@@ -1,6 +1,7 @@
 package userinterface.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -18,11 +19,10 @@ public class Main extends Application {
 
 	/** Static variables */
 	private static ArrayList<String> _taskList = new ArrayList<String>();
-	private static ArrayList<String> _helpList = UserInterfaceLogicStub.getHelpList();
-
 	private static BorderPaneLayout mainBorderPane; 
-	private Scene scene;
-	private Stage stage;
+	private static String _feedback;
+	private static Scene scene;
+	private static Stage stage;
 	
 	/*
 	* ===========================================
@@ -31,8 +31,8 @@ public class Main extends Application {
 	*/
 	
 	public static void main(String[] args) {
-//		initialiseStorage(args);
-//		initialiseLogic();
+		initialiseStorage(args);
+		initialiseLogic();
 		Application.launch(args);
 	}
 	
@@ -50,14 +50,13 @@ public class Main extends Application {
 	*/
 	
 	/** Initialise Scene for GUI */
-	private void setScene(){
-		mainBorderPane = new BorderPaneLayout(_taskList);
-		UserInterfaceLogicStub.displayRandomList();
+	private static void setScene(){
+		mainBorderPane = new BorderPaneLayout(_taskList, _feedback);
 		scene = new Scene(mainBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 	}
 	
 	/** Initialise Stage for GUI */
-	private void setStage() {
+	private static void setStage() {
 		stage.setTitle("Clockwork");
 		stage.setScene(scene);
 		stage.setResizable(false);
@@ -98,11 +97,12 @@ public class Main extends Application {
 		_taskList = newTaskList;
 	}
 	
-	public static void updateDisplay(){
-		mainBorderPane.refresh(_taskList);
+	public static void setFeedback(String newFeedback){
+		_feedback = newFeedback;
 	}
-
-	public static ArrayList<String> getTaskList(){
-		return _taskList;
+	
+	public static void updateDisplay(){
+		setScene();		
+		setStage();
 	}
 }

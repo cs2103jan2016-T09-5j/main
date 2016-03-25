@@ -65,11 +65,7 @@ public class UIController {
 		if (ke.getCode().equals(KeyCode.ENTER)) {
 			_currentUserInput = textField.getText();
 			if ((_currentUserInput != null && !_currentUserInput.isEmpty())) {
-//				callLogicController(_currentUserInput);
-				
-//				/** Uncomment to use LogicStub */
-				UserInterfaceLogicStub.simulateLogic();
-				
+				callLogicController(_currentUserInput);				
 				textField.clear();
 			}
 		} else if (ke.getCode().equals(KeyCode.ESCAPE)) {
@@ -90,12 +86,16 @@ public class UIController {
 			
 			ClockWork.ClockworkLogicMain(userInput, _logic);
 			
-			//Feedback ArrayList
-//			SignalHandler.getArrListForGUI();
+			if (!SignalHandler.getArrListForGUI().isEmpty()){
+				Main.setFeedback(SignalHandler.getArrListForGUI().get(0));
+				Main.updateDisplay();	
+			} else {
+				Main.setFeedback(" ");
+				Main.updateDisplay();
+			}
+			
 			Main.setTaskList(DisplayCommand.getArrListForGUI());
-	
-			/** Uncomment this if you want console to display userInput in console */
-	//		ClockworkGUI.addToConsoleList(userInput);
+			Main.updateDisplay();
 			
 			/** Skeleton for ClashDetector*/
 	//		if (!ClashDetector.getArrListForGUI().isEmpty()){
@@ -103,8 +103,7 @@ public class UIController {
 	//			//some action
 	//			ClockworkGUI.setConsoleList(ClashDetector.getArrListForGUI());
 	//		}
-			
-			Main.updateDisplay();
+
 		} catch (Exception ex) {
 			_logger.log(Level.WARNING, "Keypress detected, but failed to process.", ex);
 		}

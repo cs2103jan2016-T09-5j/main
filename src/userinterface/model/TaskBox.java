@@ -1,5 +1,6 @@
 package userinterface.model;
 
+import javafx.geometry.Insets;
 import javafx.scene.layout.StackPane;
 
 /**
@@ -12,6 +13,7 @@ import javafx.scene.layout.StackPane;
 public class TaskBox extends StackPane {
 	public TaskBox() {
 		this.setStyle("-fx-background-color: #000000;");
+		this.setPadding(new Insets(10,10,10,10));
 	}
 
 }
