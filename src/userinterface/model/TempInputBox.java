@@ -16,13 +16,13 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
 import userinterface.controller.*;
 
-public class BottomDisplay extends GridPane {
+public class TempInputBox extends GridPane {
 	private Text _textTask = new Text("Tasks: ");
 	private Text _textInput = new Text("Command: ");
 	private ListView<String> _taskListView;
 	private TextField _consoleInput;
 
-	public BottomDisplay(ArrayList<String> taskList) {
+	public TempInputBox(ArrayList<String> taskList) {
 		styleGrid();
 
 		_taskListView = UIController.formatArrayList(taskList);
@@ -62,9 +62,9 @@ public class BottomDisplay extends GridPane {
 	}
 
 	private void setNodePositions(ListView<String> botTop, TextField botBot) {
-		BottomDisplay.setConstraints(_textTask, 0, 0); // column=0 row=0
-		BottomDisplay.setConstraints(botTop, 0, 1); // column=0 row=1
-		BottomDisplay.setConstraints(_textInput, 0, 2); // column=0 row=2
-		BottomDisplay.setConstraints(botBot, 0, 3); // column=0 row=3
+//		InputBox.setConstraints(_textTask, 0, 0); // column=0 row=0
+//		InputBox.setConstraints(botTop, 0, 1); // column=0 row=1
+//		InputBox.setConstraints(_textInput, 0, 2); // column=0 row=2
+//		InputBox.setConstraints(botBot, 0, 3); // column=0 row=3
 	}
 }

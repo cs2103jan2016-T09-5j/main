@@ -15,11 +15,11 @@ import userinterface.controller.*;
  * @author Rebekah
  */
 
-public class CenterDisplay extends VBox {
+public class TempTaskBox extends VBox {
 	private Text _textConsole = new Text("Console: ");
 	private static ListView<String> _consoleListView;
 
-	public CenterDisplay(ArrayList<String> consoleList) {
+	public TempTaskBox(ArrayList<String> consoleList) {
 		_consoleListView = UIController.formatArrayList(consoleList);
 		styleVBox();
 		styleListView(_consoleListView);
