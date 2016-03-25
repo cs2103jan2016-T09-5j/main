@@ -1,10 +1,12 @@
 package userinterface.model;
 
+import javafx.geometry.Insets;
 import javafx.scene.layout.StackPane;
 
 
 public class FeedbackBox extends StackPane {
 	public FeedbackBox() {
-		this.setStyle("-fx-background-color: #ffff00;");
+		this.setPadding(new Insets(10,10,10,10));
+		this.setStyle("-fx-background-color: #323749;");
 	}
 }
