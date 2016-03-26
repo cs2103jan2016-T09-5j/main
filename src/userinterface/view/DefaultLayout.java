@@ -2,21 +2,14 @@ package userinterface.view;
 
 import java.util.ArrayList;
 
-import org.controlsfx.control.HiddenSidesPane;
 import org.controlsfx.control.textfield.TextFields;
-import org.controlsfx.glyphfont.FontAwesome;
-import org.controlsfx.glyphfont.FontAwesome.Glyph;
 import org.controlsfx.glyphfont.GlyphFont;
 import org.controlsfx.glyphfont.GlyphFontRegistry;
 import org.controlsfx.tools.Borders;
 
-import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -28,109 +21,192 @@ import userinterface.model.FeedbackBox;
 import userinterface.model.HeaderBox;
 
 public class DefaultLayout extends BorderPane {
-	
+
 	private ArrayList<String> _taskList;
 	private String _feedback;
 	private GlyphFont fontAwesome = GlyphFontRegistry.font("FontAwesome");
-	
-	public DefaultLayout(){
+
+	private Node taskLabel;
+	private Node helpLabel;
+	private Node calLabel;
+
+	private Label taskLbl = new Label("     Tasks     ");
+	private Label helpLbl = new Label("  F1");
+	private Label calLbl = new Label("  F2 ");
+
+	private Button helpIcon = new Button("", fontAwesome.create("question").color(Color.WHITE));
+	private Button calIcon = new Button("", fontAwesome.create("calendar").color(Color.WHITE));
+
+	private Text taskText = new Text();
+
+	private HeaderBox headerBox = new HeaderBox();
+	private TaskBox taskBox = new TaskBox();
+
+	public DefaultLayout() {
 		this.setDisplayRegions();
 	};
+
 	public DefaultLayout(ArrayList<String> taskList, String feedback) {
 		_taskList = taskList;
 		_feedback = feedback;
 		this.setDisplayRegions();
 	}
 
-	/*
-	 * ===========================================
-	 * Populating Layout
-	 * ===========================================
-	 */
+	/** POPULATING LAYOUT */
 
-	/** Set top, left, center, right and bottom region to display information */
+	/** Set top, center and bottom region to display information */
 	public void setDisplayRegions() {
 		setBottomRegion();
 		setTopRegion();
 		setCenterRegion();
+		style();
 	}
 
-	/** Set top region to display welcome text */
+	// Translucent Background
+	// -fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;"
+
+	/** Set top region to display available shortcuts */
 	private void setTopRegion() {
-		HeaderBox headerBox = new HeaderBox();
-		HeaderBox smallHeaderBox = new HeaderBox();
-		HeaderBox anotherHeaderBox  = new HeaderBox();
-		HeaderBox oneMoreHeaderBox = new HeaderBox();
-		
-		Label taskLbl = new Label("     Tasks     ");
-		taskLbl.setStyle("-fx-text-fill: #FFFFFF");
-		Node wrappedTaskLabel = Borders.wrap(taskLbl)
-			     			.lineBorder().color(Color.WHITE).build()
-			     			.build();
-		Label helpLbl = new Label("  F1");
-		Button helpTag = new Button("", fontAwesome.create("question").color(Color.WHITE));
-		//-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;"
-		helpTag.setStyle("-fx-background-color: transparent");
-		helpLbl.setStyle("-fx-text-fill: #FFFFFF");
-		anotherHeaderBox.setTop(helpLbl);
-		anotherHeaderBox.setBottom(helpTag);
-		Node wrappedHelpLabel = Borders.wrap(anotherHeaderBox)
-			     			.lineBorder().color(Color.WHITE).build()
-			     			.build();
-		
-		Label calLbl = new Label("  F2 ");
-		Button calTag = new Button("", fontAwesome.create("calendar").color(Color.WHITE));
-		calTag.setStyle("-fx-background-color: transparent");
-		calLbl.setStyle("-fx-text-fill: #FFFFFF");
-		oneMoreHeaderBox.setTop(calLbl);
-		oneMoreHeaderBox.setBottom(calTag);
-		Node wrappedCalLabel = Borders.wrap(oneMoreHeaderBox)
-			     			.lineBorder().color(Color.WHITE).build()
-			     			.build();
-		
-		smallHeaderBox.setLeft(wrappedHelpLabel);
-		smallHeaderBox.setRight(wrappedCalLabel);
-		
-	    headerBox.setLeft(wrappedTaskLabel);
-	    headerBox.setRight(smallHeaderBox);
-	    
+		implementHeaderLabels();
+		implementHeaderBox();
+
 		this.setTop(headerBox);
 	}
-
+	
 	/** Set center region to display task list */
 	private void setCenterRegion() {
-		TaskBox taskBox = new TaskBox();
-		Text t = new Text();
-		t.setText(" ");
-		if (!_taskList.isEmpty()){
-			t.setText(_taskList.get(0));
-		}
-		taskBox.getChildren().add(t);
-		t.setStyle("-fx-text-fill: #FFFFFF");
-		t.setFill(Color.WHITE);
-//		ListView<String> taskListView = new ListView<String>();
-//		taskListView = UIController.formatArrayList(_taskList);		
-//		taskBox.getChildren().add(taskListView);
+		implementTaskText();
+		implementTaskBox();
+
 		this.setCenter(taskBox);
 	}
-
+	
 	/** Set bottom region to display input section */
 	private void setBottomRegion() {
-		BorderPane borderPane = new BorderPane();
-		FeedbackBox feedbackBox = new FeedbackBox();
-		Label lbl = new Label(_feedback);
-		lbl.setStyle("-fx-text-fill: #FFFFFF");
-		feedbackBox.getChildren().add(lbl);
+		Label feedbackLbl = implementFeedbackLabel();
+		FeedbackBox feedbackBox = implementFeedbackBox(feedbackLbl);
+		
+		TextField textField = implementTextField();
+		InputBox inputBox = implementInputBox(textField);
+		
+		BorderPane userBox = implementUserBox(feedbackBox, inputBox);
+
+		this.setBottom(userBox);
+	}
+	
+	/** IMPLEMENTING REGION OBJECTS*/
+
+	private void implementHeaderBox() {
+		headerBox.setLeft(taskLabel);
+		headerBox.setRight(createShortcutBox());
+	}
+
+	private void implementHeaderLabels() {
+		taskLabel = createTaskLabel();
+		helpLabel = createHelpLabel();
+		calLabel = createCalLabel();
+	}	
+
+	private void implementTaskBox() {
+		taskBox.getChildren().add(taskText);
+	}
+
+	private void implementTaskText() {
+		taskText.setText(" ");
+		if (!_taskList.isEmpty()) {
+			taskText.setText(_taskList.get(0));
+		}
+		// ListView<String> taskListView = new ListView<String>();
+		// taskListView = UIController.formatArrayList(_taskList);
+		// taskBox.getChildren().add(taskListView);
+	}
+
+	private BorderPane implementUserBox(FeedbackBox feedbackBox, InputBox inputBox) {
+		BorderPane userBox = new BorderPane();
+		userBox.setTop(feedbackBox);
+		userBox.setBottom(inputBox);
+		return userBox;
+	}
+
+	private InputBox implementInputBox(TextField textField) {
 		InputBox inputBox = new InputBox();
+		inputBox.getChildren().add(textField);
+		return inputBox;
+	}
+
+	private TextField implementTextField() {
 		TextField textField = new TextField();
-		textField.setStyle("-fx-background-color: #272b39; -fx-text-inner-color: white;");
 		UIController.implementKeystrokeEvents(textField);
-		TextFields.bindAutoCompletion(
-	            textField,
-	            "add", "delete", "undo", "search", "display", "mark", "edit");
-	    inputBox.getChildren().add(textField);
-	    borderPane.setTop(feedbackBox);
-	    borderPane.setBottom(inputBox);
-		this.setBottom(borderPane);
+		TextFields.bindAutoCompletion(textField, "add", "delete", "undo", "search", "display", "mark", "edit");
+		
+		textField.setStyle("-fx-background-color: #272b39; -fx-text-inner-color: white;");
+		
+		return textField;
+	}
+
+	private FeedbackBox implementFeedbackBox(Label feedbackLbl) {
+		FeedbackBox feedbackBox = new FeedbackBox();
+		feedbackBox.getChildren().add(feedbackLbl);
+
+		return feedbackBox;
+	}
+
+	private Label implementFeedbackLabel() {
+		Label feedbackLbl = new Label(_feedback);
+		
+		feedbackLbl.setStyle("-fx-text-fill: #FFFFFF");
+
+		return feedbackLbl;
+	}
+	
+	/** CREATING LAYOUT OBJECTS */
+	
+	private Node createShortcutBox() {
+		HeaderBox shortcutsBox = new HeaderBox();
+		shortcutsBox.setLeft(helpLabel);
+		shortcutsBox.setRight(calLabel);
+
+		return shortcutsBox;
+	}
+
+	private Node createTaskLabel() {
+		Node wrappedTaskLabel = Borders.wrap(taskLbl).lineBorder().color(Color.WHITE).build().build();
+
+		return wrappedTaskLabel;
+	}
+
+	private Node createHelpLabel() {
+		HeaderBox helpShortcutBox = new HeaderBox();
+
+		helpShortcutBox.setTop(helpLbl);
+		helpShortcutBox.setBottom(helpIcon);
+
+		Node wrappedHelpLabel = Borders.wrap(helpShortcutBox).lineBorder().color(Color.WHITE).build().build();
+
+		return wrappedHelpLabel;
+	}
+
+	private Node createCalLabel() {
+		HeaderBox calShortcutBox = new HeaderBox();
+
+		calShortcutBox.setTop(calLbl);
+		calShortcutBox.setBottom(calIcon);
+		Node wrappedCalLabel = Borders.wrap(calShortcutBox).lineBorder().color(Color.WHITE).build().build();
+
+		return wrappedCalLabel;
+	}
+
+
+	/** STYLING FIXED OBJECTS */
+	
+	private void style() {
+		taskLbl.setStyle("-fx-text-fill: #FFFFFF");
+		helpIcon.setStyle("-fx-background-color: transparent");
+		helpLbl.setStyle("-fx-text-fill: #FFFFFF");
+		calIcon.setStyle("-fx-background-color: transparent");
+		calLbl.setStyle("-fx-text-fill: #FFFFFF");
+
+		taskText.setStyle("-fx-text-fill: #FFFFFF");
+		taskText.setFill(Color.WHITE);
 	}
 }
