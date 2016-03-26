@@ -1,4 +1,4 @@
-package userinterface.view;
+package userinterface;
 
 import java.util.ArrayList;
 
@@ -14,11 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import userinterface.model.InputBox;
-import userinterface.model.TaskBox;
-import userinterface.controller.UIController;
-import userinterface.model.FeedbackBox;
-import userinterface.model.HeaderBox;
 
 public class DefaultLayout extends BorderPane {
 	
@@ -62,7 +57,6 @@ public class DefaultLayout extends BorderPane {
 		setBottomRegion();
 		setTopRegion();
 		setCenterRegion();
-		style();
 	}
 
 	// Translucent Background
@@ -119,6 +113,7 @@ public class DefaultLayout extends BorderPane {
 		if (!_taskList.isEmpty()) {
 			taskText.setText(_taskList.get(0));
 		}
+		taskText.setFill(Color.WHITE);
 		// ListView<String> taskListView = new ListView<String>();
 		// taskListView = UIController.formatArrayList(_taskList);
 		// taskBox.getChildren().add(taskListView);
@@ -197,19 +192,5 @@ public class DefaultLayout extends BorderPane {
 		Node wrappedCalLabel = Borders.wrap(calShortcutBox).lineBorder().color(Color.WHITE).build().build();
 
 		return wrappedCalLabel;
-	}
-
-
-	/** STYLING FIXED OBJECTS */
-	
-	private void style() {
-		taskLbl.setStyle("-fx-text-fill: #FFFFFF");
-		helpIcon.setStyle("-fx-background-color: transparent");
-		helpLbl.setStyle("-fx-text-fill: #FFFFFF");
-		calIcon.setStyle("-fx-background-color: transparent");
-		calLbl.setStyle("-fx-text-fill: #FFFFFF");
-
-		taskText.setStyle("-fx-text-fill: #FFFFFF");
-		taskText.setFill(Color.WHITE);
 	}
 }

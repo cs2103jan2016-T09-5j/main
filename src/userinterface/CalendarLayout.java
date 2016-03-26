@@ -1,24 +1,16 @@
-package userinterface.view;
+package userinterface;
 
 import org.controlsfx.glyphfont.GlyphFont;
 import org.controlsfx.glyphfont.GlyphFontRegistry;
 import org.controlsfx.tools.Borders;
 
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import userinterface.controller.Main;
-import userinterface.controller.UIController;
-import userinterface.model.HeaderBox;
 
 public class CalendarLayout extends BorderPane {
 	
@@ -39,8 +31,7 @@ public class CalendarLayout extends BorderPane {
 	private Button escIcon = new Button("", fontAwesome.create("reply").color(Color.WHITE));
 	
 	private HeaderBox headerBox = new HeaderBox();
-	private GridPane helpContentBox = new GridPane();	
-	private HBox helpContentBar = new HBox();
+	private GridPane calendarBox = new GridPane();
 
 	public CalendarLayout() {
 		setDisplayRegions();
@@ -52,7 +43,6 @@ public class CalendarLayout extends BorderPane {
 		setBottomRegion();
 		setTopRegion();
 		setCenterRegion();
-		style();
 	}
 	
 	/** Set top region to display available shortcuts */
@@ -63,8 +53,10 @@ public class CalendarLayout extends BorderPane {
 		this.setTop(headerBox);
 	}
 
+	/************** IMPLEMENT CALENDAR HERE! (: **********/
 	private void setCenterRegion() {
-		this.setCenter(helpContentBox);
+		//calendarBox is a dummy variable, you might wanna change it!
+		this.setCenter(calendarBox);
 	}
 	
 	private void setBottomRegion() {
@@ -147,19 +139,5 @@ public class CalendarLayout extends BorderPane {
 		Node wrappedEscLabel = Borders.wrap(escShortcutBox).lineBorder().color(Color.WHITE).build().build();
 
 		return wrappedEscLabel;
-	}
-	
-	/** STYLING FIXED OBJECTS */
-	
-	private void style(){
-		taskLbl.setStyle("-fx-text-fill: #FFFFFF");
-		helpIcon.setStyle("-fx-background-color: transparent");
-		helpLbl.setStyle("-fx-text-fill: #FFFFFF");
-		calIcon.setStyle("-fx-background-color: transparent");
-		calLbl.setStyle("-fx-text-fill: #FFFFFF");
-		escIcon.setStyle("-fx-background-color: transparent");
-		escLbl.setStyle("-fx-text-fill: #FFFFFF");
-		
-		helpContentBar.setStyle("-fx-background-color: #182733");
 	}
 }

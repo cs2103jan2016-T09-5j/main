@@ -1,4 +1,4 @@
-package userinterface.view;
+package userinterface;
 
 import org.controlsfx.glyphfont.GlyphFont;
 import org.controlsfx.glyphfont.GlyphFontRegistry;
@@ -16,9 +16,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import userinterface.controller.Main;
-import userinterface.controller.UIController;
-import userinterface.model.HeaderBox;
 
 public class HelpLayout extends BorderPane {
 
@@ -72,7 +69,6 @@ public class HelpLayout extends BorderPane {
 		setBottomRegion();
 		setTopRegion();
 		setCenterRegion();
-		style();
 	}
 	
 	/** Set top region to display available shortcuts */
@@ -337,19 +333,5 @@ public class HelpLayout extends BorderPane {
 		
 		Node wrappedDelete = Borders.wrap(deleteBox).lineBorder().color(Color.WHITE).build().build();
 		return wrappedDelete;
-	}
-	
-	/** STYLING FIXED OBJECTS */
-	
-	private void style(){
-		taskLbl.setStyle("-fx-text-fill: #FFFFFF");
-		helpIcon.setStyle("-fx-background-color: transparent");
-		helpLbl.setStyle("-fx-text-fill: #FFFFFF");
-		calIcon.setStyle("-fx-background-color: transparent");
-		calLbl.setStyle("-fx-text-fill: #FFFFFF");
-		escIcon.setStyle("-fx-background-color: transparent");
-		escLbl.setStyle("-fx-text-fill: #FFFFFF");
-		
-		helpContentBar.setStyle("-fx-background-color: #182733");
 	}
 }

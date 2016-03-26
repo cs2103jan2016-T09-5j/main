@@ -1,4 +1,4 @@
-package userinterface.controller;
+package userinterface;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -10,9 +10,6 @@ import javafx.stage.Stage;
 import logic.ClockWork;
 import storage.StorageUtils;
 import testcases.UserInterfaceLogicStub;
-import userinterface.view.CalendarLayout;
-import userinterface.view.DefaultLayout;
-import userinterface.view.HelpLayout;
 
 public class Main extends Application {
 	
@@ -58,6 +55,8 @@ public class Main extends Application {
 	private static void setScene(){
 		mainBorderPane = new DefaultLayout(_taskList, _feedback);
 		scene = new Scene(mainBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 	}
 	
 	/** Initialise Stage for GUI */
@@ -118,12 +117,16 @@ public class Main extends Application {
 	public static void displayHelpScene(){
 		helpBorderPane = new HelpLayout();
 		scene = new Scene(helpBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();
 	}
 	
 	public static void displayCalendarScene(){
 		calBorderPane = new CalendarLayout();
 		scene = new Scene(calBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();
 	}
 }

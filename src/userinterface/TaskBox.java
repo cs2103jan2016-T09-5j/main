@@ -1,4 +1,4 @@
-package userinterface.model;
+package userinterface;
 
 import java.util.Random;
 

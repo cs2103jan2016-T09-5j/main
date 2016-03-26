@@ -3,7 +3,7 @@ package testcases;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import userinterface.controller.Main;
+import userinterface.Main;
 
 public class UserInterfaceLogicStub {
 	/** Test arrays from Logic API to display on GUI */

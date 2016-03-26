@@ -1,0 +1,15 @@
+.label{
+	-fx-text-fill: #FFFFFF;
+}
+
+.text{
+	-fx-text-fill: #FFFFFF;
+}
+
+.button{
+	-fx-background-color: transparent;
+}
+
+.HBox{
+	-fx-background-color: #182733;
+}
