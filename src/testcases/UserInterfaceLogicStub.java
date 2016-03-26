@@ -21,7 +21,7 @@ public class UserInterfaceLogicStub {
 	 */
 	public static void simulateLogic(){
 		Main.setTaskList(_taskListTest);
-		Main.updateDisplay();
+		Main.displayDefaultScene();
 	}
 	
 	/** Set all ArrayLists to test ArrayLists */

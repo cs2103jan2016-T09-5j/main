@@ -94,14 +94,14 @@ public class UIController {
 			
 			if (!SignalHandler.getArrListForGUI().isEmpty()){
 				Main.setFeedback(SignalHandler.getArrListForGUI().get(0));
-				Main.updateDisplay();	
+				Main.displayDefaultScene();	
 			} else {
 				Main.setFeedback(" ");
-				Main.updateDisplay();
+				Main.displayDefaultScene();
 			}
 			
 			Main.setTaskList(DisplayCommand.getArrListForGUI());
-			Main.updateDisplay();
+			Main.displayDefaultScene();
 			
 			/** Skeleton for ClashDetector*/
 	//		if (!ClashDetector.getArrListForGUI().isEmpty()){

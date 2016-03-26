@@ -110,13 +110,8 @@ public class Main extends Application {
 		stage.setIconified(true);
 	}
 	
-	public static void updateDisplay(){
-		setScene();		
-		setStage();
-	}
-	
 	public static void displayDefaultScene(){
-		scene = new Scene(mainBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		setScene();		
 		setStage();
 	}
 	

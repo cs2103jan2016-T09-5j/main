@@ -17,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import userinterface.controller.Main;
+import userinterface.controller.UIController;
 import userinterface.model.HeaderBox;
 
 public class CalendarLayout extends BorderPane {
@@ -26,11 +27,15 @@ public class CalendarLayout extends BorderPane {
 	private Node taskLabel;
 	private Node helpLabel;
 	private Node calLabel;
+	private Node escLabel;
 	
 	private Label taskLbl = new Label("     Tasks     ");
+	private Label helpLbl = new Label("  F1");
+	private Label calLbl = new Label("  F2 ");
 	private Label escLbl = new Label("  Esc ");
 		
 	private Button helpIcon = new Button("", fontAwesome.create("question").color(Color.WHITE));
+	private Button calIcon = new Button("", fontAwesome.create("calendar").color(Color.WHITE));
 	private Button escIcon = new Button("", fontAwesome.create("reply").color(Color.WHITE));
 	
 	private HeaderBox headerBox = new HeaderBox();
@@ -76,7 +81,9 @@ public class CalendarLayout extends BorderPane {
 	
 	private void implementHeaderLabels(){
 		taskLabel = createTaskLabel();
-		calLabel = createEscLabel();	
+		helpLabel = createHelpLabel();
+		calLabel = createCalLabel();
+		escLabel = createEscLabel();	
 	}
 
 	private TextField implementTextField() {
@@ -91,15 +98,7 @@ public class CalendarLayout extends BorderPane {
 	}
 
 	private void handleKeyPress(TextField textField) {
-		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent ke) {
-				if (ke.getCode().equals(KeyCode.ESCAPE)) {
-					// DEFAULT SCENE
-					Main.updateDisplay();
-				}
-			}
-		});
+		UIController.implementKeystrokeEvents(textField);
 	}
 	
 	/** CREATING LAYOUT OBJECTS */
@@ -107,7 +106,8 @@ public class CalendarLayout extends BorderPane {
 	private Node createShortcutBox(){
 		HeaderBox shortcutsBox = new HeaderBox();
 		shortcutsBox.setLeft(helpLabel);
-		shortcutsBox.setRight(calLabel);
+		shortcutsBox.setCenter(calLabel);
+		shortcutsBox.setRight(escLabel);
 		
 		return shortcutsBox;
 	}
@@ -116,6 +116,27 @@ public class CalendarLayout extends BorderPane {
 		Node wrappedTaskLabel = Borders.wrap(taskLbl).lineBorder().color(Color.WHITE).build().build();
 		
 		return wrappedTaskLabel;
+	}
+	
+	private Node createHelpLabel() {
+		HeaderBox helpShortcutBox = new HeaderBox();
+
+		helpShortcutBox.setTop(helpLbl);
+		helpShortcutBox.setBottom(helpIcon);
+
+		Node wrappedHelpLabel = Borders.wrap(helpShortcutBox).lineBorder().color(Color.WHITE).build().build();
+
+		return wrappedHelpLabel;
+	}
+
+	private Node createCalLabel() {
+		HeaderBox calShortcutBox = new HeaderBox();
+
+		calShortcutBox.setTop(calLbl);
+		calShortcutBox.setBottom(calIcon);
+		Node wrappedCalLabel = Borders.wrap(calShortcutBox).lineBorder().color(Color.WHITE).build().build();
+
+		return wrappedCalLabel;
 	}
 	
 	private Node createEscLabel(){
@@ -133,6 +154,9 @@ public class CalendarLayout extends BorderPane {
 	private void style(){
 		taskLbl.setStyle("-fx-text-fill: #FFFFFF");
 		helpIcon.setStyle("-fx-background-color: transparent");
+		helpLbl.setStyle("-fx-text-fill: #FFFFFF");
+		calIcon.setStyle("-fx-background-color: transparent");
+		calLbl.setStyle("-fx-text-fill: #FFFFFF");
 		escIcon.setStyle("-fx-background-color: transparent");
 		escLbl.setStyle("-fx-text-fill: #FFFFFF");
 		
