@@ -21,6 +21,9 @@ import userinterface.model.FeedbackBox;
 import userinterface.model.HeaderBox;
 
 public class DefaultLayout extends BorderPane {
+	
+//	private static final String GLYPH_NAME_HELP = "QUESTION";
+//	private static final String GLYPH_NAME_CAL = "CALENDAR";
 
 	private ArrayList<String> _taskList;
 	private String _feedback;
@@ -94,7 +97,7 @@ public class DefaultLayout extends BorderPane {
 		this.setBottom(userBox);
 	}
 	
-	/** IMPLEMENTING REGION OBJECTS*/
+	/** IMPLEMENTING REGION OBJECTS */
 
 	private void implementHeaderBox() {
 		headerBox.setLeft(taskLabel);

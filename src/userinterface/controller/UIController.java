@@ -76,10 +76,10 @@ public class UIController {
 			Main.displayHelpScene();
 		} else if (ke.getCode().equals(KeyCode.F2)) {
 			// DISPLAY CALENDAR
-			System.out.println("UH TESTING");
+			Main.displayCalendarScene();
 		} else if (ke.getCode().equals(KeyCode.F3)) {
 			// MINIMISE
-			System.out.println("UH TESTING");
+			Main.minimise();
 		}
 	}
 

@@ -1,64 +1,61 @@
 package userinterface.view;
 
-import java.util.Random;
-
-import org.controlsfx.control.GridCell;
-import org.controlsfx.control.GridView;
-import org.controlsfx.control.cell.ColorGridCell;
 import org.controlsfx.glyphfont.GlyphFont;
 import org.controlsfx.glyphfont.GlyphFontRegistry;
 import org.controlsfx.tools.Borders;
 
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.util.Callback;
 import userinterface.controller.Main;
-import userinterface.controller.UIController;
 import userinterface.model.HeaderBox;
-import userinterface.model.TaskBox;
 
 public class HelpLayout extends BorderPane {
 
+//	private static final String GLYPH_NAME_ADD = "PLUS";
+//	private static final String GLYPH_NAME_DELETE = "MINUS";
+//	private static final String GLYPH_NAME_EDIT = "PENCIL";
+//	private static final String GLYPH_NAME_UNDO = "UNDO";
+//	private static final String GLYPH_NAME_REDO = "REPEAT";
+//	private static final String GLYPH_NAME_SEARCH = "SEARCH";
+//	private static final String GLYPH_NAME_DISPLAY = "TABLET";
+//	private static final String GLYPH_NAME_MARK = "CHECK";
+//	private static final String GLYPH_NAME_EMAIL = "ENVELOPE";
+	
 	private GlyphFont fontAwesome = GlyphFontRegistry.font("FontAwesome");
 	
 	private Node taskLabel;
 	private Node helpLabel;
 	private Node calLabel;
 	
-	Node wrappedAdd;
-	Node wrappedDelete;
-	Node wrappedEdit;
-	Node wrappedUndo;
-	Node wrappedRedo;
-	Node wrappedSearch;
-	Node wrappedDisplay;
-	Node wrappedMark;
-	Node wrappedEmail;
-	
 	private Label taskLbl = new Label("     Tasks     ");
-	private Label helpLbl = new Label("  F1");
-	private Label calLbl = new Label("  F2 ");
+	private Label escLbl = new Label("  Esc ");
 	
 	private Button helpIcon = new Button("", fontAwesome.create("question").color(Color.WHITE));
-	private Button calIcon = new Button("", fontAwesome.create("calendar").color(Color.WHITE));	
+	private Button escIcon = new Button("", fontAwesome.create("reply").color(Color.WHITE));	
 		
 	private HeaderBox headerBox = new HeaderBox();
 	private GridPane helpContentBox = new GridPane();	
 	private HBox helpContentBar = new HBox();
+	
+	private Node wrappedAdd;
+	private Node wrappedDelete;
+	private Node wrappedEdit;
+	private Node wrappedUndo;
+	private Node wrappedRedo;
+	private Node wrappedSearch;
+	private Node wrappedDisplay;
+	private Node wrappedMark;
+	private Node wrappedEmail;
 
 	public HelpLayout() {
 		setDisplayRegions();
@@ -83,26 +80,29 @@ public class HelpLayout extends BorderPane {
 
 	private void setCenterRegion() {
 
-		Node wrappedAdd = createAdd();
-		Node wrappedDelete = createDelete();
-		Node wrappedEdit = createEdit();
-		Node wrappedUndo = createUndo();
-		Node wrappedRedo = createRedo();
-		Node wrappedSearch = createSearch();
-		Node wrappedDisplay = createDisplay();
-		Node wrappedMark = createMark();
-		Node wrappedEmail = createEmail();
-
-		helpContentBar.getChildren().addAll(wrappedAdd, wrappedDelete, wrappedEdit, 
-								wrappedUndo, wrappedRedo, wrappedSearch, 
-								wrappedDisplay,	wrappedMark, wrappedEmail);
+		wrappedAdd = createAdd();
+		wrappedDelete = createDelete();
+		wrappedEdit = createEdit();
+		wrappedUndo = createUndo();
+		wrappedRedo = createRedo();
+		wrappedSearch = createSearch();
+		wrappedDisplay = createDisplay();
+		wrappedMark = createMark();
+		wrappedEmail = createEmail();
+	
+		implementHelpContentBar();
 		
-		helpContentBox.setStyle("-fx-background-color: #182733");
-		helpContentBox.getChildren().add(helpContentBar);
-		helpContentBox.setAlignment(Pos.CENTER);
+		implementHelpContentBox();
 		
 		this.setCenter(helpContentBox);
 	}
+	
+	private void setBottomRegion() {
+		TextField textField = implementTextField();
+		this.setBottom(textField);
+	}
+	
+	/** IMPLEMENTING REGION OBJECTS */
 	
 	private void implementHeaderBox(){
 		headerBox.setLeft(taskLabel);
@@ -111,13 +111,69 @@ public class HelpLayout extends BorderPane {
 	
 	private void implementHeaderLabels(){
 		taskLabel = createTaskLabel();
-		helpLabel = createHelpLabel();
-		calLabel = createCalLabel();	
+		calLabel = createEscLabel();	
 	}
 	
-	private void implementHelpContent(){
-		
+	private void implementHelpContentBox() {
+		helpContentBox.setStyle("-fx-background-color: #182733");
+		helpContentBox.getChildren().add(helpContentBar);
+		helpContentBox.setAlignment(Pos.CENTER);
 	}
+
+	private void implementHelpContentBar() {
+		helpContentBar.getChildren().addAll(wrappedAdd, wrappedDelete, wrappedEdit, 
+								wrappedUndo, wrappedRedo, wrappedSearch, 
+								wrappedDisplay,	wrappedMark, wrappedEmail);
+	}
+
+	private TextField implementTextField() {
+		TextField textField = new TextField();
+		textField.setEditable(false);
+		
+		textField.setStyle("-fx-background-color: #272b39; -fx-text-inner-color: white;");
+		
+		handleKeyPress(textField);
+		
+		return textField;
+	}
+
+	private void handleKeyPress(TextField textField) {
+		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent ke) {
+				if (ke.getCode().equals(KeyCode.ESCAPE)) {
+					// DEFAULT SCENE
+					Main.updateDisplay();
+				}
+			}
+		});
+	}
+	
+	/** CREATING LAYOUT OBJECTS */
+	
+	private Node createShortcutBox(){
+		HeaderBox shortcutsBox = new HeaderBox();
+		shortcutsBox.setRight(calLabel);
+		
+		return shortcutsBox;
+	}
+	
+	private Node createTaskLabel(){
+		Node wrappedTaskLabel = Borders.wrap(taskLbl).lineBorder().color(Color.WHITE).build().build();
+		
+		return wrappedTaskLabel;
+	}
+	
+	private Node createEscLabel(){
+		HeaderBox escShortcutBox = new HeaderBox();
+		
+		escShortcutBox.setTop(escLbl);
+		escShortcutBox.setBottom(escIcon);
+		Node wrappedEscLabel = Borders.wrap(escShortcutBox).lineBorder().color(Color.WHITE).build().build();
+
+		return wrappedEscLabel;
+	}
+
 	
 	private Node createEmail() {
 		BorderPane emailBox = new BorderPane();
@@ -261,70 +317,14 @@ public class HelpLayout extends BorderPane {
 		Node wrappedDelete = Borders.wrap(deleteBox).lineBorder().color(Color.WHITE).build().build();
 		return wrappedDelete;
 	}
-
-	
-	
-	
-	
-	private Node createShortcutBox(){
-		HeaderBox shortcutsBox = new HeaderBox();
-		shortcutsBox.setLeft(helpLabel);
-		shortcutsBox.setRight(calLabel);
-		
-		return shortcutsBox;
-	}
-	
-	private Node createTaskLabel(){
-		Node wrappedTaskLabel = Borders.wrap(taskLbl).lineBorder().color(Color.WHITE).build().build();
-		
-		return wrappedTaskLabel;
-	}
-	
-	private Node createHelpLabel(){
-		HeaderBox helpShortcutBox = new HeaderBox();
-		
-		helpShortcutBox.setTop(helpLbl);
-		helpShortcutBox.setBottom(helpIcon);
-		
-		Node wrappedHelpLabel = Borders.wrap(helpShortcutBox).lineBorder().color(Color.WHITE).build().build();
-		
-		return wrappedHelpLabel;
-	}
-	
-	private Node createCalLabel(){
-		HeaderBox calShortcutBox = new HeaderBox();
-		
-		calShortcutBox.setTop(calLbl);
-		calShortcutBox.setBottom(calIcon);
-		Node wrappedCalLabel = Borders.wrap(calShortcutBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedCalLabel;
-	}
-
-	private void setBottomRegion() {
-		TextField textField = new TextField();
-		textField.setStyle("-fx-background-color: #272b39; -fx-text-inner-color: white;");
-		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent ke) {
-				if (ke.getCode().equals(KeyCode.ESCAPE)) {
-					// DEFAULT SCENE
-					Main.updateDisplay();
-				}
-			}
-		});
-		textField.setEditable(false);
-		this.setBottom(textField);
-	}
 	
 	/** STYLING FIXED OBJECTS */
 	
 	private void style(){
 		taskLbl.setStyle("-fx-text-fill: #FFFFFF");
 		helpIcon.setStyle("-fx-background-color: transparent");
-		helpLbl.setStyle("-fx-text-fill: #FFFFFF");
-		calIcon.setStyle("-fx-background-color: transparent");
-		calLbl.setStyle("-fx-text-fill: #FFFFFF");
+		escIcon.setStyle("-fx-background-color: transparent");
+		escLbl.setStyle("-fx-text-fill: #FFFFFF");
 		
 		helpContentBar.setStyle("-fx-background-color: #182733");
 	}

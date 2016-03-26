@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import logic.ClockWork;
 import storage.StorageUtils;
 import testcases.UserInterfaceLogicStub;
+import userinterface.view.CalendarLayout;
 import userinterface.view.DefaultLayout;
 import userinterface.view.HelpLayout;
 
@@ -23,11 +24,10 @@ public class Main extends Application {
 	private static ArrayList<String> _taskList = new ArrayList<String>();
 	private static DefaultLayout mainBorderPane;
 	private static HelpLayout helpBorderPane;
+	private static CalendarLayout calBorderPane;
 	private static String _feedback;
 	private static Scene scene;
 	private static Stage stage;
-	private static boolean isDefaultSceneFlag = true;
-	private static boolean isHelpSceneFlag = false;
 	
 	/*
 	* ===========================================
@@ -58,8 +58,6 @@ public class Main extends Application {
 	private static void setScene(){
 		mainBorderPane = new DefaultLayout(_taskList, _feedback);
 		scene = new Scene(mainBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		isDefaultSceneFlag = true;
-		isHelpSceneFlag = false;
 	}
 	
 	/** Initialise Stage for GUI */
@@ -108,12 +106,8 @@ public class Main extends Application {
 		_feedback = newFeedback;
 	}
 	
-	public static boolean getDefaultSceneFlag(){
-		return isDefaultSceneFlag;
-	}
-	
-	public static boolean getHelpSceneFlag(){
-		return isHelpSceneFlag;
+	public static void minimise(){
+		stage.setIconified(true);
 	}
 	
 	public static void updateDisplay(){
@@ -122,17 +116,19 @@ public class Main extends Application {
 	}
 	
 	public static void displayDefaultScene(){
-		isDefaultSceneFlag = true;
-		isHelpSceneFlag = false;
 		scene = new Scene(mainBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		setStage();
 	}
 	
 	public static void displayHelpScene(){
-		isDefaultSceneFlag = false;
-		isHelpSceneFlag = true;
 		helpBorderPane = new HelpLayout();
 		scene = new Scene(helpBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		setStage();
+	}
+	
+	public static void displayCalendarScene(){
+		calBorderPane = new CalendarLayout();
+		scene = new Scene(calBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		setStage();
 	}
 }
