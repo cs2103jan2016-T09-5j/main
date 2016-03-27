@@ -2,13 +2,10 @@ package userinterface;
 
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 
-public class CalendarLayout extends BorderPane {
-	
-	private GridPane calendarBox = new GridPane();
+public class LayoutCalendar extends BorderPane {
 
-	public CalendarLayout() {
+	public LayoutCalendar() {
 		setDisplayRegions();
 	}
 
@@ -22,14 +19,17 @@ public class CalendarLayout extends BorderPane {
 	
 	/** Set top region to display available shortcuts */
 	private void setTopRegion() {
-		HeaderBox headerBox = new HeaderBox();
+		BoxHeader headerBox = new BoxHeader();
 		this.setTop(headerBox);
 	}
 
 	/************** IMPLEMENT CALENDAR HERE! (: **********/
 	private void setCenterRegion() {
-		//calendarBox is a dummy variable, you might wanna change it!
-		this.setCenter(calendarBox);
+		//borderPane is a dummy variable, you might wanna change it!
+		BorderPane borderPane = new BorderPane();
+		borderPane.setStyle("-fx-background-color: #182733;");
+		
+		this.setCenter(borderPane);
 	}
 	/************* END IMPLEMENTATION ***************/
 	
@@ -39,7 +39,7 @@ public class CalendarLayout extends BorderPane {
 	}
 
 	private TextField implementTextField() {
-		InputBox textField = new InputBox();
+		BoxInput textField = new BoxInput();
 		textField.setEditable(false);
 
 		return textField;

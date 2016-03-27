@@ -16,7 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 
-public class HelpLayout extends BorderPane {
+public class LayoutHelp extends BorderPane {
 	
 	private Label dummyLbl = new Label(" ");
 
@@ -33,7 +33,7 @@ public class HelpLayout extends BorderPane {
 	private Node wrappedMark;
 	private Node wrappedEmail;
 
-	public HelpLayout() {
+	public LayoutHelp() {
 		setDisplayRegions();
 	}
 
@@ -47,7 +47,7 @@ public class HelpLayout extends BorderPane {
 
 	/** Set top region to display available shortcuts */
 	private void setTopRegion() {	
-		HeaderBox headerBox = new HeaderBox();
+		BoxHeader headerBox = new BoxHeader();
 		this.setTop(headerBox);
 	}
 
@@ -94,7 +94,7 @@ public class HelpLayout extends BorderPane {
 	}
 
 	private TextField implementTextField() {
-		InputBox textField = new InputBox();
+		BoxInput textField = new BoxInput();
 		textField.setEditable(false);
 
 		return textField;
@@ -137,7 +137,7 @@ public class HelpLayout extends BorderPane {
 
 		displayBox.setTop(displayLbl);
 		displayBox.setCenter(dummyLbl);
-		displayBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.TABLET));
+		displayBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.TELEVISION));
 
 		Node wrappedDisplay = Borders.wrap(displayBox).lineBorder().color(Color.WHITE).build().build();
 

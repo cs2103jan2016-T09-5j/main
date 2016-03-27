@@ -16,7 +16,7 @@ import logic.DisplayCommand;
 import logic.SignalHandler;
 import testcases.UserInterfaceLogicStub;
 
-public class UIController {
+public class Controller {
 
 	private static Logger _logger = java.util.logging.Logger.getLogger("ClockworkGUIController");
 	private static String _currentUserInput;
@@ -80,6 +80,9 @@ public class UIController {
 		} else if (ke.getCode().equals(KeyCode.F3)) {
 			// MINIMISE
 			Main.minimise();
+		} else if (ke.getCode().equals(KeyCode.DELETE)) {
+			// MINIMISE
+			Main.displayDummyScene();
 		}
 	}
 

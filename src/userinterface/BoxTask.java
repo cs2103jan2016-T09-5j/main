@@ -10,8 +10,8 @@ import javafx.scene.layout.StackPane;
  * @author Rebekah
  */
 
-public class TaskBox extends StackPane {
-	public TaskBox() {
+public class BoxTask extends StackPane {
+	public BoxTask() {
 		this.setStyle("-fx-background-color: #182733;");
 		this.setPadding(new Insets(10,10,10,10));
 	}

@@ -9,20 +9,20 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class DefaultLayout extends BorderPane {
+public class LayoutDefault extends BorderPane {
 
 	private ArrayList<String> _taskList;
 	private String _feedback;
 
 	private Text taskText = new Text();
 	
-	private TaskBox taskBox = new TaskBox();
+	private BoxTask taskBox = new BoxTask();
 
-	public DefaultLayout() {
+	public LayoutDefault() {
 		this.setDisplayRegions();
 	};
 
-	public DefaultLayout(ArrayList<String> taskList, String feedback) {
+	public LayoutDefault(ArrayList<String> taskList, String feedback) {
 		_taskList = taskList;
 		_feedback = feedback;
 		this.setDisplayRegions();
@@ -37,12 +37,9 @@ public class DefaultLayout extends BorderPane {
 		setCenterRegion();
 	}
 
-	// Translucent Background
-	// -fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;
-
 	/** Set top region to display available shortcuts */
 	private void setTopRegion() {
-		HeaderBox headerBox = new HeaderBox();
+		BoxHeader headerBox = new BoxHeader();
 		headerBox.removeEscNode();
 		
 		this.setTop(headerBox);
@@ -60,8 +57,8 @@ public class DefaultLayout extends BorderPane {
 	private void setBottomRegion() {
 		Label feedbackLbl = createFeedbackLabel();
 		
-		FeedbackBox feedbackBox = implementFeedbackBox(feedbackLbl);
-		InputBox inputBox = implementInputBox();
+		BoxFeedback feedbackBox = implementFeedbackBox(feedbackLbl);
+		BoxInput inputBox = implementInputBox();
 		
 		BorderPane userBox = implementUserBox(feedbackBox, inputBox);
 
@@ -92,7 +89,7 @@ public class DefaultLayout extends BorderPane {
 		// taskBox.getChildren().add(taskListView);
 	}
 
-	private BorderPane implementUserBox(FeedbackBox feedbackBox, InputBox inputBox) {
+	private BorderPane implementUserBox(BoxFeedback feedbackBox, BoxInput inputBox) {
 		BorderPane userBox = new BorderPane();
 		userBox.setTop(feedbackBox);
 		userBox.setBottom(inputBox);
@@ -100,15 +97,15 @@ public class DefaultLayout extends BorderPane {
 		return userBox;
 	}
 
-	private InputBox implementInputBox() {	
-		InputBox textField = new InputBox();
+	private BoxInput implementInputBox() {	
+		BoxInput textField = new BoxInput();
 		TextFields.bindAutoCompletion(textField, "add", "delete", "undo", "search", "display", "mark", "edit");
 
 		return textField;
 	}
 
-	private FeedbackBox implementFeedbackBox(Label feedbackLbl) {
-		FeedbackBox feedbackBox = new FeedbackBox();
+	private BoxFeedback implementFeedbackBox(Label feedbackLbl) {
+		BoxFeedback feedbackBox = new BoxFeedback();
 		feedbackBox.getChildren().add(feedbackLbl);
 
 		return feedbackBox;

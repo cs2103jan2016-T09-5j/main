@@ -17,9 +17,9 @@ public class Main extends Application {
 
 	/** Static variables */
 	private static ArrayList<String> _taskList = new ArrayList<String>();
-	private static DefaultLayout mainBorderPane;
-	private static HelpLayout helpBorderPane;
-	private static CalendarLayout calBorderPane;
+	private static LayoutDefault mainBorderPane;
+	private static LayoutHelp helpBorderPane;
+	private static LayoutCalendar calBorderPane;
 	private static String _feedback;
 	private static Scene scene;
 	private static Stage stage;
@@ -51,7 +51,7 @@ public class Main extends Application {
 	
 	/** Initialise Scene for GUI */
 	private static void setScene(){
-		mainBorderPane = new DefaultLayout(_taskList, _feedback);
+		mainBorderPane = new LayoutDefault(_taskList, _feedback);
 		scene = new Scene(mainBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
@@ -74,7 +74,7 @@ public class Main extends Application {
 	 * GUI with UserInterfaceLogicStub.
 	 */
 	private static void initialiseLogic() {
-		UIController.setLogic(ClockWork.getInstance());
+		Controller.setLogic(ClockWork.getInstance());
 	}
 	
 	/** 
@@ -116,7 +116,7 @@ public class Main extends Application {
 	}
 	
 	public static void displayHelpScene(){
-		helpBorderPane = new HelpLayout();
+		helpBorderPane = new LayoutHelp();
 		scene = new Scene(helpBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
@@ -124,8 +124,16 @@ public class Main extends Application {
 	}
 	
 	public static void displayCalendarScene(){
-		calBorderPane = new CalendarLayout();
+		calBorderPane = new LayoutCalendar();
 		scene = new Scene(calBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	public static void displayDummyScene(){
+		LayoutDraftDefault dummyBorderPane = new LayoutDraftDefault();
+		scene = new Scene(dummyBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();

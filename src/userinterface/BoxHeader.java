@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
-public class HeaderBox extends BorderPane {
+public class BoxHeader extends BorderPane {
 
 	private Node helpNode;
 	private Node calNode;
@@ -23,7 +23,7 @@ public class HeaderBox extends BorderPane {
 	private Label escLbl = new Label("Esc");
 	private Label dummyLbl = new Label(" ");
 	
-	public HeaderBox() {
+	public BoxHeader() {
 		implementHeaderNodes();
 		this.setLeft(createTaskBox());
 		this.setRight(createShortcutBox());
@@ -38,10 +38,10 @@ public class HeaderBox extends BorderPane {
 	}
 	
 	private Node createShortcutBox(){
-		HeaderContentBox shortcutsBox = new HeaderContentBox();
+		ContentBoxHeader shortcutsBox = new ContentBoxHeader();
 		
-		HeaderContentBox helpCalBox = createLeftShortcutBox();
-		HeaderContentBox minEscBox = createRightShortcutBox();
+		ContentBoxHeader helpCalBox = createLeftShortcutBox();
+		ContentBoxHeader minEscBox = createRightShortcutBox();
 		
 		shortcutsBox.setLeft(helpCalBox);
 		shortcutsBox.setRight(minEscBox);
@@ -49,22 +49,22 @@ public class HeaderBox extends BorderPane {
 		return shortcutsBox;
 	}
 	
-	private HeaderContentBox createLeftShortcutBox() {
-		HeaderContentBox helpCalBox = new HeaderContentBox();
+	private ContentBoxHeader createLeftShortcutBox() {
+		ContentBoxHeader helpCalBox = new ContentBoxHeader();
 		helpCalBox.setLeft(helpNode);
 		helpCalBox.setRight(calNode);
 		return helpCalBox;
 	}
 
-	private HeaderContentBox createRightShortcutBox() {
-		HeaderContentBox minEscBox = new HeaderContentBox();
+	private ContentBoxHeader createRightShortcutBox() {
+		ContentBoxHeader minEscBox = new ContentBoxHeader();
 		minEscBox.setLeft(minNode);
 		minEscBox.setRight(escNode);
 		return minEscBox;
 	}
 
-	private HeaderContentBox createTaskBox(){
-		HeaderContentBox taskBox = new HeaderContentBox();
+	private ContentBoxHeader createTaskBox(){
+		ContentBoxHeader taskBox = new ContentBoxHeader();
 		Node wrappedTaskLabel = Borders.wrap(taskLbl).lineBorder().color(Color.WHITE).build().build();
 		taskBox.setLeft(wrappedTaskLabel);
 		
@@ -72,7 +72,7 @@ public class HeaderBox extends BorderPane {
 	}
 	
 	private Node createHelpNode() {
-		HeaderContentBox helpShortcutBox = new HeaderContentBox();
+		ContentBoxHeader helpShortcutBox = new ContentBoxHeader();
 
 		helpShortcutBox.setTop(helpLbl);
 		helpShortcutBox.setCenter(dummyLbl);
@@ -84,7 +84,7 @@ public class HeaderBox extends BorderPane {
 	}
 
 	private Node createCalNode() {
-		HeaderContentBox calShortcutBox = new HeaderContentBox();
+		ContentBoxHeader calShortcutBox = new ContentBoxHeader();
 
 		calShortcutBox.setTop(calLbl);
 		calShortcutBox.setCenter(dummyLbl);
@@ -95,7 +95,7 @@ public class HeaderBox extends BorderPane {
 	}
 	
 	private Node createMinNode() {
-		HeaderContentBox minShortcutBox = new HeaderContentBox();
+		ContentBoxHeader minShortcutBox = new ContentBoxHeader();
 
 		Label dummyLbl = new Label(" ");
 		
@@ -110,7 +110,7 @@ public class HeaderBox extends BorderPane {
 	}
 	
 	private Node createEscNode(){
-		HeaderContentBox escShortcutBox = new HeaderContentBox();
+		ContentBoxHeader escShortcutBox = new ContentBoxHeader();
 		
 		escShortcutBox.setTop(escLbl);
 		escShortcutBox.setCenter(dummyLbl);
@@ -125,6 +125,12 @@ public class HeaderBox extends BorderPane {
 		this.setLeft(createTaskBox());
 		this.setRight(createShortcutBox());
 		this.setStyle("-fx-background-color: #272b39;");
+	}
+	
+	public class ContentBoxHeader extends BorderPane {
+		public ContentBoxHeader() {
+			this.setStyle("-fx-background-color: #272b39;");
+		}
 	}
 
 }
