@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import logic.ClockWork;
 import storage.StorageUtils;
@@ -62,6 +63,8 @@ public class Main extends Application {
 		stage.setScene(scene);
 		stage.setResizable(false);
 		stage.sizeToScene();
+		stage.getIcons().add(new Image(Main.class
+						.getResourceAsStream("icon.png" ))); 
 		stage.show();
 	}
 	
