@@ -3,12 +3,11 @@ package userinterface;
 import java.util.ArrayList;
 
 import org.controlsfx.control.textfield.TextFields;
-import org.controlsfx.glyphfont.GlyphFont;
-import org.controlsfx.glyphfont.GlyphFontRegistry;
 import org.controlsfx.tools.Borders;
 
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -16,24 +15,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class DefaultLayout extends BorderPane {
-	
-//	private static final String GLYPH_NAME_HELP = "QUESTION";
-//	private static final String GLYPH_NAME_CAL = "CALENDAR";
 
 	private ArrayList<String> _taskList;
 	private String _feedback;
-	private GlyphFont fontAwesome = GlyphFontRegistry.font("FontAwesome");
 
 	private Node taskLabel;
 	private Node helpLabel;
 	private Node calLabel;
 
 	private Label taskLbl = new Label("     Tasks     ");
-	private Label helpLbl = new Label("  F1");
-	private Label calLbl = new Label("  F2 ");
-
-	private Button helpIcon = new Button("", fontAwesome.create("question").color(Color.WHITE));
-	private Button calIcon = new Button("", fontAwesome.create("calendar").color(Color.WHITE));
+	private Label helpLbl = new Label("F1");
+	private Label calLbl = new Label("F2");
+	private Label dummyLbl = new Label(" ");
 
 	private Text taskText = new Text();
 
@@ -151,8 +144,6 @@ public class DefaultLayout extends BorderPane {
 
 	private Label implementFeedbackLabel() {
 		Label feedbackLbl = new Label(_feedback);
-		
-		feedbackLbl.setStyle("-fx-text-fill: #FFFFFF");
 
 		return feedbackLbl;
 	}
@@ -177,7 +168,8 @@ public class DefaultLayout extends BorderPane {
 		HeaderBox helpShortcutBox = new HeaderBox();
 
 		helpShortcutBox.setTop(helpLbl);
-		helpShortcutBox.setBottom(helpIcon);
+		helpShortcutBox.setCenter(dummyLbl);
+		helpShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.QUESTION));
 
 		Node wrappedHelpLabel = Borders.wrap(helpShortcutBox).lineBorder().color(Color.WHITE).build().build();
 
@@ -188,7 +180,8 @@ public class DefaultLayout extends BorderPane {
 		HeaderBox calShortcutBox = new HeaderBox();
 
 		calShortcutBox.setTop(calLbl);
-		calShortcutBox.setBottom(calIcon);
+		calShortcutBox.setCenter(dummyLbl);
+		calShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.CALENDAR));
 		Node wrappedCalLabel = Borders.wrap(calShortcutBox).lineBorder().color(Color.WHITE).build().build();
 
 		return wrappedCalLabel;

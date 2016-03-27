@@ -1,35 +1,20 @@
 package userinterface;
 
-import org.controlsfx.glyphfont.GlyphFont;
-import org.controlsfx.glyphfont.GlyphFontRegistry;
 import org.controlsfx.tools.Borders;
 
-import javafx.event.EventHandler;
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
 public class HelpLayout extends BorderPane {
-
-//	private static final String GLYPH_NAME_ADD = "PLUS";
-//	private static final String GLYPH_NAME_DELETE = "MINUS";
-//	private static final String GLYPH_NAME_EDIT = "PENCIL";
-//	private static final String GLYPH_NAME_UNDO = "UNDO";
-//	private static final String GLYPH_NAME_REDO = "REPEAT";
-//	private static final String GLYPH_NAME_SEARCH = "SEARCH";
-//	private static final String GLYPH_NAME_DISPLAY = "TABLET";
-//	private static final String GLYPH_NAME_MARK = "CHECK";
-//	private static final String GLYPH_NAME_EMAIL = "ENVELOPE";
-	
-	private GlyphFont fontAwesome = GlyphFontRegistry.font("FontAwesome");
 	
 	private Node taskLabel;
 	private Node helpLabel;
@@ -37,14 +22,11 @@ public class HelpLayout extends BorderPane {
 	private Node escLabel;
 	
 	private Label taskLbl = new Label("     Tasks     ");
-	private Label helpLbl = new Label("  F1");
-	private Label calLbl = new Label("  F2 ");
-	private Label escLbl = new Label("  Esc ");
-	
-	private Button helpIcon = new Button("", fontAwesome.create("question").color(Color.WHITE));
-	private Button calIcon = new Button("", fontAwesome.create("calendar").color(Color.WHITE));
-	private Button escIcon = new Button("", fontAwesome.create("reply").color(Color.WHITE));	
-		
+	private Label helpLbl = new Label("F1");
+	private Label calLbl = new Label("F2");
+	private Label escLbl = new Label("Esc");
+	private Label dummyLbl = new Label(" ");
+			
 	private HeaderBox headerBox = new HeaderBox();
 	private GridPane helpContentBox = new GridPane();	
 	private HBox helpContentBar = new HBox();
@@ -118,9 +100,9 @@ public class HelpLayout extends BorderPane {
 	}
 	
 	private void implementHelpContentBox() {
-		helpContentBox.setStyle("-fx-background-color: #182733");
 		helpContentBox.getChildren().add(helpContentBar);
 		helpContentBox.setAlignment(Pos.CENTER);
+		helpContentBox.setStyle("-fx-background-color: #182733");
 	}
 
 	private void implementHelpContentBar() {
@@ -144,7 +126,7 @@ public class HelpLayout extends BorderPane {
 		UIController.implementKeystrokeEvents(textField);
 	}
 	
-	/** CREATING LAYOUT OBJECTS */
+/** CREATING LAYOUT OBJECTS */
 	
 	private Node createShortcutBox(){
 		HeaderBox shortcutsBox = new HeaderBox();
@@ -164,8 +146,11 @@ public class HelpLayout extends BorderPane {
 	private Node createHelpLabel() {
 		HeaderBox helpShortcutBox = new HeaderBox();
 
+		Label dummyLbl = new Label(" ");
+		
 		helpShortcutBox.setTop(helpLbl);
-		helpShortcutBox.setBottom(helpIcon);
+		helpShortcutBox.setCenter(dummyLbl);
+		helpShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.QUESTION));
 
 		Node wrappedHelpLabel = Borders.wrap(helpShortcutBox).lineBorder().color(Color.WHITE).build().build();
 
@@ -175,8 +160,12 @@ public class HelpLayout extends BorderPane {
 	private Node createCalLabel() {
 		HeaderBox calShortcutBox = new HeaderBox();
 
+		Label dummyLbl = new Label(" ");
+		
 		calShortcutBox.setTop(calLbl);
-		calShortcutBox.setBottom(calIcon);
+		calShortcutBox.setCenter(dummyLbl);
+		calShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.CALENDAR));
+		
 		Node wrappedCalLabel = Borders.wrap(calShortcutBox).lineBorder().color(Color.WHITE).build().build();
 
 		return wrappedCalLabel;
@@ -185,8 +174,12 @@ public class HelpLayout extends BorderPane {
 	private Node createEscLabel(){
 		HeaderBox escShortcutBox = new HeaderBox();
 		
+		Label dummyLbl = new Label(" ");
+		
 		escShortcutBox.setTop(escLbl);
-		escShortcutBox.setBottom(escIcon);
+		escShortcutBox.setCenter(dummyLbl);
+		escShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.REPLY));
+		
 		Node wrappedEscLabel = Borders.wrap(escShortcutBox).lineBorder().color(Color.WHITE).build().build();
 
 		return wrappedEscLabel;
@@ -194,14 +187,12 @@ public class HelpLayout extends BorderPane {
 	
 	private Node createEmail() {
 		BorderPane emailBox = new BorderPane();
-		emailBox.setStyle("-fx-background-color: #182733");
 		
 		Label emailLbl = new Label("Email");
-		Button emailIcon = new Button("", fontAwesome.create("envelope").color(Color.WHITE));
-		emailIcon.setStyle("-fx-background-color: transparent");
-		emailLbl.setStyle("-fx-text-fill: #FFFFFF");
+		
 		emailBox.setTop(emailLbl);
-		emailBox.setBottom(emailIcon);
+		emailBox.setCenter(dummyLbl);
+		emailBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.ENVELOPE));
 		
 		Node wrappedEmail = Borders.wrap(emailBox).lineBorder().color(Color.WHITE).build().build();
 		
@@ -210,14 +201,12 @@ public class HelpLayout extends BorderPane {
 	
 	private Node createMark() {
 		BorderPane markBox = new BorderPane();
-		markBox.setStyle("-fx-background-color: #182733");
 		
 		Label markLbl = new Label("Mark");
-		Button markIcon = new Button("", fontAwesome.create("check").color(Color.WHITE));
-		markIcon.setStyle("-fx-background-color: transparent");
-		markLbl.setStyle("-fx-text-fill: #FFFFFF");
+		
 		markBox.setTop(markLbl);
-		markBox.setBottom(markIcon);
+		markBox.setCenter(dummyLbl);
+		markBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.CHECK));
 		
 		Node wrappedMark = Borders.wrap(markBox).lineBorder().color(Color.WHITE).build().build();
 		
@@ -226,14 +215,12 @@ public class HelpLayout extends BorderPane {
 	
 	private Node createDisplay() {
 		BorderPane displayBox = new BorderPane();
-		displayBox.setStyle("-fx-background-color: #182733");
 		
 		Label displayLbl = new Label("Display");
-		Button displayIcon = new Button("", fontAwesome.create("tablet").color(Color.WHITE));
-		displayIcon.setStyle("-fx-background-color: transparent");
-		displayLbl.setStyle("-fx-text-fill: #FFFFFF");
+		
 		displayBox.setTop(displayLbl);
-		displayBox.setBottom(displayIcon);
+		displayBox.setCenter(dummyLbl);
+		displayBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.TABLET));
 		
 		Node wrappedDisplay = Borders.wrap(displayBox).lineBorder().color(Color.WHITE).build().build();
 		
@@ -242,14 +229,12 @@ public class HelpLayout extends BorderPane {
 	
 	private Node createSearch() {
 		BorderPane searchBox = new BorderPane();
-		searchBox.setStyle("-fx-background-color: #182733");
 		
 		Label searchLbl = new Label("Search");
-		Button searchIcon = new Button("", fontAwesome.create("search").color(Color.WHITE));
-		searchIcon.setStyle("-fx-background-color: transparent");
-		searchLbl.setStyle("-fx-text-fill: #FFFFFF");
+		
 		searchBox.setTop(searchLbl);
-		searchBox.setBottom(searchIcon);
+		searchBox.setCenter(dummyLbl);
+		searchBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.SEARCH));
 		
 		Node wrappedSearch = Borders.wrap(searchBox).lineBorder().color(Color.WHITE).build().build();
 		
@@ -258,14 +243,12 @@ public class HelpLayout extends BorderPane {
 	
 	private Node createRedo() {
 		BorderPane redoBox = new BorderPane();
-		redoBox.setStyle("-fx-background-color: #182733");
 		
 		Label redoLbl = new Label("Redo");
-		Button redoIcon = new Button("", fontAwesome.create("repeat").color(Color.WHITE));
-		redoIcon.setStyle("-fx-background-color: transparent");
-		redoLbl.setStyle("-fx-text-fill: #FFFFFF");
+		
 		redoBox.setTop(redoLbl);
-		redoBox.setBottom(redoIcon);
+		redoBox.setCenter(dummyLbl);
+		redoBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.REPEAT));
 		
 		Node wrappedRedo = Borders.wrap(redoBox).lineBorder().color(Color.WHITE).build().build();
 		
@@ -274,14 +257,12 @@ public class HelpLayout extends BorderPane {
 	
 	private Node createUndo() {
 		BorderPane undoBox = new BorderPane();
-		undoBox.setStyle("-fx-background-color: #182733");
 		
 		Label undoLbl = new Label("Undo");
-		Button undoIcon = new Button("", fontAwesome.create("undo").color(Color.WHITE));
-		undoIcon.setStyle("-fx-background-color: transparent");
-		undoLbl.setStyle("-fx-text-fill: #FFFFFF");
+		
 		undoBox.setTop(undoLbl);
-		undoBox.setBottom(undoIcon);
+		undoBox.setCenter(dummyLbl);
+		undoBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.UNDO));
 		
 		Node wrappedUndo = Borders.wrap(undoBox).lineBorder().color(Color.WHITE).build().build();
 		
@@ -290,14 +271,12 @@ public class HelpLayout extends BorderPane {
 	
 	private Node createEdit() {
 		BorderPane editBox = new BorderPane();
-		editBox.setStyle("-fx-background-color: #182733");
 		
 		Label editLbl = new Label("Edit");
-		Button editIcon = new Button("", fontAwesome.create("pencil").color(Color.WHITE));
-		editIcon.setStyle("-fx-background-color: transparent");
-		editLbl.setStyle("-fx-text-fill: #FFFFFF");
+		
 		editBox.setTop(editLbl);
-		editBox.setBottom(editIcon);
+		editBox.setCenter(dummyLbl);
+		editBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.PENCIL));
 		
 		Node wrappedEdit = Borders.wrap(editBox).lineBorder().color(Color.WHITE).build().build();
 		
@@ -306,14 +285,12 @@ public class HelpLayout extends BorderPane {
 
 	private Node createAdd() {
 		BorderPane addBox = new BorderPane();
-		addBox.setStyle("-fx-background-color: #182733");
 		
 		Label addLbl = new Label("Add");
-		Button addIcon = new Button("", fontAwesome.create("plus").color(Color.WHITE));
-		addIcon.setStyle("-fx-background-color: transparent");
-		addLbl.setStyle("-fx-text-fill: #FFFFFF");
+		
 		addBox.setTop(addLbl);
-		addBox.setBottom(addIcon);
+		addBox.setCenter(dummyLbl);
+		addBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.PLUS));
 		
 		Node wrappedAdd = Borders.wrap(addBox).lineBorder().color(Color.WHITE).build().build();
 		
@@ -322,14 +299,12 @@ public class HelpLayout extends BorderPane {
 	
 	private Node createDelete() {
 		BorderPane deleteBox = new BorderPane();
-		deleteBox.setStyle("-fx-background-color: #182733");
 		
 		Label deleteLbl = new Label("Delete");
-		Button deleteIcon = new Button("", fontAwesome.create("minus").color(Color.WHITE));
-		deleteIcon.setStyle("-fx-background-color: transparent");
-		deleteLbl.setStyle("-fx-text-fill: #FFFFFF");
+		
 		deleteBox.setTop(deleteLbl);
-		deleteBox.setBottom(deleteIcon);
+		deleteBox.setCenter(dummyLbl);
+		deleteBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.MINUS));
 		
 		Node wrappedDelete = Borders.wrap(deleteBox).lineBorder().color(Color.WHITE).build().build();
 		return wrappedDelete;

@@ -6,10 +6,18 @@
 	-fx-text-fill: #FFFFFF;
 }
 
-.button{
-	-fx-background-color: transparent;
+.glyph-icon{
+	-fx-fill: #FFFFFF;
 }
 
 .HBox{
+	-fx-background-color: #182733;
+}
+
+.GridPane{
+	-fx-background-color: #182733;
+}
+
+.BorderPane{
 	-fx-background-color: #182733;
 }
