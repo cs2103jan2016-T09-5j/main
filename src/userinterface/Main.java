@@ -61,6 +61,7 @@ public class Main extends Application {
 		stage.setTitle("Clockwork");
 		stage.setScene(scene);
 		stage.setResizable(false);
+		stage.sizeToScene();
 		stage.show();
 	}
 	
