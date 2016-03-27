@@ -1,10 +1,10 @@
 package userinterface;
 
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.TextField;
 
-
-public class InputBox extends StackPane {
+public class InputBox extends TextField {
 	public InputBox() {
-		this.setStyle("-fx-background-color: #272b39;");
+		UIController.implementKeystrokeEvents(this);
+		this.setStyle("-fx-background-color: #272b39; -fx-text-inner-color: white;");
 	}
 }
