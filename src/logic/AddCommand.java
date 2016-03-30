@@ -39,7 +39,6 @@ public class AddCommand extends Command {
 	 */
 	@Override
 	public Signal execute() {
-		ClashDetector.clearArrListForGUI();
 		// Check for empty string params
 		if (input.containsEmptyParams()) {
 			return new Signal(Signal.GENERIC_EMPTY_PARAM, false);
