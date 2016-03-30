@@ -21,6 +21,7 @@ import storage.Memory;
  */
 public class SearchCommand extends Command {
 
+	private static  ArrayList<String> ArrListForGUI = new ArrayList<String> ();
 	private static final String REGEX_SPACE = "\\s";
 
 	/**
@@ -35,8 +36,12 @@ public class SearchCommand extends Command {
 	public SearchCommand(ParsedInput input, Memory memory) {
 		super(input, memory);
 	}
-
-
+	public static ArrayList<String> getArrListForGUI(){
+    	return ArrListForGUI;
+    }
+	public static void clearArrListForGUI(){
+    	ArrListForGUI.clear();
+    }
 	/**
 	 * Searches keywords given in parsedInput in the memory. 
 	 */
@@ -81,7 +86,7 @@ public class SearchCommand extends Command {
 
 		// displays the list of todos that were found
 		String displayString = DisplayCommand.getDisplayChrono(todos, 2);
-		System.out.println(displayString);
+		ArrListForGUI.add(displayString);
 
 		return new Signal(Signal.SEARCH_SUCCESS_SIGNAL, true);
 	}
