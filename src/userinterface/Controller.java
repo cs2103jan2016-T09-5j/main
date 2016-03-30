@@ -13,6 +13,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import logic.ClockWork;
 import logic.DisplayCommand;
+import logic.SearchCommand;
 import logic.SignalHandler;
 import testcases.UserInterfaceLogicStub;
 
@@ -92,13 +93,17 @@ public class Controller {
 		try {
 			SignalHandler.clearArrListForGUI();
 			DisplayCommand.clearArrListForGUI();
-			
+			SearchCommand.clearArrListForGUI();
 			ClockWork.ClockworkLogicMain(userInput, _logic);
 			
 			if (!SignalHandler.getArrListForGUI().isEmpty()){
 				Main.setFeedback(SignalHandler.getArrListForGUI().get(0));
 				Main.displayDefaultScene();	
-			} else {
+			} 
+			else if(!SearchCommand.getArrListForGUI().isEmpty()){
+				Main.setFeedback(SearchCommand.getArrListForGUI().get(0));
+				Main.displayDefaultScene();	
+			}else {
 				Main.setFeedback(" ");
 				Main.displayDefaultScene();
 			}
