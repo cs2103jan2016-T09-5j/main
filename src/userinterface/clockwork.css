@@ -21,3 +21,10 @@
 .BorderPane{
 	-fx-background-color: #182733;
 }
+
+#calendar-control {
+	-fx-padding: 1;  
+	-fx-background-insets: 0, 100;
+	-fx-background-radius: 0, 0; 
+	-fx-background-color: rgba(0, 100, 100, 0.1);
+}

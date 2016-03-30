@@ -1,148 +1,130 @@
 package logic;
-
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Scanner;
+import org.joda.time.DateTime;
 
-import parser.Keywords;
-import parser.ParsedInput;
-import storage.Memory;
-
-/**
- * The AddCommand class handles all user commands with "add" as the first
- * keyword and processes ParsedInput to generate Todo objects and adds them into
- * memory.
- */
-
-public class AddCommand extends Command {
-
-	/**
-	 * Creates an AddCommand object.
-	 * 
-	 * @param input
-	 *            the ParsedInput object containing the parameters.
-	 * @param memory
-	 *            the memory containing the Todos to which the changes should be
-	 *            committed.
-	 */
-	public AddCommand(ParsedInput input, Memory memory) {
-		super(input, memory);
+public class ClashDetector {
+	private Collection<Todo> onDateTodos;
+	private Todo attemptedTodo;
+	public static Scanner scn = new Scanner(System.in);
+	private static  ArrayList<String> ArrListForGUI = new ArrayList<String> ();
+	
+	public static ArrayList<String> getArrListForGUI(){
+	    	return ArrListForGUI;
 	}
-
-	/**
-	 * It takes in a ParsedInput object and generates a Todo object with respect
-	 * to the ParsedInput object. The Todo object can be a floating task,
-	 * deadline or event.
-	 * 
-	 * It returns a Signal object to indicate success or failure (if exception
-	 * is thrown).
-	 * 
-	 * @return It returns a Signal object to indicate success or failure.
-	 */
-	@Override
-	public Signal execute() {
-		// Check for empty string params
-		if (input.containsEmptyParams()) {
-			return new Signal(Signal.GENERIC_EMPTY_PARAM, false);
+	public static void clearArrListForGUI(){
+		ArrListForGUI.clear();
+	}
+	ClashDetector(Collection<Todo> onDateTodos, Todo attemptedTodo){
+		this.onDateTodos = onDateTodos;
+		this.attemptedTodo = attemptedTodo;
+	}
+	
+	public boolean verifyTodoClash() {
+		boolean todoClashExists = false;
+		ArrListForGUI.clear();
+		switch(attemptedTodo.type) {
+			case DEADLINE:
+				todoClashExists = isDeadlineClash();
+				if(todoClashExists) {
+					ArrListForGUI.add(String.format(Signal.CLASH_DEADLINE_DOES_EXIST,
+							attemptedTodo.name, attemptedTodo.endTime));
+					System.out.println(String.format(Signal.CLASH_DEADLINE_DOES_EXIST,
+							attemptedTodo.name, attemptedTodo.endTime));
+				}
+				break;
+			case EVENT:
+				todoClashExists = isEventClash();
+				if(todoClashExists) {
+					ArrListForGUI.add(String.format(Signal.CLASH_EVENT_DOES_EXIST,
+							attemptedTodo.name, attemptedTodo.endTime));
+					System.out.println(String.format(Signal.CLASH_EVENT_DOES_EXIST,
+							attemptedTodo.name, attemptedTodo.endTime));
+				}
+				break;
+			default:
+				break;
 		}
-
-		String todoName = keyParamPairs.get(0).getParam();
-		//keyParamPair.size() should be 1, and maximum of dateTimes.size() should be 2
-		int numberOfParams = keyParamPairs.size() + dateTimes.size();
-		// Check if Todo to be created is a recurring task
-		// Recurring Deadline
-
-		if (input.isRecurring()) {
-			// Check for valid number of keywords
-			if (numberOfParams > 3) {
-				return new Signal(Signal.ADD_INVALID_PARAMS, false);
-			}
-
-			RecurringTodoRule rule;
-
-			// If recurrence rule has a limit
-			if (input.hasLimit()) {
-				rule = new RecurringTodoRule(memory.obtainFreshRecurringId(),
-						todoName, dateTimes, input.getPeriod(),
-						input.getLimit());
-				memory.add(rule);
-			}
-			// If recurrence rule has no limit
-			else {
-				rule = new RecurringTodoRule(memory.obtainFreshRecurringId(),
-						todoName, dateTimes, input.getPeriod());
-			}
-			memory.add(rule);
-			memory.saveToFile();
-			return new Signal(String.format(Signal.ADD_SUCCESS_SIGNAL_FORMAT,
-					rule.toString()), true);
-
+		
+		//A user may choose to void a time clash and force the system to add the overlapping times
+		if(todoClashExists) {
+			todoClashExists = isUserVoidingTodo();
 		}
-		// Not recurring task
+		
+		return todoClashExists;
+	}
+	
+	private boolean isUserVoidingTodo() {
+		ArrListForGUI.add(String.format(Signal.CLASH_CONTINUE_PROPOSITION));
+		System.out.println(String.format(Signal.CLASH_CONTINUE_PROPOSITION));
+		String userResponse = scn.nextLine().trim().toLowerCase();
+		if(userResponse.equals("yes") || userResponse.equals("y")) {
+			ArrListForGUI.add(String.format(Signal.CLASH_USER_OVERRIDE));
+			System.out.println(String.format(Signal.CLASH_USER_OVERRIDE));
+			return false;
+		}
 		else {
-			// Check for valid number of keywords
-			
-			if (numberOfParams > 3) {
-				
-				return new Signal(Signal.ADD_INVALID_PARAMS, false);
-			}
-
-			int numberOfDates = dateTimes.size();
-			Collection<Todo> listOnSameDay;
-			ClashDetector eventOverlapDetector;
-			
-			switch (numberOfDates) {
-			// No dates = floating task
-			case 0:
-				Todo floatingTask = new Todo(memory.obtainFreshId(), todoName);
-				memory.userAdd(floatingTask);
-				memory.saveToFile();
-				return new Signal(String.format(
-						Signal.ADD_SUCCESS_SIGNAL_FORMAT, floatingTask), true);
-			// 1 date = deadline
-			case 1:
-				Todo timedTodo = new Todo(memory.obtainFreshId(), todoName,
-						dateTimes);
-				
-				//ClashDetector object warns user of an impending time overlap
-				listOnSameDay = SearchCommand.getTodosOfSameDay(Keywords.DAY, 
-						timedTodo.endTime, memory);
-				eventOverlapDetector = new ClashDetector(listOnSameDay, timedTodo);
-				if(eventOverlapDetector.verifyTodoClash()) {
-					return new Signal(Signal.CLASH_USER_VOID_TASK, true);
-				}
-				
-				memory.userAdd(timedTodo);
-				memory.saveToFile();
-				return new Signal(String.format(
-						Signal.ADD_SUCCESS_SIGNAL_FORMAT, timedTodo), true);
-			// 2 dates = event
-			case 2:
-				timedTodo = new Todo(memory.obtainFreshId(), todoName,
-						dateTimes);
-				
-				//ClashDetector object warns user of an impending time overlap
-				listOnSameDay = SearchCommand.getTodosOfSameDay(Keywords.DAY, 
-						timedTodo.endTime, memory);
-				eventOverlapDetector = new ClashDetector(listOnSameDay, timedTodo);
-				if(eventOverlapDetector.verifyTodoClash()) {
-					return new Signal(Signal.CLASH_USER_VOID_TASK, true);
-				}
-				
-				// Start-time is after end-time
-				if (dateTimes.get(0).isAfter(dateTimes.get(1))) {
-					memory.saveToFile();
-					return new Signal(Signal.ADD_END_BEFORE_START_ERROR, false);
-				
-				// Valid dates
-				} else {
-					memory.userAdd(timedTodo);
-					memory.saveToFile();
-					return new Signal(String.format(
-							Signal.ADD_SUCCESS_SIGNAL_FORMAT, timedTodo), true);
-				}
-			}
-			// Should not be reached
-			memory.saveToFile();
-			return new Signal(Signal.ADD_UNKNOWN_ERROR, false);
+			ArrListForGUI.add(String.format(Signal.CLASH_USER_VOID_TASK));
+			System.out.println(String.format(Signal.CLASH_USER_VOID_TASK));	
+			return true;
 		}
+	}
+	
+	private boolean isDeadlineClash() {
+		DateTime deadlineTime = attemptedTodo.endTime;
+		for (Todo item : onDateTodos) {
+			
+			if(item.type == Todo.TYPE.DEADLINE) {
+				if(deadlineTime.isEqual(item.endTime)) {
+					return true;
+				}	
+			}
+			
+			if(item.type == Todo.TYPE.EVENT) {
+				if(deadlineTime.isBefore(item.endTime) && deadlineTime.isAfter(item.startTime)) {
+					return true;
+				}
+				
+				if(deadlineTime.isEqual(item.endTime) || deadlineTime.isEqual(item.startTime)) {
+					return true;
+				}	
+			}
+			
+		}
+		return false;
+	}
+	
+	private boolean isEventClash() {
+		DateTime startTime = attemptedTodo.startTime;
+		DateTime endTime = attemptedTodo.endTime;
+		for (Todo item : onDateTodos) {
+			
+			if(item.type == Todo.TYPE.EVENT) {
+				if(startTime.isBefore(item.startTime) && endTime.isAfter(item.startTime)) {
+					return true;
+				}
+				
+				if(endTime.isAfter(item.endTime) && startTime.isBefore(item.endTime)) {
+					return true;
+				}
+				
+				if(startTime.isEqual(item.startTime) || endTime.isEqual(item.endTime)) {
+					return true;
+				}
+			}
+			
+			if(item.type == Todo.TYPE.DEADLINE) {
+				if(item.endTime.isAfter(startTime) && item.endTime.isBefore(endTime)) {
+					return true;
+				}
+				
+				if(startTime.isEqual(item.endTime) || endTime.isEqual(item.endTime)) {
+					return true;
+				}	
+			}
+			
+		}
+		return false;
 	}
 }
