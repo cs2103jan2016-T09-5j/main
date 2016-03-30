@@ -83,7 +83,6 @@ public class ClockWork {
 	 */
 	public static void ClockworkLogicMain(String input, ClockWork logic) {
 
-			SignalHandler.printCommandPrefix();
 			clearConsole();
 			Signal signal;
 			try {
