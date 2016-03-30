@@ -58,7 +58,7 @@ public class MarkCommandTest {
 		 * Test marking of Todo with index 1
 		 */
 		markCommand = "mark 1";
-		markString = "Deadline \"deadline\" by Fri 05 Jun 2015 at 15:00";
+		markString = "Deadline \"deadline\" by Sun 05 Jun 2016 at 15:00";
 		markSuccess = new Signal(String.format(Signal.MARK_SUCCESS_SIGNAL_FORMAT, markString), true);
 		try{
 			assertEquals(markSuccess, logic.handleInput(markCommand));
@@ -69,7 +69,7 @@ public class MarkCommandTest {
 		 * Test marking of Todo with index 2
 		 */
 		markCommand = "mark 2";
-		markString = "Event \"event\" from Tue 07 Jul 2015 at 16:00 to Tue 07 Jul 2015 at 17:00";
+		markString = "Event \"event\" from Thu 07 Jul 2016 at 16:00 to Thu 07 Jul 2016 at 17:00";
 		markSuccess = new Signal(String.format(Signal.MARK_SUCCESS_SIGNAL_FORMAT, markString), true);
 		try{
 			assertEquals(markSuccess, logic.handleInput(markCommand));
