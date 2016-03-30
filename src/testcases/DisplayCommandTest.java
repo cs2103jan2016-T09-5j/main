@@ -59,14 +59,14 @@ public class DisplayCommandTest {
 
     @Test
     public void testDisplayChronoPending() {
-        String expected = "Showing pending todos:\nID | Name                           | "
-                + "Time\n\n..Thu 01 Jan 2015...\n3  | new year                       | "
-                + "10:00 - 11:00\n\n..Tue 03 Feb 2015...\n4  | CS1010 deadline                | "
-                + "22:00\n\n..Sat 07 Mar 2015...\n6  | CS3243 project deadline        | "
-                + "09:00\n\n..Mon 09 Mar 2015...\n1  | CS3230 deadline                | "
+        String expected = "Showing pending todos:\n"+"ID | Name                           | "
+                + "Time\n\n..Fri 01 Jan 2016...\n3  | new year                       | "
+                + "10:00 - 11:00\n\n..Wed 03 Feb 2016...\n4  | CS1010 deadline                | "
+                + "22:00\n\n..Mon 07 Mar 2016...\n6  | CS3243 project deadline        | "
+                + "09:00\n\n..Wed 09 Mar 2016...\n1  | CS3230 deadline                | "
                 + "21:00\n8  | meet june from malaysia        | "
-                + "21:00 - 23:59\n\n..Tue 10 Mar 2015...\n8  | meet june from malaysia        | "
-                + "00:00 - 22:00\n\n..Tue 07 Apr 2015...\n7  | CS3333 project 2               | "
+                + "21:00 - 23:59\n\n..Thu 10 Mar 2016...\n8  | meet june from malaysia        | "
+                + "00:00 - 22:00\n\n..Thu 07 Apr 2016...\n7  | CS3333 project 2               | "
                 + "10:00\n\n......Anytime.......\n5  | read floating books            | NIL\n";
         assertEquals(expected, DisplayCommand.getDisplayChrono(ClockWork.memory, 0));
     }
@@ -74,7 +74,7 @@ public class DisplayCommandTest {
     @Test
     public void testDisplayChronoCompleted() {
         String expected = "Showing completed todos:\nID | Name                           "
-                + "| Time\n\n..Tue 03 Mar 2015...\n2  | CIP event                      "
+                + "| Time\n\n..Thu 03 Mar 2016...\n2  | CIP event                      "
                 + "| 10:00 - 12:00\n\n......Anytime.......\n0  | floating task                  "
                 + "| NIL\n";
         assertEquals(expected, DisplayCommand.getDisplayChrono(ClockWork.memory, 1));
