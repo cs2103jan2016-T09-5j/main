@@ -11,6 +11,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import logic.ClashDetector;
 import logic.ClockWork;
 import logic.DisplayCommand;
 import logic.SearchCommand;
@@ -94,36 +95,44 @@ public class Controller {
 			SignalHandler.clearArrListForGUI();
 			DisplayCommand.clearArrListForGUI();
 			SearchCommand.clearArrListForGUI();
+			ClashDetector.clearArrListForGUI();
 			ClockWork.ClockworkLogicMain(userInput, _logic);
 			
-			if (!SignalHandler.getArrListForGUI().isEmpty()){
-				Main.setFeedback(SignalHandler.getArrListForGUI().get(0));
+			if (!SignalHandler.getArrListForGUI().isEmpty() & !ClashDetector.getArrListForGUI().isEmpty()) {
+				String clashStr = changeArrListtoString(ClashDetector.getArrListForGUI());
+				Main.setFeedback(changeArrListtoString(SignalHandler.getArrListForGUI())+clashStr);
+				/********Create a label for clashDetector************************/
+				System.out.println(clashStr);
+				Main.setTaskList(DisplayCommand.getArrListForGUI());
 				Main.displayDefaultScene();	
-			} 
-			else if(!SearchCommand.getArrListForGUI().isEmpty()){
-				Main.setFeedback(SearchCommand.getArrListForGUI().get(0));
+				
+			} else if (!SignalHandler.getArrListForGUI().isEmpty() && SearchCommand.getArrListForGUI().isEmpty()) {
+				Main.setFeedback(changeArrListtoString(SignalHandler.getArrListForGUI()));
+				Main.setTaskList(DisplayCommand.getArrListForGUI());
 				Main.displayDefaultScene();	
-			}else {
+				
+			} else if (!SearchCommand.getArrListForGUI().isEmpty()) {
+				Main.setTaskList(SearchCommand.getArrListForGUI());
+				Main.displayDefaultScene();	
+				
+			} else {
 				Main.setFeedback(" ");
+				Main.setTaskList(DisplayCommand.getArrListForGUI());
 				Main.displayDefaultScene();
 			}
-			
-			Main.setTaskList(DisplayCommand.getArrListForGUI());
-			Main.displayDefaultScene();
-			
-			/** Skeleton for ClashDetector*/
-	//		if (!ClashDetector.getArrListForGUI().isEmpty()){
-	//			ClashDetector.userResponse = getCurrentUserInput();
-	//			//some action
-	//			ClockworkGUI.setConsoleList(ClashDetector.getArrListForGUI());
-	//		}
 
 		} catch (Exception ex) {
 			_logger.log(Level.WARNING, "Keypress detected, but failed to process.", ex);
 		}
 		_logger.log(Level.INFO, "Sucessfully called logic to process keypress.");
 	}
-	
+	private static String changeArrListtoString(ArrayList<String> arrList){
+		String str="";
+		for(int i=0; i<arrList.size();i++){
+			str += arrList.get(i)+"\n";
+		}
+		return str;
+	}
 	public static String getCurrentUserInput(){
 		return _currentUserInput;
 	}
