@@ -23,6 +23,7 @@ public class Controller {
 	private static Logger _logger = java.util.logging.Logger.getLogger("ClockworkGUIController");
 	private static String _currentUserInput;
 	private static ClockWork _logic;
+	private static String _scrollAction;
 
 	/**
 	 * Handle event after key is pressed
@@ -85,6 +86,10 @@ public class Controller {
 		} else if (ke.getCode().equals(KeyCode.DELETE)) {
 			// MINIMISE
 			Main.displayDummyScene();
+		} else if (ke.getCode().equals(KeyCode.UP)){
+			Main.scrollListener("UP");
+		} else if (ke.getCode().equals(KeyCode.DOWN)){
+			Main.scrollListener("DOWN");
 		}
 	}
 
@@ -133,6 +138,7 @@ public class Controller {
 		}
 		return str;
 	}
+    
 	public static String getCurrentUserInput(){
 		return _currentUserInput;
 	}

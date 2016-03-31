@@ -21,9 +21,11 @@ public class Main extends Application {
 	private static LayoutHelp helpBorderPane;
 	private static LayoutCalendar calBorderPane;
 	private static String _feedback;
+	private static String _scrollAction = "DO NOTHING";
+	private static double _scrollValue = 0;
 	private static Scene scene;
 	private static Stage stage;
-	
+
 	/*
 	* ===========================================
 	* Main Program
@@ -52,6 +54,7 @@ public class Main extends Application {
 	/** Initialise Scene for GUI */
 	private static void setScene(){
 		mainBorderPane = new LayoutDefault(_taskList, _feedback);
+		_scrollValue = mainBorderPane.setScrollPosition(_scrollAction, _scrollValue);
 		scene = new Scene(mainBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
@@ -137,5 +140,10 @@ public class Main extends Application {
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();
+	}
+	
+	public static void scrollListener(String action){
+		_scrollAction = action;
+		displayDefaultScene();
 	}
 }
