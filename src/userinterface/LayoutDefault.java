@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import org.controlsfx.control.textfield.TextFields;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -17,6 +21,10 @@ public class LayoutDefault extends BorderPane {
 	private Text taskText = new Text();
 	
 	private BoxTask taskBox = new BoxTask();
+	
+	private StackPane taskTextBox = new StackPane();
+	
+	private ScrollPane scrollPane = new ScrollPane();
 
 	public LayoutDefault() {
 		this.setDisplayRegions();
@@ -68,7 +76,10 @@ public class LayoutDefault extends BorderPane {
 	/** IMPLEMENTING REGION OBJECTS */
 
 	private void implementTaskBox() {
-		taskBox.getChildren().add(taskText);
+createScrollPane();
+		
+		taskBox.setCenter(taskTextBox);
+		taskBox.setCenter(scrollPane);
 	}
 
 	private void implementTaskText() {
@@ -87,6 +98,8 @@ public class LayoutDefault extends BorderPane {
 		// ListView<String> taskListView = new ListView<String>();
 		// taskListView = UIController.formatArrayList(_taskList);
 		// taskBox.getChildren().add(taskListView);
+		
+		taskTextBox.getChildren().add(taskText);
 	}
 
 	private BorderPane implementUserBox(BoxFeedback feedbackBox, BoxInput inputBox) {
@@ -115,5 +128,11 @@ public class LayoutDefault extends BorderPane {
 		Label feedbackLbl = new Label(_feedback);
 
 		return feedbackLbl;
+	}
+	
+	private void createScrollPane() {
+		scrollPane.setContent(taskText);
+		scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		scrollPane.setStyle("-fx-background: #182733;");
 	}
 }
