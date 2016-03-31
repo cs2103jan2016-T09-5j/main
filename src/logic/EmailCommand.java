@@ -25,10 +25,21 @@ public class EmailCommand extends Command {
 		super(input, memory);
 	}
 	
+	//TODO: ACCEPT COMMANDS FOR EMAIL PREFERENCE AND PARSE TO SETTINGS
 	@Override
 	public Signal execute() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	//TODO: PAYLOAD WILL BE VALIDATED AND SETTINGS WILL BE UPDATED
+	public void saveNewEmail(String userEmail, String frequency) {
+		
+	}
+	
+	//TODO: A SEPARATE THREAD WILL RUN IN THE BACKGROUND TO ACCEPT
+	//EMAIL REQUESTS AND SEND PERIODIC REMINDERS
+	public void mailDaemonProgram() {
+		
 	}
 
 }
