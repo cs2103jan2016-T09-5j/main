@@ -1,5 +1,8 @@
 package userinterface;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.controlsfx.control.HiddenSidesPane;
 import org.controlsfx.tools.Borders;
 
@@ -69,15 +72,20 @@ public class LayoutDraftDefault extends BorderPane {
 		testText.setUnderline(true);
 		testText.setFill(Color.WHITE);
 		
+		TextGUI guiText = new TextGUI("POTATO", "ADD");
+		Text myText = new Text();
+		
+		formatGUIText(guiText, myText);
+		
 		HiddenSidesPane todayPane = new HiddenSidesPane();
 		todayPane.setTop(wrappedTodayLabel);
-		todayPane.setContent(testText);
+		todayPane.setContent(myText);
 		todayPane.setPinnedSide(Side.TOP);
 		todayPane.setPrefHeight(160);
 				
 		HiddenSidesPane tomorrowPane = new HiddenSidesPane();
 		tomorrowPane.setTop(wrappedTmrLabel);
-		tomorrowPane.setContent(someText);
+		tomorrowPane.setContent(testText);
 		tomorrowPane.setPinnedSide(Side.TOP);
 		tomorrowPane.setPrefHeight(160);
 		
@@ -125,6 +133,37 @@ public class LayoutDraftDefault extends BorderPane {
 		GridPane.setHalignment(somedayPane, HPos.CENTER);
 		
 		this.setCenter(gridPane);
+	}
+
+	private void formatGUIText(TextGUI guiText, Text myText) {
+		if (guiText.getTextType().equals("ADD") || guiText.getTextType().equals("EDIT")){
+			myText.setText(guiText.getTextString());
+			myText.setFont(Font.font ("Calibri", FontWeight.BOLD, 12));
+			myText.setFill(Color.WHITE);
+		} else if (guiText.getTextType().equals("MARK") || guiText.getTextType().equals("DELETE")){
+			myText.setText(guiText.getTextString());
+			myText.setFont(Font.font ("Calibri", 12));
+			myText.setStrikethrough(true);
+			myText.setFill(Color.GREY);
+		} else if (guiText.getTextType().equals("UNDO")){
+			myText.setText(guiText.getTextString());
+			myText.setFont(Font.font ("Calibri", FontPosture.ITALIC, 12));
+			myText.setStrikethrough(true);
+			myText.setFill(Color.GREY);
+		} else if (guiText.getTextType().equals("REDO")){
+			myText.setText(guiText.getTextString());
+			myText.setFont(Font.font ("Calibri", 12));
+			myText.setUnderline(true);
+			myText.setFill(Color.WHITE);
+		} else if (guiText.getTextType().equals("CLASH")){
+			myText.setText(guiText.getTextString());
+			myText.setFont(Font.font ("Calibri", 12));
+			myText.setFill(Color.CRIMSON);
+		} else {
+			myText.setText(guiText.getTextString());
+			myText.setFont(Font.font ("Calibri", FontWeight.BOLD, 12));
+			myText.setFill(Color.WHITE);
+		}
 	}
 	/************* END IMPLEMENTATION ***************/
 	
