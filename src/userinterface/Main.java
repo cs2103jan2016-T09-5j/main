@@ -20,6 +20,7 @@ public class Main extends Application {
 	private static LayoutDefault mainBorderPane;
 	private static LayoutHelp helpBorderPane;
 	private static LayoutCalendar calBorderPane;
+	private static LayoutToday todayBorderPane;
 	private static String _feedback;
 	private static String _scrollAction = "DO NOTHING";
 	private static double _scrollValue = 0;
@@ -137,6 +138,14 @@ public class Main extends Application {
 	public static void displaySummaryScene(){
 		LayoutSummary summaryBorderPane = new LayoutSummary();
 		scene = new Scene(summaryBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	public static void displayTodayScene(){
+		LayoutToday todayBorderPane = new LayoutToday();
+		scene = new Scene(todayBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();

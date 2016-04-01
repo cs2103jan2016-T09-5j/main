@@ -1,39 +1,18 @@
 package userinterface;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.controlsfx.control.HiddenSidesPane;
-import org.controlsfx.control.textfield.TextFields;
 import org.controlsfx.tools.Borders;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
-import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 
 public class LayoutSummary extends BorderPane {
 
@@ -82,10 +61,10 @@ public class LayoutSummary extends BorderPane {
 		StackPane spUpcoming = new StackPane();
 		StackPane spSomeday = new StackPane();
 		
-		spToday.getChildren().addAll(rectToday, createSummaryButton(todayButton, createSummaryButtonString(todayString, todayNumItemsTest)));
-		spTomorrow.getChildren().addAll(rectTomorrow, createSummaryButton(tomorrowButton, createSummaryButtonString(tomorrowString, tomorrowNumItemsTest)));
-		spUpcoming.getChildren().addAll(rectUpcoming, createSummaryButton(upcomingButton, createSummaryButtonString(upcomingString, upcomingNumItemsTest)));
-		spSomeday.getChildren().addAll(rectSomeday, createSummaryButton(somedayButton, createSummaryButtonString(somedayString, somedayNumItemsTest)));
+		spToday.getChildren().addAll(rectToday, createSummaryButton(todayButton, todayString, createSummaryButtonString(todayString, todayNumItemsTest)));
+		spTomorrow.getChildren().addAll(rectTomorrow, createSummaryButton(tomorrowButton, tomorrowString, createSummaryButtonString(tomorrowString, tomorrowNumItemsTest)));
+		spUpcoming.getChildren().addAll(rectUpcoming, createSummaryButton(upcomingButton, upcomingString, createSummaryButtonString(upcomingString, upcomingNumItemsTest)));
+		spSomeday.getChildren().addAll(rectSomeday, createSummaryButton(somedayButton, somedayString, createSummaryButtonString(somedayString, somedayNumItemsTest)));
 
 		GridPane gridSummaryButtons = new GridPane();
 		
@@ -126,24 +105,17 @@ public class LayoutSummary extends BorderPane {
 	}
 	
 	private String createSummaryButtonString(String summaryType, int numItems){
-		String summaryString = "  " + summaryType + " \n" + Integer.toString(numItems) + " Item(s)";
+		String summaryString = summaryType + "\n" + Integer.toString(numItems) + " Item(s)";
 		return summaryString;
 	}
 	
-	private Node createSummaryButton(Button button, String summaryString){
+	private Node createSummaryButton(Button button, String summaryType, String summaryString){
 		button.setText(summaryString);
 		button.setWrapText(true);
 		button.setPrefSize(150, 150);
 		button.setTextFill(Color.WHITE);
 		button.setStyle("-fx-background-color: transparent;");
-		button.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent ke) {
-				if (ke.getCode().equals(KeyCode.ENTER)) {
-					System.out.println("DETECTED");
-				}
-			}
-		});
+		Controller.redirectAppropriateScene(button, summaryString);
 		Node wrappedButton = Borders.wrap(button).lineBorder().color(Color.AQUAMARINE).build().build();
 		return wrappedButton;
 	}

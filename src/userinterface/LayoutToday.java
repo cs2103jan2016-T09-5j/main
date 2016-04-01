@@ -6,6 +6,7 @@ import java.util.Arrays;
 import org.controlsfx.control.HiddenSidesPane;
 import org.controlsfx.tools.Borders;
 
+import common.TextGUI;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -29,17 +30,11 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-public class LayoutDefaultDummy extends BorderPane {
+public class LayoutToday extends BorderPane {
 	
-	private Text blankText = new Text(" ");
-	private Text someText = new Text("TEST TEXT");
-	private Text testTextToday;
-	private Text testTextTomorrow;
-	private Text testTextUpcoming;
-	private Text testTextSomeday;
-	
+	private Text blankText = new Text(" ");	
 
-	public LayoutDefaultDummy() {
+	public LayoutToday() {
 		setDisplayRegions();
 	}
 

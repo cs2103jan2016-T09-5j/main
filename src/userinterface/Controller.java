@@ -7,6 +7,7 @@ import java.util.logging.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -23,7 +24,6 @@ public class Controller {
 	private static Logger _logger = java.util.logging.Logger.getLogger("ClockworkGUIController");
 	private static String _currentUserInput;
 	private static ClockWork _logic;
-	private static String _scrollAction;
 
 	/**
 	 * Handle event after key is pressed
@@ -84,13 +84,27 @@ public class Controller {
 			// MINIMISE
 			Main.minimise();
 		} else if (ke.getCode().equals(KeyCode.DELETE)) {
-			// MINIMISE
+			// DISPLAY SUMMARY SCENE
 			Main.displaySummaryScene();
+		} else if (ke.getCode().equals(KeyCode.INSERT)) {
+			// DISPLAY TODAY SCENE
+			Main.displayTodayScene();
 		} else if (ke.getCode().equals(KeyCode.UP)){
 			Main.scrollListener("UP");
 		} else if (ke.getCode().equals(KeyCode.DOWN)){
 			Main.scrollListener("DOWN");
 		}
+	}
+	
+	public static void redirectAppropriateScene(Button button, String sceneName) {
+		button.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent ke) {
+				if (ke.getCode().equals(KeyCode.ENTER)) {
+					System.out.println("DETECTED" + sceneName);
+				}
+			}
+		});
 	}
 
 	// *********** LOGIC INTEGRATION HERE ************************
