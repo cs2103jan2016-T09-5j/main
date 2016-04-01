@@ -16,7 +16,7 @@ public class LayoutDefault extends BorderPane {
 
 	private ArrayList<String> _taskList;
 	private String _feedback;
-	private double scrollValue = 0.25f;
+	private double scrollValue = 0.1f;
 
 	private Text taskText = new Text();
 	private BoxTask taskBox = new BoxTask();

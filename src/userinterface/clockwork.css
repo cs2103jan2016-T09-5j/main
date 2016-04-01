@@ -10,15 +10,15 @@
 	-fx-fill: #FFFFFF;
 }
 
-.HBox{
+.h-box{
 	-fx-background-color: #182733;
 }
 
-.GridPane{
+.grid-pane{
 	-fx-background-color: #182733;
 }
 
-.BorderPane{
+.border-pane{
 	-fx-background-color: #182733;
 }
 
