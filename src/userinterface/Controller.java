@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import java.util.logging.*;
 
+import common.UserInterfaceObjectListTest;
+import common.UserInterfaceObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -17,13 +19,16 @@ import logic.ClockWork;
 import logic.DisplayCommand;
 import logic.SearchCommand;
 import logic.SignalHandler;
-import testcases.UserInterfaceLogicStub;
 
 public class Controller {
 
 	private static Logger _logger = java.util.logging.Logger.getLogger("ClockworkGUIController");
 	private static String _currentUserInput;
 	private static ClockWork _logic;
+//	private static ArrayList<String> indexList;
+//	private static ArrayList<String> nameList;
+//	private static ArrayList<String> timeList;
+//	private static ArrayList<String> typeList;
 
 	/**
 	 * Handle event after key is pressed
@@ -86,9 +91,6 @@ public class Controller {
 		} else if (ke.getCode().equals(KeyCode.DELETE)) {
 			// DISPLAY SUMMARY SCENE
 			Main.displaySummaryScene();
-		} else if (ke.getCode().equals(KeyCode.INSERT)) {
-			// DISPLAY TODAY SCENE
-			Main.displayTodayScene();
 		} else if (ke.getCode().equals(KeyCode.UP)){
 			Main.scrollListener("UP");
 		} else if (ke.getCode().equals(KeyCode.DOWN)){
@@ -101,8 +103,28 @@ public class Controller {
 			@Override
 			public void handle(KeyEvent ke) {
 				if (ke.getCode().equals(KeyCode.ENTER)) {
-					System.out.println("DETECTED" + sceneName);
-				}
+					if (sceneName.equals("Today")){
+						Main.displayTodayScene();
+					} else if (sceneName.equals("Tomorrow")){
+						System.out.println("Tomorrow Layout");
+					} else if (sceneName.equals("Upcoming")){
+						System.out.println("Upcoming Layout");
+					} else {
+						System.out.println("Someday Layout");
+					}
+				} else if (ke.getCode().equals(KeyCode.ESCAPE)) {
+					// DEFAULT SCENE
+					Main.displayDefaultScene();
+				} else if (ke.getCode().equals(KeyCode.F1)){
+					// HELP SCENE
+					Main.displayHelpScene();
+				} else if (ke.getCode().equals(KeyCode.F2)) {
+					// DISPLAY CALENDAR
+					Main.displayCalendarScene();
+				} else if (ke.getCode().equals(KeyCode.F3)) {
+					// MINIMISE
+					Main.minimise();
+				} 
 			}
 		});
 	}
@@ -118,15 +140,15 @@ public class Controller {
 			ClockWork.ClockworkLogicMain(userInput, _logic);
 			
 			if (!SignalHandler.getArrListForGUI().isEmpty() & !ClashDetector.getArrListForGUI().isEmpty()) {
-				String clashStr = changeArrListtoString(ClashDetector.getArrListForGUI());
-				Main.setFeedback(changeArrListtoString(SignalHandler.getArrListForGUI())+clashStr);
+				String clashStr = getStringFromArrayList(ClashDetector.getArrListForGUI());
+				Main.setFeedback(getStringFromArrayList(SignalHandler.getArrListForGUI())+clashStr);
 				/********Create a label for clashDetector************************/
 				System.out.println(clashStr);
 				Main.setTaskList(DisplayCommand.getArrListForGUI());
 				Main.displayDefaultScene();	
 				
 			} else if (!SignalHandler.getArrListForGUI().isEmpty() && SearchCommand.getArrListForGUI().isEmpty()) {
-				Main.setFeedback(changeArrListtoString(SignalHandler.getArrListForGUI()));
+				Main.setFeedback(getStringFromArrayList(SignalHandler.getArrListForGUI()));
 				Main.setTaskList(DisplayCommand.getArrListForGUI());
 				Main.displayDefaultScene();	
 				
@@ -145,7 +167,54 @@ public class Controller {
 		}
 		_logger.log(Level.INFO, "Sucessfully called logic to process keypress.");
 	}
-	private static String changeArrListtoString(ArrayList<String> arrList){
+	
+	public static void unwrapGUIObjectArrayList(ArrayList<UserInterfaceObject> guiObjectList, ArrayList<String> indexList, ArrayList<String> nameList, ArrayList<String> timeList, ArrayList<String> typeList){
+		indexList.clear();
+		nameList.clear();
+		timeList.clear();
+		typeList.clear();
+		if (!guiObjectList.isEmpty()){
+			for (int i = 0; i < guiObjectList.size(); i++){
+				indexList.add(guiObjectList.get(i).getIndex());
+				nameList.add(guiObjectList.get(i).getName());
+				timeList.add(guiObjectList.get(i).getTime());
+				typeList.add(guiObjectList.get(i).getType());
+			}
+		}
+	}
+	
+//	protected static ArrayList<String> getIndexList(){
+//		return indexList;
+//	}
+//	
+//	protected static ArrayList<String> getNameList(){
+//		return nameList;
+//	}
+//	
+//	protected static ArrayList<String> getTimeList(){
+//		return timeList;
+//	}
+//	
+//	protected static ArrayList<String> getTypeList(){
+//		return typeList;
+//	}
+	
+	/**
+	 * Set list format from ArrayList to ListView so that list can be seen on
+	 * GUI
+	 * 
+	 * @param arrayList
+	 *            List of type ArrayList String
+	 * @return listView List of type ListView String
+	 */
+	public static ListView<String> getListViewFromArrayList(ArrayList<String> arrayList) {
+		ObservableList<String> obsList = FXCollections.observableList(arrayList);
+		ListView<String> listView = new ListView<String>(obsList);
+		listView.setItems(obsList);
+		return listView;
+	}
+	
+	private static String getStringFromArrayList(ArrayList<String> arrList){
 		String str="";
 		for(int i=0; i<arrList.size();i++){
 			str += arrList.get(i)+"\n";

@@ -115,7 +115,7 @@ public class LayoutSummary extends BorderPane {
 		button.setPrefSize(150, 150);
 		button.setTextFill(Color.WHITE);
 		button.setStyle("-fx-background-color: transparent;");
-		Controller.redirectAppropriateScene(button, summaryString);
+		Controller.redirectAppropriateScene(button, summaryType);
 		Node wrappedButton = Borders.wrap(button).lineBorder().color(Color.AQUAMARINE).build().build();
 		return wrappedButton;
 	}
