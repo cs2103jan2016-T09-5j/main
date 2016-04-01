@@ -134,9 +134,9 @@ public class Main extends Application {
 		setStage();
 	}
 	
-	public static void displayDummyScene(){
-		LayoutDraftDefault dummyBorderPane = new LayoutDraftDefault();
-		scene = new Scene(dummyBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+	public static void displaySummaryScene(){
+		LayoutSummary summaryBorderPane = new LayoutSummary();
+		scene = new Scene(summaryBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();

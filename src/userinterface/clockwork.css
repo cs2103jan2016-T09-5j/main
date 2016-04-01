@@ -6,6 +6,10 @@
 	-fx-text-fill: #FFFFFF;
 }
 
+.button:focused {
+    -fx-text-fill: #AFEEEE;
+}
+
 .glyph-icon{
 	-fx-fill: #FFFFFF;
 }

@@ -8,22 +8,28 @@ import org.controlsfx.tools.Borders;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-public class LayoutDraftDefault extends BorderPane {
+public class LayoutDefaultDummy extends BorderPane {
 	
 	private Text blankText = new Text(" ");
 	private Text someText = new Text("TEST TEXT");
@@ -33,7 +39,7 @@ public class LayoutDraftDefault extends BorderPane {
 	private Text testTextSomeday;
 	
 
-	public LayoutDraftDefault() {
+	public LayoutDefaultDummy() {
 		setDisplayRegions();
 	}
 
@@ -51,20 +57,19 @@ public class LayoutDraftDefault extends BorderPane {
 		this.setTop(headerBox);
 	}
 
-	/************** EXAMPLE OF POSSIBLE GUI FORMAT (: **********/
-	private void setCenterRegion() { 				
+	private void setCenterRegion() {
 		Label todayLbl = new Label("Today");
 		Node wrappedTodayLabel = Borders.wrap(todayLbl).lineBorder().color(Color.AQUAMARINE).build().build();
 		
 		Label tmrLbl = new Label("Tomorrow");
 		Node wrappedTmrLabel = Borders.wrap(tmrLbl).lineBorder().color(Color.TEAL).build().build();
-
+	
 		Label upcomingLbl = new Label("Upcoming");
 		Node wrappedUpcomingLabel = Borders.wrap(upcomingLbl).lineBorder().color(Color.TEAL).build().build();
-
+	
 		Label somedayLbl = new Label("Someday");
 		Node wrappedSomedayLabel = Borders.wrap(somedayLbl).lineBorder().color(Color.TEAL).build().build();
-
+	
 		Text testText = new Text();
 		testText.setText("This is a text sample");
 		testText.setFont(Font.font ("Calibri", FontWeight.BOLD, FontPosture.ITALIC, 20));
@@ -184,3 +189,4 @@ public class LayoutDraftDefault extends BorderPane {
 		return text;
 	}
 }
+

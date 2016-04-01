@@ -85,7 +85,7 @@ public class Controller {
 			Main.minimise();
 		} else if (ke.getCode().equals(KeyCode.DELETE)) {
 			// MINIMISE
-			Main.displayDummyScene();
+			Main.displaySummaryScene();
 		} else if (ke.getCode().equals(KeyCode.UP)){
 			Main.scrollListener("UP");
 		} else if (ke.getCode().equals(KeyCode.DOWN)){
