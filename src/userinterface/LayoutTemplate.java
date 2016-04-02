@@ -60,6 +60,7 @@ public class LayoutTemplate extends BorderPane {
 		GridPane innerGrid = implementInnerGrid(_indexListView, _nameListView, _timeListView);
 		BoxTask outerBox = implementOuterBox(_titleNode, innerGrid);
 		HBox mainHBox = implementMainContainer(outerBox);
+		
 		this.setCenter(mainHBox);
 	}
 	
@@ -126,7 +127,6 @@ public class LayoutTemplate extends BorderPane {
 		_nameListView = new ListView<UserInterfaceObject>(nameObsList);
 		_nameListView.setItems(nameObsList);
 		_nameListView.setCellFactory((ListView<UserInterfaceObject> l) -> new NameCell());
-
 	}
 
 	private void createIndexListView() {

@@ -11,6 +11,7 @@ public class UserInterfaceObject {
 	private String _name;
 	private String _time;
 	private String _type;
+	private String _date;
 	
 	/**
 	 * NOTE: 
@@ -19,13 +20,16 @@ public class UserInterfaceObject {
 	 * time contains the duration of the task
 	 * type contains either "MARK", "ADD", "EDIT", 
 	 * 						"REDO","CLASH" or any other String.
+	 * date contains date of the task, and is only used in times when date is defined
+	 * but date is not today or tomorrow, eg. 6 December 2016.
 	 */
 	
-	public UserInterfaceObject(String index, String name, String time, String type){
+	public UserInterfaceObject(String index, String name, String time, String type, String date){
 		_index = index;
 		_name = name;
 		_time = time;
 		_type = type;
+		_date = date;
 	}
 
 	public void setIndex(String index){
@@ -44,6 +48,10 @@ public class UserInterfaceObject {
 		_type = type;
 	}
 	
+	public void setDate(String date){
+		_date = date;
+	}
+	
 	public String getIndex(){
 		return _index;
 	}
@@ -58,5 +66,9 @@ public class UserInterfaceObject {
 	
 	public String getType(){
 		return _type;
+	}
+	
+	public String getDate(){
+		return _date;
 	}
 }

@@ -27,12 +27,16 @@ public class LayoutSummary extends BorderPane {
 	private String somedayString = "Someday";
 	
 	
-	private int todayNumItemsTest = 1;
-	private int tomorrowNumItemsTest = 2;
-	private int upcomingNumItemsTest = 3;
-	private int somedayNumItemsTest = 4;
+	private int _numToday;
+	private int _numTomorrow;
+	private int _numUpcoming;
+	private int _numSomeday;
 	
-	public LayoutSummary() {
+	public LayoutSummary(int numToday, int numTomorrow, int numUpcoming, int numSomeday) {
+		_numToday = numToday;
+		_numTomorrow = numTomorrow;
+		_numUpcoming = numUpcoming;
+		_numSomeday = numSomeday;
 		setDisplayRegions();
 	}
 
@@ -61,10 +65,10 @@ public class LayoutSummary extends BorderPane {
 		StackPane spUpcoming = new StackPane();
 		StackPane spSomeday = new StackPane();
 		
-		spToday.getChildren().addAll(rectToday, createSummaryButton(todayButton, todayString, createSummaryButtonString(todayString, todayNumItemsTest)));
-		spTomorrow.getChildren().addAll(rectTomorrow, createSummaryButton(tomorrowButton, tomorrowString, createSummaryButtonString(tomorrowString, tomorrowNumItemsTest)));
-		spUpcoming.getChildren().addAll(rectUpcoming, createSummaryButton(upcomingButton, upcomingString, createSummaryButtonString(upcomingString, upcomingNumItemsTest)));
-		spSomeday.getChildren().addAll(rectSomeday, createSummaryButton(somedayButton, somedayString, createSummaryButtonString(somedayString, somedayNumItemsTest)));
+		spToday.getChildren().addAll(rectToday, createSummaryButton(todayButton, todayString, createSummaryButtonString(todayString, _numToday)));
+		spTomorrow.getChildren().addAll(rectTomorrow, createSummaryButton(tomorrowButton, tomorrowString, createSummaryButtonString(tomorrowString, _numTomorrow)));
+		spUpcoming.getChildren().addAll(rectUpcoming, createSummaryButton(upcomingButton, upcomingString, createSummaryButtonString(upcomingString, _numUpcoming)));
+		spSomeday.getChildren().addAll(rectSomeday, createSummaryButton(somedayButton, somedayString, createSummaryButtonString(somedayString, _numSomeday)));
 
 		GridPane gridSummaryButtons = new GridPane();
 		
@@ -99,8 +103,6 @@ public class LayoutSummary extends BorderPane {
 	
 	private TextField implementTextField() {
 		BoxInput textField = new BoxInput();
-		textField.setEditable(false);
-
 		return textField;
 	}
 	
@@ -114,7 +116,7 @@ public class LayoutSummary extends BorderPane {
 		button.setWrapText(true);
 		button.setPrefSize(150, 150);
 		button.setTextFill(Color.WHITE);
-		Controller.redirectAppropriateScene(button, summaryType);
+		Controller.redirectFromSummaryScene(button, summaryType);
 		Node wrappedButton = Borders.wrap(button).lineBorder().color(Color.AQUAMARINE).build().build();
 		return wrappedButton;
 	}
