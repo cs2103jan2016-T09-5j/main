@@ -7,11 +7,12 @@ import userinterface.Main;
 
 public class UserInterfaceObjectListTest {
 	
+	//create ArrayList<UserInterfaceObject> before populating by passing in parameter
 	public static ArrayList<UserInterfaceObject> populateTestObjectList(ArrayList<UserInterfaceObject> list) {
 		list.clear();
 		
 		String testIndex = "0.";
-		String testName = "TEST NAME"; 
+		String testName = "TEST NAME DJFNSKFNDJSKFNJKDSNFJKDNFJKDSNFJKDSNFJKDSNFJKNDFSDHHJFNDSJFNJKDSNFJKDSNFJKDSFNJKDSFNJKF"; 
 		String testTime = "12:00 - 15:00";
 		String testTypeAdd = "ADD";
 		String testTypeEdit = "EDIT";

@@ -2,6 +2,7 @@ package userinterface;
 
 import java.util.ArrayList;
 
+import common.UserInterfaceObject;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -17,10 +18,18 @@ public class Main extends Application {
 
 	/** Static variables */
 	private static ArrayList<String> _taskList = new ArrayList<String>();
-	private static LayoutDefault mainBorderPane;
+	private static ArrayList<UserInterfaceObject> _todayList = new ArrayList<UserInterfaceObject>();
+	private static ArrayList<UserInterfaceObject> _tomorrowList = new ArrayList<UserInterfaceObject>();	
+	private static ArrayList<UserInterfaceObject> _upcomingList = new ArrayList<UserInterfaceObject>();	
+	private static ArrayList<UserInterfaceObject> _somedayList = new ArrayList<UserInterfaceObject>();	
+	
+	private static OldLayout mainBorderPane;
 	private static LayoutHelp helpBorderPane;
 	private static LayoutCalendar calBorderPane;
-	private static LayoutToday todayBorderPane;
+	private static LayoutTemplate todayBorderPane;
+	private static LayoutTemplate tomorrowBorderPane;
+	private static LayoutTemplate upcomingBorderPane;
+	private static LayoutTemplate somedayBorderPane;
 	private static String _feedback;
 	private static String _scrollAction = "DO NOTHING";
 	private static double _scrollValue = 0;
@@ -54,7 +63,7 @@ public class Main extends Application {
 	
 	/** Initialise Scene for GUI */
 	private static void setScene(){
-		mainBorderPane = new LayoutDefault(_taskList, _feedback);
+		mainBorderPane = new OldLayout(_taskList, _feedback);
 		_scrollValue = mainBorderPane.setScrollPosition(_scrollAction, _scrollValue);
 		scene = new Scene(mainBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
@@ -110,6 +119,22 @@ public class Main extends Application {
 		_feedback = newFeedback;
 	}
 	
+	public static void setTodayList(ArrayList<UserInterfaceObject> todayList){
+		_todayList = todayList;
+	}
+	
+	public static void setTomorrowList(ArrayList<UserInterfaceObject> tomorrowList){
+		_tomorrowList = tomorrowList;
+	}
+	
+	public static void setUpcomingList(ArrayList<UserInterfaceObject> upcomingList){
+		_upcomingList = upcomingList;
+	}
+	
+	public static void setSomedayList(ArrayList<UserInterfaceObject> somedayList){
+		_somedayList = somedayList;
+	}
+	
 	public static void minimise(){
 		stage.setIconified(true);
 	}
@@ -144,7 +169,7 @@ public class Main extends Application {
 	}
 	
 	public static void displayTodayScene(){
-		LayoutToday todayBorderPane = new LayoutToday();
+		LayoutTemplate todayBorderPane = new LayoutTemplate("Today", _todayList);
 		scene = new Scene(todayBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());

@@ -12,7 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class LayoutDefault extends BorderPane {
+public class OldLayout extends BorderPane {
 
 	private ArrayList<String> _taskList;
 	private String _feedback;
@@ -23,11 +23,11 @@ public class LayoutDefault extends BorderPane {
 	private StackPane taskTextBox = new StackPane();
 	private ScrollPane scrollPane = new ScrollPane();
 
-	public LayoutDefault() {
+	public OldLayout() {
 		this.setDisplayRegions();
 	};
 
-	public LayoutDefault(ArrayList<String> taskList, String feedback) {
+	public OldLayout(ArrayList<String> taskList, String feedback) {
 		_taskList = taskList;
 		_feedback = feedback;
 		this.setDisplayRegions();

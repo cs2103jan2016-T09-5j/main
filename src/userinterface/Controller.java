@@ -25,6 +25,11 @@ public class Controller {
 	private static Logger _logger = java.util.logging.Logger.getLogger("ClockworkGUIController");
 	private static String _currentUserInput;
 	private static ClockWork _logic;
+	private static ArrayList<UserInterfaceObject> _todayList = new ArrayList<UserInterfaceObject>();
+	private static ArrayList<UserInterfaceObject> _tomorrowList = new ArrayList<UserInterfaceObject>();	
+	private static ArrayList<UserInterfaceObject> _upcomingList = new ArrayList<UserInterfaceObject>();	
+	private static ArrayList<UserInterfaceObject> _somedayList = new ArrayList<UserInterfaceObject>();	
+	
 
 	/**
 	 * Handle event after key is pressed
@@ -100,6 +105,11 @@ public class Controller {
 			public void handle(KeyEvent ke) {
 				if (ke.getCode().equals(KeyCode.ENTER)) {
 					if (sceneName.equals("Today")){
+						//DO SOMETHING TO INTEGRATE WITH LOGIC
+						//Eg. _todayList = Logic.getTodayList();
+						//FOR TESTING PURPOSES, REMOVE ONCE LOGIC INTEGRATION IS DONE
+						UserInterfaceObjectListTest.populateTestObjectList(_todayList);
+						Main.setTodayList(_todayList);
 						Main.displayTodayScene();
 					} else if (sceneName.equals("Tomorrow")){
 						System.out.println("Tomorrow Layout");
@@ -162,21 +172,6 @@ public class Controller {
 			_logger.log(Level.WARNING, "Keypress detected, but failed to process.", ex);
 		}
 		_logger.log(Level.INFO, "Sucessfully called logic to process keypress.");
-	}
-	
-	public static void unwrapObjectArrayList(ArrayList<UserInterfaceObject> guiObjectList, ArrayList<String> indexList, ArrayList<String> nameList, ArrayList<String> timeList, ArrayList<String> typeList){
-		indexList.clear();
-		nameList.clear();
-		timeList.clear();
-		typeList.clear();
-		if (!guiObjectList.isEmpty()){
-			for (int i = 0; i < guiObjectList.size(); i++){
-				indexList.add(guiObjectList.get(i).getIndex());
-				nameList.add(guiObjectList.get(i).getName());
-				timeList.add(guiObjectList.get(i).getTime());
-				typeList.add(guiObjectList.get(i).getType());
-			}
-		}
 	}
 		
 	/**
