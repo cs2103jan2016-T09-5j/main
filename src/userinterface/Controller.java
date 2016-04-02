@@ -164,7 +164,7 @@ public class Controller {
 		_logger.log(Level.INFO, "Sucessfully called logic to process keypress.");
 	}
 	
-	public static void unwrapGUIObjectArrayList(ArrayList<UserInterfaceObject> guiObjectList, ArrayList<String> indexList, ArrayList<String> nameList, ArrayList<String> timeList, ArrayList<String> typeList){
+	public static void unwrapObjectArrayList(ArrayList<UserInterfaceObject> guiObjectList, ArrayList<String> indexList, ArrayList<String> nameList, ArrayList<String> timeList, ArrayList<String> typeList){
 		indexList.clear();
 		nameList.clear();
 		timeList.clear();

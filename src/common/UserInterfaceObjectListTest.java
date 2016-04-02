@@ -7,7 +7,7 @@ import userinterface.Main;
 
 public class UserInterfaceObjectListTest {
 	
-	public static ArrayList<UserInterfaceObject> populateTestUIObjectList(ArrayList<UserInterfaceObject> list) {
+	public static ArrayList<UserInterfaceObject> populateTestObjectList(ArrayList<UserInterfaceObject> list) {
 		list.clear();
 		
 		String testIndex = "0.";
