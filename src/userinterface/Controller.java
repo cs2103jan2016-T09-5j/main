@@ -25,10 +25,6 @@ public class Controller {
 	private static Logger _logger = java.util.logging.Logger.getLogger("ClockworkGUIController");
 	private static String _currentUserInput;
 	private static ClockWork _logic;
-//	private static ArrayList<String> indexList;
-//	private static ArrayList<String> nameList;
-//	private static ArrayList<String> timeList;
-//	private static ArrayList<String> typeList;
 
 	/**
 	 * Handle event after key is pressed
@@ -182,23 +178,7 @@ public class Controller {
 			}
 		}
 	}
-	
-//	protected static ArrayList<String> getIndexList(){
-//		return indexList;
-//	}
-//	
-//	protected static ArrayList<String> getNameList(){
-//		return nameList;
-//	}
-//	
-//	protected static ArrayList<String> getTimeList(){
-//		return timeList;
-//	}
-//	
-//	protected static ArrayList<String> getTypeList(){
-//		return typeList;
-//	}
-	
+		
 	/**
 	 * Set list format from ArrayList to ListView so that list can be seen on
 	 * GUI
@@ -207,7 +187,7 @@ public class Controller {
 	 *            List of type ArrayList String
 	 * @return listView List of type ListView String
 	 */
-	public static ListView<String> getListViewFromArrayList(ArrayList<String> arrayList) {
+	public static ListView<String> setListViewFromArrayList(ArrayList<String> arrayList) {
 		ObservableList<String> obsList = FXCollections.observableList(arrayList);
 		ListView<String> listView = new ListView<String>(obsList);
 		listView.setItems(obsList);

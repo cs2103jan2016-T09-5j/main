@@ -17,8 +17,8 @@ public class UserInterfaceObject {
 	 * index contains the index of the task
 	 * name contains the name of the task
 	 * time contains the duration of the task
-	 * type contains either "DELETE", "MARK", "ADD", "EDIT", 
-	 * 						"UNDO", "REDO", "SEARCH", "CLASH", or "NONE"
+	 * type contains either "MARK", "ADD", "EDIT", 
+	 * 						"REDO","CLASH" or any other String.
 	 */
 	
 	public UserInterfaceObject(String index, String name, String time, String type){
