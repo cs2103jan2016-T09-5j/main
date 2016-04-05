@@ -66,9 +66,9 @@ public class DisplayCommand extends Command {
     private static final String EMPTY_FIELD = "NIL";
 
     // String formats
-    private static final String eventFormat = "%1$-2s | %2$-30s | %3$s - %4$s";
-    private static final String deadLineFormat = "%1$-2s | %2$-30s | %3$s";
-    private static final String floatingFormat = "%1$-2s | %2$-30s | %3$s";
+    private static final String eventFormat = "%1$-2s ~ %2$-30s ~ %3$s - %4$s";
+    private static final String deadLineFormat = "%1$-2s ~ %2$-30s ~ %3$s";
+    private static final String floatingFormat = "%1$-2s ~ %2$-30s ~ %3$s";
 
     private static final String headingFormat = "%1$-2s | %2$-30s | %3$s";
 
@@ -228,7 +228,7 @@ public class DisplayCommand extends Command {
 		Iterator<Todo> iterator = todos.iterator();
 		StringBuilder sBuilder = new StringBuilder();
         DateTime currentDate = new DateTime(0);
-		appendHeading(signal, sBuilder);
+//		appendHeading(signal, sBuilder);
 
 		while (iterator.hasNext()) {
 			Todo todo = iterator.next();

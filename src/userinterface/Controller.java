@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.logging.*;
 
 import common.UserInterfaceObjectListTest;
+import common.FeedbackProcessor;
+import common.TaskListProcessor;
 import common.UserInterfaceObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,8 +58,12 @@ public class Controller {
 						//Eg. _todayList = Logic.getTodayList();
 						
 						//FOR TESTING PURPOSES, REMOVE ONCE LOGIC INTEGRATION IS DONE
-						UserInterfaceObjectListTest.populateTestObjectList(_todayList);
-						
+//						UserInterfaceObjectListTest.populateTestObjectList(_todayList);
+//						if (!DisplayCommand.getArrListForGUI().isEmpty()){
+//							_todayList = TaskListProcessor.getUIObjects(DisplayCommand.getArrListForGUI().get(0));
+//
+//						}
+
 						Main.setTodayList(_todayList);
 						Main.displayTodayScene();
 					
@@ -115,8 +121,7 @@ public class Controller {
 		if (ke.getCode().equals(KeyCode.ENTER)) {
 			_currentUserInput = textField.getText();
 			if ((_currentUserInput != null && !_currentUserInput.isEmpty())) {
-//				callLogicController(_currentUserInput);	
-				System.out.println("BOO");
+				callLogicController(_currentUserInput);
 				textField.clear();
 			}
 		} else if (ke.getCode().equals(KeyCode.ESCAPE)) {
@@ -136,26 +141,66 @@ public class Controller {
 			// MINIMISE
 			Main.minimise();
 		} 
-//		 else if (ke.getCode().equals(KeyCode.DELETE)) {
-//			// DEFAULT SCENE
-//			Main.displayOldScene();
-//		} else if (ke.getCode().equals(KeyCode.UP)){
-//			Main.scrollListener("UP");
-//		} else if (ke.getCode().equals(KeyCode.DOWN)){
-//			Main.scrollListener("DOWN");
-//		}
+		 else if (ke.getCode().equals(KeyCode.DELETE)) {
+			// DEFAULT SCENE
+			Main.displayOldScene();
+		} else if (ke.getCode().equals(KeyCode.UP)){
+			Main.scrollListener("UP");
+		} else if (ke.getCode().equals(KeyCode.DOWN)){
+			Main.scrollListener("DOWN");
+		}
 	}
 
-//	// *********** LOGIC INTEGRATION HERE ************************
-//	public static void callLogicController(String userInput) {
-//		_logger.log(Level.INFO, "Calling logic to process keypress.");
-//		try {
-//			SignalHandler.clearArrListForGUI();
-//			DisplayCommand.clearArrListForGUI();
-//			SearchCommand.clearArrListForGUI();
-//			ClashDetector.clearArrListForGUI();
-//			ClockWork.ClockworkLogicMain(userInput, _logic);
+	// *********** LOGIC INTEGRATION HERE ************************
+	public static void callLogicController(String userInput) {
+		_logger.log(Level.INFO, "Calling logic to process keypress.");
+		try {
+			// CLEARING OLD STRINGS
+			SignalHandler.clearArrListForGUI();
+			DisplayCommand.clearArrListForGUI();
+			SearchCommand.clearArrListForGUI();
+			ClashDetector.clearArrListForGUI();
+			ClockWork.ClockworkLogicMain(userInput, _logic);
+			
+			String _type;
+			//FINDING TYPE OF FEEDBACK
+			if (!ClashDetector.getArrListForGUI().isEmpty()) {
+				_type = "CLASH";
+			} else if (!SignalHandler.getArrListForGUI().isEmpty()){
+				_type = FeedbackProcessor.processFeedback(SignalHandler.getArrListForGUI().get(0));
+			} else {
+				_type = "NO MESSAGE";
+			}
+			//System.out.println("DEBUGGING FEEDBACK PROCESSOR: " + _type);
+			
+//			// FEEDBACK STRING
+//			if (!SignalHandler.getArrListForGUI().isEmpty()){
+//				System.out.println("SIGNAL HANDLER: " + SignalHandler.getArrListForGUI().get(0));
+//			}
+//			//CLASH DETECTOR STRING
+//			if (!ClashDetector.getArrListForGUI().isEmpty()){
+//				System.out.println("CLASH DETECTOR: " + ClashDetector.getArrListForGUI().get(0));
+//			}
 //			
+//			//SHOWS SEARCH STRINGS
+//			if (!SearchCommand.getArrListForGUI().isEmpty()){
+//				System.out.println("SEARCH COMMAND: " + SearchCommand.getArrListForGUI().get(0));
+//			}
+			
+			//DISPLAY STRING TASKS
+			if (!DisplayCommand.getArrListForGUI().isEmpty()){
+				//TaskListProcessor.getDisplayList(DisplayCommand.getArrListForGUI().get(0));
+				//System.out.println("DISPLAY COMMAND: " + DisplayCommand.getArrListForGUI().get(0));
+				_todayList = TaskListProcessor.getUIObjects(DisplayCommand.getArrListForGUI().get(0));
+
+				Main.setNumToday(getNumTodayItems());
+				Main.setNumTomorrow(getNumTomorrowItems());
+				Main.setNumUpcoming(getNumUpcomingItems());
+				Main.setNumSomeday(getNumSomedayItems());
+			}
+			
+			
+			
 //			if (!SignalHandler.getArrListForGUI().isEmpty() & !ClashDetector.getArrListForGUI().isEmpty()) {
 //				String clashStr = getStringFromArrayList(ClashDetector.getArrListForGUI());
 //				Main.setFeedback(getStringFromArrayList(SignalHandler.getArrListForGUI())+clashStr);
@@ -178,12 +223,12 @@ public class Controller {
 //				Main.setTaskList(DisplayCommand.getArrListForGUI());
 //				Main.displayOldScene();
 //			}
-//
-//		} catch (Exception ex) {
-//			_logger.log(Level.WARNING, "Keypress detected, but failed to process.", ex);
-//		}
-//		_logger.log(Level.INFO, "Sucessfully called logic to process keypress.");
-//	}
+
+		} catch (Exception ex) {
+			_logger.log(Level.WARNING, "Keypress detected, but failed to process.", ex);
+		}
+		_logger.log(Level.INFO, "Sucessfully called logic to process keypress.");
+	}
 			
 	/**
 	 * Set list format from ArrayList to ListView so that list can be seen on
@@ -246,5 +291,7 @@ public class Controller {
 	
 	public static void setLogic(ClockWork l){
 		_logic = l;
+		callLogicController("display");
 	}
+	
 }

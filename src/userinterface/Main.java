@@ -53,6 +53,7 @@ public class Main extends Application {
 		initialiseStorage(args);
 		initialiseLogic();
 		Application.launch(args);
+		displaySummaryScene();
 	}
 	
 	@Override
