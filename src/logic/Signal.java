@@ -18,13 +18,13 @@ public class Signal {
 	/**
 	 * Add Command Signals
 	 */
-	public static final String ADD_SUCCESS_SIGNAL_FORMAT = "%1$s successfully added.";
+	public static final String ADD_SUCCESS_SIGNAL_FORMAT = "Added %1$s";
 	public static final String ADD_UNKNOWN_ERROR = "Unknown add error";
-	public static final String ADD_END_BEFORE_START_ERROR = "The start time is after the end time.";
-	public static final String ADD_INVALID_RECURRING_ERROR = "No date or time given for recurring todo.";
-	public static final String ADD_INVALID_TODO_NAME_ERROR = "Flags in todo names are not supported."
+	public static final String ADD_END_BEFORE_START_ERROR = "Start and end time error";
+	public static final String ADD_INVALID_RECURRING_ERROR = "Recurring todo error";
+	public static final String ADD_INVALID_TODO_NAME_ERROR = "todo names error"
 			+ System.lineSeparator() + "Flags: -d, -dt, -m, -r, -t, -y";
-	public static final String ADD_INVALID_PARAMS = "The number of parameters is invalid."
+	public static final String ADD_INVALID_PARAMS = "Invalid parameters."
 			+ System.lineSeparator()
 			+ "\t Supported formats:"
 			+ System.lineSeparator()
@@ -38,8 +38,8 @@ public class Signal {
 	/**
 	 * Delete Command Signals
 	 */
-	public static final String DELETE_SUCCESS_FORMAT = "%1$s successfully deleted.";
-	public static final String DELETE_INVALID_PARAMS = "The number of parameters is invalid."
+	public static final String DELETE_SUCCESS_FORMAT = "Deleted %1$s";
+	public static final String DELETE_INVALID_PARAMS = "Invalid parameters"
 			+ System.lineSeparator()
 			+ "\t Supported format:"
 			+ System.lineSeparator() + "\t delete <indexNumber>";
@@ -48,10 +48,10 @@ public class Signal {
 	 * Display Command Signals
 	 */
 	public static final String DISPLAY_SUCCESS_SIGNAL = "";
-    public static final String DISPLAY_EMPTY_TODO_SIGNAL = "The list of todos is empty.";
-    public static final String DISPLAY_EMPTY_RULE_SIGNAL = "The list of recurring rules is empty.";
-	public static final String DISPLAY_ID_NOT_FOUND = "The specified todo with ID %1$s does not exist";
-	public static final String DISPLAY_INVALID_PARAM = "The parameter %1$s is not recognized."
+    public static final String DISPLAY_EMPTY_TODO_SIGNAL = "Empty list";
+    public static final String DISPLAY_EMPTY_RULE_SIGNAL = "Empty recurring";
+	public static final String DISPLAY_ID_NOT_FOUND = "ID %1$s does not exist";
+	public static final String DISPLAY_INVALID_PARAM = "Parameter %1$s is not recognized."
 			+ System.lineSeparator()
             + "The display command only supports only following additional parameters: "
             + "c, completed, a, all, rule, [ID]. "
@@ -61,12 +61,12 @@ public class Signal {
 	/**
 	 * Edit Command Signals
 	 */
-	public static final String EDIT_SUCCESS_FORMAT = "%1$s successfully modified to %2$s";
-	public static final String EDIT_RULE_SUCCESS_FORMAT = "Rule %1$s successfuly modified to %2$s.";
-	public static final String EDIT_END_BEFORE_START = "The start time must be before the end time.";
+	public static final String EDIT_SUCCESS_FORMAT = "Edited %1$s to %2$s";
+	public static final String EDIT_RULE_SUCCESS_FORMAT = "Edited %1$s to %2$s";
+	public static final String EDIT_END_BEFORE_START = "Start and end time error";
 	public static final String EDIT_INVALID_DATE = "Date(s) specified is/are invalid";
-	public static final String EDIT_NO_LONGER_RECURS = "Recurring Todo rule specified no longer exists.";
-	public static final String EDIT_LIMIT_BEFORE_NOW = "Limit specified must not be before current time and date.";
+	public static final String EDIT_NO_LONGER_RECURS = "Recurring no longer exists.";
+	public static final String EDIT_LIMIT_BEFORE_NOW = "Limit before current time and date error";
 	public static final String EDIT_INVALID_PARAMS = "The number or format of parameters is invalid."
 			+ System.lineSeparator()
 			+ "\t Supported format:"
@@ -84,9 +84,9 @@ public class Signal {
 	/**
 	 * Mark Command Signals
 	 */
-	public static final String MARK_SUCCESS_SIGNAL_FORMAT = "%1$s successfully marked as done.";
+	public static final String MARK_SUCCESS_SIGNAL_FORMAT = "Marked %1$s successfully";
 	public static final String MARK_UNKNOWN_ERROR = "Unknown mark error.";
-	public static final String MARK_INVALID_PARAMS = "The number of parameters is invalid."
+	public static final String MARK_INVALID_PARAMS = "Parameters is invalid."
 			+ System.lineSeparator()
 			+ "\t Supported format:"
 			+ System.lineSeparator() + "\t mark <indexNumber>";
@@ -94,8 +94,8 @@ public class Signal {
 	/**
 	 * Undo Command Signals
 	 */
-	public static final String UNDO_SUCCESS = "Undo operation successful.";
-	public static final String UNDO_INVALID_PARAMS = "The number of parameters is invalid."
+	public static final String UNDO_SUCCESS = "Undo successful.";
+	public static final String UNDO_INVALID_PARAMS = "Parameters is invalid."
 			+ System.lineSeparator()
 			+ "\t Supported format:"
 			+ System.lineSeparator() + "\t undo";
@@ -103,8 +103,8 @@ public class Signal {
 	/**
 	 * Redo Command Signals
 	 */
-	public static final String REDO_SUCCESS = "Redo operation successful.";
-	public static final String REDO_INVALID_PARAMS = "The number of parameters is invalid"
+	public static final String REDO_SUCCESS = "Redo successful.";
+	public static final String REDO_INVALID_PARAMS = "Parameters is invalid"
 			+ System.lineSeparator()
 			+ "\t Supported format:"
 			+ System.lineSeparator() + "\t redo";
@@ -113,9 +113,9 @@ public class Signal {
 	 * Search Command Signals
 	 */
 
-	public static final String SEARCH_SUCCESS_SIGNAL = "";
-	public static final String SEARCH_EMPTY_SIGNAL = "No result found.";
-	public static final String SEARCH_INVALID_PARAMS = "The type of parameters is invalid"
+	public static final String SEARCH_SUCCESS_SIGNAL = "Search found";
+	public static final String SEARCH_EMPTY_SIGNAL = "Search No result found.";
+	public static final String SEARCH_INVALID_PARAMS = "Parameters is invalid"
 			+ System.lineSeparator()
 			+ "\t Supported format:"
 			+ System.lineSeparator()
@@ -125,17 +125,17 @@ public class Signal {
 	 * Time Clash Signals
 	 */
 	public static final String CLASH_DOES_NOT_EXIST = "";
-	public static final String CLASH_DEADLINE_DOES_EXIST = "The deadline you're attempting to add overlaps other deadline at \"%1$s\"";
-	public static final String CLASH_EVENT_DOES_EXIST = "The event you're attempting to add overlaps with other event at \"%1$s\"";
-	public static final String CLASH_CONTINUE_PROPOSITION = "Would you still like to add the overlapping entry? (y/n)";
-	public static final String CLASH_USER_OVERRIDE = "The overlapping entry has been added.";
+	public static final String CLASH_DEADLINE_DOES_EXIST = "";
+	public static final String CLASH_EVENT_DOES_EXIST = "Clash tasks deteched \"%1$s\"";
+	public static final String CLASH_CONTINUE_PROPOSITION = "";
+	public static final String CLASH_USER_OVERRIDE = "";
 	public static final String CLASH_USER_VOID_TASK = "The entry has not been added, remove using 'delete' conflict to continue,";
 
 	/**
 	 * Generic Signals
 	 */
-	public static final String GENERIC_EMPTY_PARAM = "At least one parameter is unspecified.";
-	public static final String GENERIC_INVALID_COMMAND_FORMAT = "%1$s command is invalid!"
+	public static final String GENERIC_EMPTY_PARAM = "Parameter is unspecified.";
+	public static final String GENERIC_INVALID_COMMAND_FORMAT = "Invalid command %1$s"
 			+ System.lineSeparator()
 			+ "Supported commands: add, mark, delete, edit, undo, etc...";
 	public static final String GENERIC_FATAL_ERROR = "Fatal error.";
