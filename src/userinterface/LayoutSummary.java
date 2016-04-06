@@ -1,5 +1,6 @@
 package userinterface;
 
+import org.controlsfx.control.textfield.TextFields;
 import org.controlsfx.tools.Borders;
 
 import javafx.geometry.Pos;
@@ -13,6 +14,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 public class LayoutSummary extends BorderPane {
 
@@ -25,7 +30,6 @@ public class LayoutSummary extends BorderPane {
 	private String tomorrowString = "Tomorrow";
 	private String upcomingString = "Upcoming";
 	private String somedayString = "Someday";
-	
 	
 	private int _numToday;
 	private int _numTomorrow;
@@ -103,6 +107,8 @@ public class LayoutSummary extends BorderPane {
 	
 	private TextField implementTextField() {
 		BoxInput textField = new BoxInput();
+		textField.setEditable(false);
+
 		return textField;
 	}
 	

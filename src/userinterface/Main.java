@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import logic.ClockWork;
@@ -16,7 +17,6 @@ public class Main extends Application {
 	private static int HEIGHT_WINDOW_DEFAULT = 600;
 
 	/** Static variables */
-	private static ArrayList<String> _taskList = new ArrayList<String>();
 	private static ArrayList<String[]> _todayList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _tomorrowList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _upcomingList = new ArrayList<String[]>();
@@ -33,7 +33,7 @@ public class Main extends Application {
 	private static LayoutCalendar calendarLayout;
 	private static LayoutTemplate todayLayout;
 	private static LayoutTemplate tomorrowLayout;
-	private static LayoutTemplate upcomingLayout;
+	private static LayoutUpcoming upcomingLayout;
 	private static LayoutTemplate somedayLayout;
 	private static String _feedback;
 	private static Scene scene;
@@ -115,12 +115,9 @@ public class Main extends Application {
 	* Public Methods
 	* ===========================================
 	*/
-	public static void setTaskList(ArrayList<String> newTaskList){
-		_taskList = newTaskList;
-	}
 	
-	public static void setFeedback(String newFeedback){
-		_feedback = newFeedback;
+	public static void setFeedback(String feedback){
+		_feedback = feedback;
 	}
 	
 	public static void setTodayList(ArrayList<String[]> todayList){
@@ -183,16 +180,17 @@ public class Main extends Application {
 		setStage();
 	}
 	
-	public static void displayTodayScene(){
-		todayLayout = new LayoutTemplate("Today", _todayList);
+	public static TableView displayTodayScene(){
+		todayLayout = new LayoutTemplate("Today", _todayList, _feedback);
 		scene = new Scene(todayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();
+		return todayLayout.getTableView();
 	}
 	
 	public static void displayTomorrowScene(){
-		tomorrowLayout = new LayoutTemplate("Tomorrow", _tomorrowList);
+		tomorrowLayout = new LayoutTemplate("Tomorrow", _tomorrowList, _feedback);
 		scene = new Scene(tomorrowLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
@@ -200,7 +198,7 @@ public class Main extends Application {
 	}
 	
 	public static void displayUpcomingScene(){
-		upcomingLayout = new LayoutTemplate("Upcoming", _upcomingList);
+		upcomingLayout = new LayoutUpcoming("Upcoming", _upcomingList,  _feedback);
 		scene = new Scene(upcomingLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
@@ -208,7 +206,7 @@ public class Main extends Application {
 	}
 	
 	public static void displaySomedayScene(){
-		somedayLayout = new LayoutTemplate("Someday", _somedayList);
+		somedayLayout = new LayoutTemplate("Someday", _somedayList,  _feedback);
 		scene = new Scene(somedayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());

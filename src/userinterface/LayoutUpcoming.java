@@ -31,7 +31,7 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
-public class LayoutTemplate extends BorderPane {
+public class LayoutUpcoming extends BorderPane {
 
 	private ArrayList<String[]> _list = new ArrayList<String[]>();
 	private Label _titleLabel;
@@ -43,10 +43,8 @@ public class LayoutTemplate extends BorderPane {
 	public static final String ColumnNameMapKey = "Name";
 	public static final String ColumnTimeMapKey = "Time";
 	public static final String ColumnDateMapKey = "Date";
-	
-	private TableView tableView;
 
-	public LayoutTemplate(String title, ArrayList<String[]> list, String feedbackType) {
+	public LayoutUpcoming(String title, ArrayList<String[]> list, String feedbackType) {
 		_titleString = title;
 		_list = list;
 		_feedback = feedbackType;
@@ -76,6 +74,7 @@ public class LayoutTemplate extends BorderPane {
 		TableColumn<Map, String> firstDataColumn = new TableColumn<>("No");
 		TableColumn<Map, String> secondDataColumn = new TableColumn<>("Name");
 		TableColumn<Map, String> thirdDataColumn = new TableColumn<>("Time");
+		TableColumn<Map, String> fourthDataColumn = new TableColumn<>("Date");
 
 		firstDataColumn.setCellValueFactory(new MapValueFactory(ColumnIndexMapKey));
 		firstDataColumn.setMinWidth(10);
@@ -83,12 +82,14 @@ public class LayoutTemplate extends BorderPane {
 		secondDataColumn.setMinWidth(600);
 		thirdDataColumn.setCellValueFactory(new MapValueFactory(ColumnTimeMapKey));
 		thirdDataColumn.setMinWidth(90);
+		fourthDataColumn.setCellValueFactory(new MapValueFactory(ColumnDateMapKey));
+		fourthDataColumn.setMinWidth(100);
 
-		tableView = new TableView<>(populateDataInMap());
+		TableView tableView = new TableView<>(populateDataInMap());
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		tableView.setEditable(false);
 		tableView.getSelectionModel().setCellSelectionEnabled(false);
-		tableView.getColumns().setAll(firstDataColumn, secondDataColumn, thirdDataColumn);
+		tableView.getColumns().setAll(firstDataColumn, secondDataColumn, thirdDataColumn, fourthDataColumn);
 		Callback<TableColumn<Map, String>, TableCell<Map, String>> cellFactoryForMap = (
 				TableColumn<Map, String> p) -> new TextFieldTableCell(new StringConverter() {
 					@Override
@@ -105,6 +106,7 @@ public class LayoutTemplate extends BorderPane {
 		firstDataColumn.setCellFactory(cellFactoryForMap);
 		secondDataColumn.setCellFactory(cellFactoryForMap);
 		thirdDataColumn.setCellFactory(cellFactoryForMap);
+		fourthDataColumn.setCellFactory(cellFactoryForMap);
 
 		grid.setHgrow(tableView, Priority.ALWAYS);
 
@@ -127,10 +129,12 @@ public class LayoutTemplate extends BorderPane {
 			String index = _list.get(0)[0];
 			String name = _list.get(0)[1];
 			String time = _list.get(0)[2];
+			String date = _list.get(0)[3];
 
 			dataRow.put(ColumnIndexMapKey, index);
 			dataRow.put(ColumnNameMapKey, name);
 			dataRow.put(ColumnTimeMapKey, time);
+			dataRow.put(ColumnDateMapKey, date);
 
 			allData.add(dataRow);
 		}
@@ -192,9 +196,5 @@ public class LayoutTemplate extends BorderPane {
 			feedbackText.setFill(Color.CRIMSON);
 		}
 		return feedbackText;
-	}
-	
-	public TableView getTableView(){
-		return this.tableView;
 	}
 }

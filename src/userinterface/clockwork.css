@@ -33,22 +33,39 @@
     -fx-background-color:transparent;
 }
 
-.list-cell:filled:selected:focused, .list-cell:filled:selected {
+.table-view{
+   -fx-background-color: #182733;
+}
+
+.table-view .column-header-background{
+    -fx-background-color: rgba(0, 100, 100, 0.5);
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+
+.table-cell:filled:selected:focused, .table-cell:filled:selected {
     -fx-background-color: #182733;
     -fx-text-fill: white;
 }
 
-.list-cell:odd { 
+.table-cell:odd { 
     -fx-background-color: #182733;
     -fx-text-fill: white;
 }
 
-.list-cell:even { 
+.table-cell:even { 
     -fx-background-color: #182733;
     -fx-text-fill: white;
 }
 
-.list-cell:filled:hover {
+.table-cell:filled:hover {
     -fx-background-color: #182733;
     -fx-text-fill: white;
 }

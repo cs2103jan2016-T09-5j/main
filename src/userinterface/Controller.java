@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -22,11 +23,14 @@ public class Controller {
 
 	private static Logger _logger = java.util.logging.Logger.getLogger("ClockworkGUIController");
 	private static String _currentUserInput;
+	private static ArrayList<String> _feedback;
 	private static ClockWork _logic;
 	private static ArrayList<String[]> _todayList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _tomorrowList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _upcomingList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _somedayList = new ArrayList<String[]>();
+	private static TableView currentTableView;
+	
 	/**
 	 * Handle event after key is pressed
 	 * 
@@ -79,9 +83,9 @@ public class Controller {
 	public static void processEnter(String userInput) {
 		_logger.log(Level.INFO, "Calling logic to process keypress.");
 		try {
-			resetLists();
-			ClockWork.ClockworkLogicMain(userInput, _logic);
-			
+//			resetLists();
+//			ClockWork.ClockworkLogicMain(userInput, _logic);
+//			
 //			// FEEDBACK STRING
 //			if (!SignalHandler.getArrListForGUI().isEmpty()){
 //				System.out.println("SIGNAL HANDLER: " + SignalHandler.getArrListForGUI().get(0));
@@ -95,13 +99,22 @@ public class Controller {
 //			if (!SearchCommand.getArrListForGUI().isEmpty()){
 //				System.out.println("SEARCH COMMAND: " + SearchCommand.getArrListForGUI().get(0));
 //			}
+//			
+//			if (!DisplayCommand.getArrListForGUI().isEmpty()){			
+//				Main.setNumToday(getNumTodayItems());
+//				Main.setNumTomorrow(getNumTomorrowItems());
+//				Main.setNumUpcoming(getNumUpcomingItems());
+//				Main.setNumSomeday(getNumSomedayItems());
+//			}
 			
-			if (!DisplayCommand.getArrListForGUI().isEmpty()){			
-				Main.setNumToday(getNumTodayItems());
-				Main.setNumTomorrow(getNumTomorrowItems());
-				Main.setNumUpcoming(getNumUpcomingItems());
-				Main.setNumSomeday(getNumSomedayItems());
-			}
+//			UserInterfaceStub.populateFeedbackList(_feedback);
+			Main.setFeedback("POTATO");
+			
+			Main.setNumToday(getNumTodayItems());
+			Main.setNumTomorrow(getNumTomorrowItems());
+			Main.setNumUpcoming(getNumUpcomingItems());
+			Main.setNumSomeday(getNumSomedayItems());
+		
 		} catch (Exception ex) {
 			_logger.log(Level.WARNING, "Keypress detected, but failed to process.", ex);
 		}
@@ -114,8 +127,9 @@ public class Controller {
 			public void handle(KeyEvent ke) {
 				if (ke.getCode().equals(KeyCode.ENTER)) {
 					if (sceneName.equals("Today")){
+						UserInterfaceStub.populateList(_todayList);
 						Main.setTodayList(_todayList);
-						Main.displayTodayScene();
+						currentTableView = Main.displayTodayScene();
 					} else if (sceneName.equals("Tomorrow")){				
 						Main.setTomorrowList(_tomorrowList);
 						Main.displayTomorrowScene();
@@ -140,28 +154,13 @@ public class Controller {
 		});
 	}
 	
-	public static void resetLists(){
-		SignalHandler.clearArrListForGUI();
-		DisplayCommand.clearArrListForGUI();
-		SearchCommand.clearArrListForGUI();
-		ClashDetector.clearArrListForGUI();
-	}
+//	public static void resetLists(){
+//		SignalHandler.clearArrListForGUI();
+//		DisplayCommand.clearArrListForGUI();
+//		SearchCommand.clearArrListForGUI();
+//		ClashDetector.clearArrListForGUI();
+//	}
 			
-	/**
-	 * Set list format from ArrayList to ListView so that list can be seen on
-	 * GUI
-	 * 
-	 * @param arrayList
-	 *            List of type ArrayList String
-	 * @return listView List of type ListView String
-	 */
-	public static ListView<String> getListViewFromArrayList(ArrayList<String> arrayList) {
-		ObservableList<String> obsList = FXCollections.observableList(arrayList);
-		ListView<String> listView = new ListView<String>(obsList);
-		listView.setItems(obsList);
-		return listView;
-	}
-
 	public static int getNumTodayItems(){
 		if (_todayList.isEmpty()){
 			return 0;
