@@ -126,10 +126,10 @@ public class LayoutUpcoming extends BorderPane {
 		for (int i = 0; i < _list.size(); i++) {
 			Map<String, String> dataRow = new HashMap<>();
 
-			String index = _list.get(0)[0];
-			String name = _list.get(0)[1];
-			String time = _list.get(0)[2];
-			String date = _list.get(0)[3];
+			String index = _list.get(i)[0];
+			String name = _list.get(i)[1];
+			String time = _list.get(i)[2];
+			String date = _list.get(i)[3];
 
 			dataRow.put(ColumnIndexMapKey, index);
 			dataRow.put(ColumnNameMapKey, name);

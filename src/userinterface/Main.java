@@ -21,6 +21,8 @@ public class Main extends Application {
 	private static ArrayList<String[]> _tomorrowList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _upcomingList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _somedayList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _searchList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _powerList = new ArrayList<String[]>();
 	
 	private static int _numToday;
 	private static int _numTomorrow;
@@ -35,6 +37,8 @@ public class Main extends Application {
 	private static LayoutTemplate tomorrowLayout;
 	private static LayoutUpcoming upcomingLayout;
 	private static LayoutTemplate somedayLayout;
+	private static LayoutTemplate searchLayout;
+	private static LayoutUpcoming allLayout;
 	private static String _feedback;
 	private static Scene scene;
 	private static Stage stage;
@@ -208,6 +212,22 @@ public class Main extends Application {
 	public static void displaySomedayScene(){
 		somedayLayout = new LayoutTemplate("Someday", _somedayList,  _feedback);
 		scene = new Scene(somedayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	public static void displaySearchScene(){
+		searchLayout = new LayoutTemplate("Search", _searchList,  _feedback);
+		scene = new Scene(searchLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	public static void displayAllScene(){
+		allLayout = new LayoutUpcoming("All Tasks", _powerList,  _feedback);
+		scene = new Scene(allLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();

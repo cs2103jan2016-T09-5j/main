@@ -29,6 +29,8 @@ public class Controller {
 	private static ArrayList<String[]> _tomorrowList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _upcomingList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _somedayList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _searchList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _powerList = new ArrayList<String[]>();
 	private static TableView currentTableView;
 	
 	/**
@@ -83,37 +85,42 @@ public class Controller {
 	public static void processEnter(String userInput) {
 		_logger.log(Level.INFO, "Calling logic to process keypress.");
 		try {
-//			resetLists();
-//			ClockWork.ClockworkLogicMain(userInput, _logic);
-//			
-//			// FEEDBACK STRING
-//			if (!SignalHandler.getArrListForGUI().isEmpty()){
-//				System.out.println("SIGNAL HANDLER: " + SignalHandler.getArrListForGUI().get(0));
-//			}
-//			//CLASH DETECTOR STRING
-//			if (!ClashDetector.getArrListForGUI().isEmpty()){
-//				System.out.println("CLASH DETECTOR: " + ClashDetector.getArrListForGUI().get(0));
-//			}
-//			
-//			//SHOWS SEARCH STRINGS
-//			if (!SearchCommand.getArrListForGUI().isEmpty()){
-//				System.out.println("SEARCH COMMAND: " + SearchCommand.getArrListForGUI().get(0));
-//			}
-//			
-//			if (!DisplayCommand.getArrListForGUI().isEmpty()){			
-//				Main.setNumToday(getNumTodayItems());
-//				Main.setNumTomorrow(getNumTomorrowItems());
-//				Main.setNumUpcoming(getNumUpcomingItems());
-//				Main.setNumSomeday(getNumSomedayItems());
-//			}
+			if (userInput.equalsIgnoreCase("search")){
+				Main.displaySearchScene();
+			} else {
+				ClockWork.ClockworkLogicMain(userInput, _logic);
+//				
+//				// FEEDBACK STRING
+//				if (!SignalHandler.getArrListForGUI().isEmpty()){
+//					System.out.println("SIGNAL HANDLER: " + SignalHandler.getArrListForGUI().get(0));
+//				}
+//				//CLASH DETECTOR STRING
+//				if (!ClashDetector.getArrListForGUI().isEmpty()){
+//					System.out.println("CLASH DETECTOR: " + ClashDetector.getArrListForGUI().get(0));
+//				}
+//				
+//				//SHOWS SEARCH STRINGS
+//				if (!SearchCommand.getArrListForGUI().isEmpty()){
+//					System.out.println("SEARCH COMMAND: " + SearchCommand.getArrListForGUI().get(0));
+//				}
+//				
+//				if (!DisplayCommand.getArrListForGUI().isEmpty()){			
+//					Main.setNumToday(getNumTodayItems());
+//					Main.setNumTomorrow(getNumTomorrowItems());
+//					Main.setNumUpcoming(getNumUpcomingItems());
+//					Main.setNumSomeday(getNumSomedayItems());
+//				}
+				
+				
+				Main.setFeedback("POTATO");
+				
+				Main.setNumToday(getNumTodayItems());
+				Main.setNumTomorrow(getNumTomorrowItems());
+				Main.setNumUpcoming(getNumUpcomingItems());
+				Main.setNumSomeday(getNumSomedayItems());
 			
-//			UserInterfaceStub.populateFeedbackList(_feedback);
-			Main.setFeedback("POTATO");
-			
-			Main.setNumToday(getNumTodayItems());
-			Main.setNumTomorrow(getNumTomorrowItems());
-			Main.setNumUpcoming(getNumUpcomingItems());
-			Main.setNumSomeday(getNumSomedayItems());
+				Main.displayAllScene();
+			}
 		
 		} catch (Exception ex) {
 			_logger.log(Level.WARNING, "Keypress detected, but failed to process.", ex);
@@ -149,7 +156,9 @@ public class Controller {
 				} else if (ke.getCode().equals(KeyCode.F3)) {
 					// MINIMISE
 					Main.minimise();
-				} 
+				} else if (ke.getCode().equals(KeyCode.UP)){
+					
+				}
 			}
 		});
 	}

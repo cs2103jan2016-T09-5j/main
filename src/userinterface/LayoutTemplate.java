@@ -10,15 +10,18 @@ import org.controlsfx.tools.Borders;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -45,6 +48,7 @@ public class LayoutTemplate extends BorderPane {
 	public static final String ColumnDateMapKey = "Date";
 	
 	private TableView tableView;
+	private double scrollValue = 0.25f;
 
 	public LayoutTemplate(String title, ArrayList<String[]> list, String feedbackType) {
 		_titleString = title;
@@ -85,6 +89,7 @@ public class LayoutTemplate extends BorderPane {
 		thirdDataColumn.setMinWidth(90);
 
 		tableView = new TableView<>(populateDataInMap());
+		
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		tableView.setEditable(false);
 		tableView.getSelectionModel().setCellSelectionEnabled(false);
@@ -190,11 +195,28 @@ public class LayoutTemplate extends BorderPane {
 		} else if (_feedback.equals("Clash")) {
 			feedbackText.setText(_feedback);
 			feedbackText.setFill(Color.CRIMSON);
-		}
+		}		
 		return feedbackText;
 	}
 	
 	public TableView getTableView(){
 		return this.tableView;
 	}
+	
+//	public double setScrollPosition(String action, double prevScrollValue){
+//		for (Node n: tableView.lookupAll(".scroll-bar")) {
+//			  if (n instanceof ScrollBar) {
+//			    ScrollBar bar = (ScrollBar) n;
+//			    System.out.println(bar.getOrientation() + ": range " + bar.getMin() + " => " + bar.getMax() + ", value " + bar.getValue());
+//			  }
+//		}
+//		if (action == "UP" && ((prevScrollValue - scrollValue) >= 0)){
+//			tableView.setVvalue(prevScrollValue - scrollValue);
+//		} else if (action == "DOWN" && ((prevScrollValue + scrollValue) <= 1)){
+//			tableView.setVvalue(prevScrollValue + scrollValue);
+//		} else {
+//			tableView.setVvalue(prevScrollValue);
+//		}
+//		return tableView.getVvalue();
+//	}
 }
