@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.logging.*;
 
 import common.UserInterfaceObjectListTest;
-import common.TaskListProcessor;
 import common.UserInterfaceObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -101,8 +100,24 @@ public class Controller {
 //			}
 			
 			if (!DisplayCommand.getArrListForGUI().isEmpty()){
-				_todayList = TaskListProcessor.getUIObjects(DisplayCommand.getArrListForGUI().get(0));
-
+				TaskListProcessor.getUIObjects(DisplayCommand.getArrListForGUI().get(0));
+				
+				if (!TaskListProcessor.getTodayList().isEmpty()){
+					_todayList = TaskListProcessor.getTodayList();
+				}
+				
+				if (!TaskListProcessor.getTomorrowList().isEmpty()){
+					_tomorrowList = TaskListProcessor.getTomorrowList();
+				}
+				
+				if (!TaskListProcessor.getUpcomingList().isEmpty()){
+					_upcomingList = TaskListProcessor.getUpcomingList();
+				}
+				
+				if (!TaskListProcessor.getSomedayList().isEmpty()){
+					_somedayList = TaskListProcessor.getSomedayList();
+				}
+				
 				Main.setNumToday(getNumTodayItems());
 				Main.setNumTomorrow(getNumTomorrowItems());
 				Main.setNumUpcoming(getNumUpcomingItems());
@@ -122,16 +137,13 @@ public class Controller {
 					if (sceneName.equals("Today")){
 						Main.setTodayList(_todayList);
 						Main.displayTodayScene();
-					} else if (sceneName.equals("Tomorrow")){
-						UserInterfaceObjectListTest.populateTestObjectList(_tomorrowList);					
+					} else if (sceneName.equals("Tomorrow")){				
 						Main.setTomorrowList(_tomorrowList);
 						Main.displayTomorrowScene();
-					} else if (sceneName.equals("Upcoming")){
-						UserInterfaceObjectListTest.populateTestObjectList(_upcomingList);						
+					} else if (sceneName.equals("Upcoming")){					
 						Main.setUpcomingList(_upcomingList);
 						Main.displayUpcomingScene();
 					} else if (sceneName.equals("Someday")){
-						UserInterfaceObjectListTest.populateTestObjectList(_somedayList);
 						Main.setSomedayList(_somedayList);
 						Main.displaySomedayScene();
 					} 
