@@ -139,7 +139,12 @@ public class Main extends Application {
 	public static void setSomedayList(ArrayList<String[]> somedayList){
 		_somedayList = somedayList;
 	}
-	
+	public static void setPowerList(ArrayList<String[]> powerList){
+		_powerList = powerList;
+	}
+	public static void setSearchList(ArrayList<String[]> searchList) {
+		_searchList = searchList;
+	}
 	public static void setNumToday(int numToday){
 		_numToday = numToday;
 	}
@@ -238,4 +243,6 @@ public class Main extends Application {
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();
 	}
+
+	
 }
