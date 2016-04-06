@@ -36,7 +36,7 @@ public class SearchCommand extends Command {
 	public SearchCommand(ParsedInput input, Memory memory) {
 		super(input, memory);
 	}
-	public static ArrayList<String> getArrListForGUI(){
+	protected static ArrayList<String> getArrListForGUI(){
     	return ArrListForGUI;
     }
 	public static void clearArrListForGUI(){
