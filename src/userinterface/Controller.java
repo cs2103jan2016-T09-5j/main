@@ -15,8 +15,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import logic.ClashDetector;
 import logic.ClockWork;
+import logic.DisplayCategory;
 import logic.DisplayCommand;
 import logic.SearchCommand;
+import logic.SearchDisplay;
 import logic.SignalHandler;
 
 public class Controller {
@@ -25,7 +27,7 @@ public class Controller {
 	private static String _currentUserInput;
 	private static ArrayList<String> _feedback = new ArrayList<String>(Arrays.asList(" ", " "));
 	private static ClockWork _logic;
-	private static ArrayList<String[]> _todayList = new ArrayList<String[]>();
+	private static ArrayList<String[]> todayList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _tomorrowList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _upcomingList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _somedayList = new ArrayList<String[]>();
@@ -85,11 +87,22 @@ public class Controller {
 	public static void processEnter(String userInput) {
 		_logger.log(Level.INFO, "Calling logic to process keypress.");
 		try {
-			if (userInput.equalsIgnoreCase("search")){
-				Main.displaySearchScene();
-			} else {
+			String[] keyword = userInput.split(" ");
+			if (keyword[0].equalsIgnoreCase("search")){
 				ClockWork.ClockworkLogicMain(userInput, _logic);
-//				
+				if (!SignalHandler.getArrListForGUI().isEmpty()){
+					_feedback = SignalHandler.getArrListForGUI();
+					_searchList = SearchDisplay.getSearchArrListForGUI();
+					Main.setSearchList(_searchList);
+					Main.displaySearchScene();
+				}
+			} else {
+				resetLists();
+				ClockWork.ClockworkLogicMain(userInput, _logic);
+				
+				_powerList = DisplayCategory.getCommandArrListForGUI();
+				Main.setPowerList(_powerList);
+				Main.displayAllScene();
 //				// FEEDBACK STRING
 //				if (!SignalHandler.getArrListForGUI().isEmpty()){
 //					System.out.println("SIGNAL HANDLER: " + SignalHandler.getArrListForGUI().get(0));
@@ -128,7 +141,9 @@ public class Controller {
 	//Get Logic to give you the feedback list here
 	public static ArrayList<String> getFeedback() {
 		_feedback = UserInterfaceStub.populateFeedbackList();
-//		_feedback = Logjvfdmdklvdf/...
+		if (!SignalHandler.getArrListForGUI().isEmpty()){
+			_feedback = SignalHandler.getArrListForGUI();
+		}
 		return _feedback;
 	}
 	
@@ -137,19 +152,25 @@ public class Controller {
 			@Override
 			public void handle(KeyEvent ke) {
 				if (ke.getCode().equals(KeyCode.ENTER)) {
+					ClockWork.ClockworkLogicMain("display", _logic);
+//					ArrayList<String[]> a = DisplayCategory.getTodayArrListForGUI();
+//					System.out.println(a.get(1)[0]);
 					if (sceneName.equals("Today")){
-						//_todayList = Logic.getngjkdfdefgrfkld
-						UserInterfaceStub.populateList(_todayList);
-						Main.setTodayList(_todayList);
+						todayList = DisplayCategory.getTodayArrListForGUI();
+						//UserInterfaceStub.populateList(_todayList);
+						Main.setTodayList(todayList);
 						currentTableView = Main.displayTodayScene();
+						Main.displayTodayScene();
 					} else if (sceneName.equals("Tomorrow")){				
-						//_tomorrowList = ...
+						_tomorrowList = DisplayCategory.geTmrArrListForGUI();
 						Main.setTomorrowList(_tomorrowList);
 						Main.displayTomorrowScene();
-					} else if (sceneName.equals("Upcoming")){					
+					} else if (sceneName.equals("Upcoming")){		
+						_upcomingList = DisplayCategory.getUpcommingArrListForGUI();
 						Main.setUpcomingList(_upcomingList);
 						Main.displayUpcomingScene();
 					} else if (sceneName.equals("Someday")){
+						_somedayList = DisplayCategory.getSomedaysArrListForGUI();
 						Main.setSomedayList(_somedayList);
 						Main.displaySomedayScene();
 					} 
@@ -169,18 +190,20 @@ public class Controller {
 		});
 	}
 	
-//	public static void resetLists(){
-//		SignalHandler.clearArrListForGUI();
-//		DisplayCommand.clearArrListForGUI();
-//		SearchCommand.clearArrListForGUI();
-//		ClashDetector.clearArrListForGUI();
-//	}
+	private static void resetLists(){
+		SignalHandler.clearArrListForGUI();
+		DisplayCommand.clearArrListForGUI();
+		SearchCommand.clearArrListForGUI();
+		ClashDetector.clearArrListForGUI();
+	    DisplayCategory.clearArrListForGUI();
+	    SearchDisplay.clearSearchArrListForGUI();
+	}
 			
 	public static int getNumTodayItems(){
-		if (_todayList.isEmpty()){
+		if (todayList.isEmpty()){
 			return 0;
 		} else {
-			return _todayList.size();
+			return todayList.size();
 		}
 	}
 	
