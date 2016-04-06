@@ -11,9 +11,7 @@ public class TaskListProcessor {
     	ArrayList<String[]> currList = null;
     	for (int i = 0; i < splitString.length; i++){
     		if (splitString[i].length() == 0 || splitString[i].equals(System.getProperty("line.separator"))){ 
-    			
     			continue;
-    		
     		}
     		if (splitString[i].contains("..")){
     			if (currList != null && !currList.isEmpty()) list.add(currList);
@@ -32,8 +30,7 @@ public class TaskListProcessor {
     		}
     	}
     	list.add(currList);
-    	
-    	
+  
     	return list;
     }
 	
@@ -47,11 +44,11 @@ public class TaskListProcessor {
     		for (int j = 1; j < list.get(i).size(); j++){
     				String[] task = list.get(i).get(j);
     				UserInterfaceObject uiObj = new UserInterfaceObject(
-    						task[0], task[1], task[2], "placeholder", date);
-    				
+    						task[0], task[1], task[2], "PLACEHOLDER", date);
     				uiObjects.add(uiObj);
     		}
     	}
+    	
     	return uiObjects;
 	}
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.logging.*;
 
 import common.UserInterfaceObjectListTest;
-import common.FeedbackProcessor;
 import common.TaskListProcessor;
 import common.UserInterfaceObject;
 import javafx.collections.FXCollections;
@@ -38,73 +37,11 @@ public class Controller {
 	 * @param textField
 	 *        User input to be handled
 	 */
-
 	public static void implementKeystrokeEvents(final TextField textField) {
 		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent ke) {
 				executeKeyPress(textField, ke);
-			}
-		});
-	}
-	
-	public static void redirectFromSummaryScene(Button button, String sceneName) {
-		button.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent ke) {
-				if (ke.getCode().equals(KeyCode.ENTER)) {
-					if (sceneName.equals("Today")){
-						//DO SOMETHING TO INTEGRATE WITH LOGIC
-						//Eg. _todayList = Logic.getTodayList();
-						
-						//FOR TESTING PURPOSES, REMOVE ONCE LOGIC INTEGRATION IS DONE
-//						UserInterfaceObjectListTest.populateTestObjectList(_todayList);
-//						if (!DisplayCommand.getArrListForGUI().isEmpty()){
-//							_todayList = TaskListProcessor.getUIObjects(DisplayCommand.getArrListForGUI().get(0));
-//
-//						}
-
-						Main.setTodayList(_todayList);
-						Main.displayTodayScene();
-					
-					} else if (sceneName.equals("Tomorrow")){
-						//DO SOMETHING TO INTEGRATE WITH LOGIC
-						//Eg. _tomorrowList = Logic.getTomorrowList();
-						
-						//FOR TESTING PURPOSES, REMOVE ONCE LOGIC INTEGRATION IS DONE
-						UserInterfaceObjectListTest.populateTestObjectList(_tomorrowList);
-						
-						Main.setTomorrowList(_tomorrowList);
-						Main.displayTomorrowScene();
-					} else if (sceneName.equals("Upcoming")){
-						//DO SOMETHING TO INTEGRATE WITH LOGIC
-						//Eg. _upcomingList = Logic.getUpcomingList();
-						
-						//FOR TESTING PURPOSES, REMOVE ONCE LOGIC INTEGRATION IS DONE
-						UserInterfaceObjectListTest.populateTestObjectList(_upcomingList);
-						
-						Main.setUpcomingList(_upcomingList);
-						Main.displayUpcomingScene();
-					} else if (sceneName.equals("Someday")){
-						//DO SOMETHING TO INTEGRATE WITH LOGIC
-						//Eg. _somedayList = Logic.getSomedayList();
-						
-						//FOR TESTING PURPOSES, REMOVE ONCE LOGIC INTEGRATION IS DONE
-						UserInterfaceObjectListTest.populateTestObjectList(_somedayList);
-	
-						Main.setSomedayList(_somedayList);
-						Main.displaySomedayScene();
-					} 
-				} 	else if (ke.getCode().equals(KeyCode.F1)){
-					// HELP SCENE
-					Main.displayHelpScene();
-				} else if (ke.getCode().equals(KeyCode.F2)) {
-					// DISPLAY CALENDAR
-					Main.displayCalendarScene();
-				} else if (ke.getCode().equals(KeyCode.F3)) {
-					// MINIMISE
-					Main.minimise();
-				} 
 			}
 		});
 	}
@@ -121,7 +58,7 @@ public class Controller {
 		if (ke.getCode().equals(KeyCode.ENTER)) {
 			_currentUserInput = textField.getText();
 			if ((_currentUserInput != null && !_currentUserInput.isEmpty())) {
-				callLogicController(_currentUserInput);
+				processEnter(_currentUserInput);
 				textField.clear();
 			}
 		} else if (ke.getCode().equals(KeyCode.ESCAPE)) {
@@ -141,37 +78,13 @@ public class Controller {
 			// MINIMISE
 			Main.minimise();
 		} 
-		 else if (ke.getCode().equals(KeyCode.DELETE)) {
-			// DEFAULT SCENE
-			Main.displayOldScene();
-		} else if (ke.getCode().equals(KeyCode.UP)){
-			Main.scrollListener("UP");
-		} else if (ke.getCode().equals(KeyCode.DOWN)){
-			Main.scrollListener("DOWN");
-		}
 	}
 
-	// *********** LOGIC INTEGRATION HERE ************************
-	public static void callLogicController(String userInput) {
+	public static void processEnter(String userInput) {
 		_logger.log(Level.INFO, "Calling logic to process keypress.");
 		try {
-			// CLEARING OLD STRINGS
-			SignalHandler.clearArrListForGUI();
-			DisplayCommand.clearArrListForGUI();
-			SearchCommand.clearArrListForGUI();
-			ClashDetector.clearArrListForGUI();
+			resetLists();
 			ClockWork.ClockworkLogicMain(userInput, _logic);
-			
-			String _type;
-			//FINDING TYPE OF FEEDBACK
-			if (!ClashDetector.getArrListForGUI().isEmpty()) {
-				_type = "CLASH";
-			} else if (!SignalHandler.getArrListForGUI().isEmpty()){
-				_type = FeedbackProcessor.processFeedback(SignalHandler.getArrListForGUI().get(0));
-			} else {
-				_type = "NO MESSAGE";
-			}
-			//System.out.println("DEBUGGING FEEDBACK PROCESSOR: " + _type);
 			
 //			// FEEDBACK STRING
 //			if (!SignalHandler.getArrListForGUI().isEmpty()){
@@ -187,10 +100,7 @@ public class Controller {
 //				System.out.println("SEARCH COMMAND: " + SearchCommand.getArrListForGUI().get(0));
 //			}
 			
-			//DISPLAY STRING TASKS
 			if (!DisplayCommand.getArrListForGUI().isEmpty()){
-				//TaskListProcessor.getDisplayList(DisplayCommand.getArrListForGUI().get(0));
-				//System.out.println("DISPLAY COMMAND: " + DisplayCommand.getArrListForGUI().get(0));
 				_todayList = TaskListProcessor.getUIObjects(DisplayCommand.getArrListForGUI().get(0));
 
 				Main.setNumToday(getNumTodayItems());
@@ -198,36 +108,52 @@ public class Controller {
 				Main.setNumUpcoming(getNumUpcomingItems());
 				Main.setNumSomeday(getNumSomedayItems());
 			}
-			
-			
-			
-//			if (!SignalHandler.getArrListForGUI().isEmpty() & !ClashDetector.getArrListForGUI().isEmpty()) {
-//				String clashStr = getStringFromArrayList(ClashDetector.getArrListForGUI());
-//				Main.setFeedback(getStringFromArrayList(SignalHandler.getArrListForGUI())+clashStr);
-//				/********Create a label for clashDetector************************/
-//				System.out.println(clashStr);
-//				Main.setTaskList(DisplayCommand.getArrListForGUI());
-//				Main.displayOldScene();	
-//				
-//			} else if (!SignalHandler.getArrListForGUI().isEmpty() && SearchCommand.getArrListForGUI().isEmpty()) {
-//				Main.setFeedback(getStringFromArrayList(SignalHandler.getArrListForGUI()));
-//				Main.setTaskList(DisplayCommand.getArrListForGUI());
-//				Main.displayOldScene();	
-//				
-//			} else if (!SearchCommand.getArrListForGUI().isEmpty()) {
-//				Main.setTaskList(SearchCommand.getArrListForGUI());
-//				Main.displayOldScene();	
-//				
-//			} else {
-//				Main.setFeedback(" ");
-//				Main.setTaskList(DisplayCommand.getArrListForGUI());
-//				Main.displayOldScene();
-//			}
-
 		} catch (Exception ex) {
 			_logger.log(Level.WARNING, "Keypress detected, but failed to process.", ex);
 		}
 		_logger.log(Level.INFO, "Sucessfully called logic to process keypress.");
+	}
+	
+	public static void redirectScene(Button button, String sceneName) {
+		button.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent ke) {
+				if (ke.getCode().equals(KeyCode.ENTER)) {
+					if (sceneName.equals("Today")){
+						Main.setTodayList(_todayList);
+						Main.displayTodayScene();
+					} else if (sceneName.equals("Tomorrow")){
+						UserInterfaceObjectListTest.populateTestObjectList(_tomorrowList);					
+						Main.setTomorrowList(_tomorrowList);
+						Main.displayTomorrowScene();
+					} else if (sceneName.equals("Upcoming")){
+						UserInterfaceObjectListTest.populateTestObjectList(_upcomingList);						
+						Main.setUpcomingList(_upcomingList);
+						Main.displayUpcomingScene();
+					} else if (sceneName.equals("Someday")){
+						UserInterfaceObjectListTest.populateTestObjectList(_somedayList);
+						Main.setSomedayList(_somedayList);
+						Main.displaySomedayScene();
+					} 
+				} 	else if (ke.getCode().equals(KeyCode.F1)){
+					// HELP SCENE
+					Main.displayHelpScene();
+				} else if (ke.getCode().equals(KeyCode.F2)) {
+					// DISPLAY CALENDAR
+					Main.displayCalendarScene();
+				} else if (ke.getCode().equals(KeyCode.F3)) {
+					// MINIMISE
+					Main.minimise();
+				} 
+			}
+		});
+	}
+	
+	public static void resetLists(){
+		SignalHandler.clearArrListForGUI();
+		DisplayCommand.clearArrListForGUI();
+		SearchCommand.clearArrListForGUI();
+		ClashDetector.clearArrListForGUI();
 	}
 			
 	/**
@@ -244,15 +170,7 @@ public class Controller {
 		listView.setItems(obsList);
 		return listView;
 	}
-	
-	private static String getStringFromArrayList(ArrayList<String> arrList){
-		String str="";
-		for(int i=0; i<arrList.size();i++){
-			str += arrList.get(i)+"\n";
-		}
-		return str;
-	}
-	
+
 	public static int getNumTodayItems(){
 		if (_todayList.isEmpty()){
 			return 0;
@@ -291,7 +209,7 @@ public class Controller {
 	
 	public static void setLogic(ClockWork l){
 		_logic = l;
-		callLogicController("display");
+		processEnter("DISPLAY");
 	}
 	
 }

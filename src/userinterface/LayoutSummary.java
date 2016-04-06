@@ -116,7 +116,7 @@ public class LayoutSummary extends BorderPane {
 		button.setWrapText(true);
 		button.setPrefSize(150, 150);
 		button.setTextFill(Color.WHITE);
-		Controller.redirectFromSummaryScene(button, summaryType);
+		Controller.redirectScene(button, summaryType);
 		Node wrappedButton = Borders.wrap(button).lineBorder().color(Color.AQUAMARINE).build().build();
 		return wrappedButton;
 	}

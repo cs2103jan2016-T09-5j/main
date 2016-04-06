@@ -29,17 +29,14 @@ public class Main extends Application {
 	private static int _numSomeday;
 	
 
-	private static LayoutSummary summaryBorderPane;
-	private static OldLayout oldBorderPane;
-	private static LayoutHelp helpBorderPane;
-	private static LayoutCalendar calBorderPane;
-	private static LayoutTemplate todayBorderPane;
-	private static LayoutTemplate tomorrowBorderPane;
-	private static LayoutTemplate upcomingBorderPane;
-	private static LayoutTemplate somedayBorderPane;
+	private static LayoutSummary summaryLayout;
+	private static LayoutHelp helpLayout;
+	private static LayoutCalendar calendarLayout;
+	private static LayoutTemplate todayLayout;
+	private static LayoutTemplate tomorrowLayout;
+	private static LayoutTemplate upcomingLayout;
+	private static LayoutTemplate somedayLayout;
 	private static String _feedback;
-	private static String _scrollAction = "DO NOTHING";
-	private static double _scrollValue = 0;
 	private static Scene scene;
 	private static Stage stage;
 
@@ -53,12 +50,13 @@ public class Main extends Application {
 		initialiseStorage(args);
 		initialiseLogic();
 		Application.launch(args);
-		displaySummaryScene();
+		
 	}
 	
 	@Override
 	public void start(Stage primaryStage) {
 		stage = primaryStage;
+		displaySummaryScene();
 		setScene();
 		setStage();
 	}
@@ -71,8 +69,8 @@ public class Main extends Application {
 	
 	/** Initialise Scene for GUI */
 	private static void setScene(){
-		summaryBorderPane = new LayoutSummary(_numToday, _numTomorrow, _numUpcoming, _numSomeday);
-		scene = new Scene(summaryBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		summaryLayout = new LayoutSummary(_numToday, _numTomorrow, _numUpcoming, _numSomeday);
+		scene = new Scene(summaryLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 	}
@@ -162,72 +160,59 @@ public class Main extends Application {
 		stage.setIconified(true);
 	}
 	
-	public static void displayOldScene(){
-		oldBorderPane = new OldLayout(_taskList, _feedback);
-		_scrollValue = oldBorderPane.setScrollPosition(_scrollAction, _scrollValue);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
 	public static void displayHelpScene(){
-		helpBorderPane = new LayoutHelp();
-		scene = new Scene(helpBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		helpLayout = new LayoutHelp();
+		scene = new Scene(helpLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();
 	}
 	
 	public static void displayCalendarScene(){
-		calBorderPane = new LayoutCalendar();
-		scene = new Scene(calBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		calendarLayout = new LayoutCalendar();
+		scene = new Scene(calendarLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();
 	}
 	
 	public static void displaySummaryScene(){
-		summaryBorderPane = new LayoutSummary(_numToday, _numTomorrow, _numUpcoming, _numSomeday);
-		scene = new Scene(summaryBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		summaryLayout = new LayoutSummary(_numToday, _numTomorrow, _numUpcoming, _numSomeday);
+		scene = new Scene(summaryLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();
 	}
 	
 	public static void displayTodayScene(){
-		todayBorderPane = new LayoutTemplate("Today", _todayList);
-		scene = new Scene(todayBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		todayLayout = new LayoutTemplate("Today", _todayList);
+		scene = new Scene(todayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();
 	}
 	
 	public static void displayTomorrowScene(){
-		tomorrowBorderPane = new LayoutTemplate("Tomorrow", _tomorrowList);
-		scene = new Scene(tomorrowBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		tomorrowLayout = new LayoutTemplate("Tomorrow", _tomorrowList);
+		scene = new Scene(tomorrowLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();
 	}
 	
 	public static void displayUpcomingScene(){
-		upcomingBorderPane = new LayoutTemplate("Upcoming", _upcomingList);
-		scene = new Scene(upcomingBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		upcomingLayout = new LayoutTemplate("Upcoming", _upcomingList);
+		scene = new Scene(upcomingLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();
 	}
 	
 	public static void displaySomedayScene(){
-		somedayBorderPane = new LayoutTemplate("Someday", _somedayList);
-		scene = new Scene(somedayBorderPane, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		somedayLayout = new LayoutTemplate("Someday", _somedayList);
+		scene = new Scene(somedayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();
-	}
-	
-	public static void scrollListener(String action){
-		_scrollAction = action;
-		displayOldScene();
 	}
 }
