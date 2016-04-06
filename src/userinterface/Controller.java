@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import java.util.logging.*;
 
-import common.UserInterfaceObjectListTest;
-import common.UserInterfaceObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -25,11 +23,10 @@ public class Controller {
 	private static Logger _logger = java.util.logging.Logger.getLogger("ClockworkGUIController");
 	private static String _currentUserInput;
 	private static ClockWork _logic;
-	private static ArrayList<UserInterfaceObject> _todayList = new ArrayList<UserInterfaceObject>();
-	private static ArrayList<UserInterfaceObject> _tomorrowList = new ArrayList<UserInterfaceObject>();	
-	private static ArrayList<UserInterfaceObject> _upcomingList = new ArrayList<UserInterfaceObject>();	
-	private static ArrayList<UserInterfaceObject> _somedayList = new ArrayList<UserInterfaceObject>();
-
+	private static ArrayList<String[]> _todayList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _tomorrowList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _upcomingList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _somedayList = new ArrayList<String[]>();
 	/**
 	 * Handle event after key is pressed
 	 * 
@@ -99,25 +96,7 @@ public class Controller {
 //				System.out.println("SEARCH COMMAND: " + SearchCommand.getArrListForGUI().get(0));
 //			}
 			
-			if (!DisplayCommand.getArrListForGUI().isEmpty()){
-				TaskListProcessor.getUIObjects(DisplayCommand.getArrListForGUI().get(0));
-				
-				if (!TaskListProcessor.getTodayList().isEmpty()){
-					_todayList = TaskListProcessor.getTodayList();
-				}
-				
-				if (!TaskListProcessor.getTomorrowList().isEmpty()){
-					_tomorrowList = TaskListProcessor.getTomorrowList();
-				}
-				
-				if (!TaskListProcessor.getUpcomingList().isEmpty()){
-					_upcomingList = TaskListProcessor.getUpcomingList();
-				}
-				
-				if (!TaskListProcessor.getSomedayList().isEmpty()){
-					_somedayList = TaskListProcessor.getSomedayList();
-				}
-				
+			if (!DisplayCommand.getArrListForGUI().isEmpty()){			
 				Main.setNumToday(getNumTodayItems());
 				Main.setNumTomorrow(getNumTomorrowItems());
 				Main.setNumUpcoming(getNumUpcomingItems());

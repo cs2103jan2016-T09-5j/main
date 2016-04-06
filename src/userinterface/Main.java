@@ -2,7 +2,6 @@ package userinterface;
 
 import java.util.ArrayList;
 
-import common.UserInterfaceObject;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -18,10 +17,10 @@ public class Main extends Application {
 
 	/** Static variables */
 	private static ArrayList<String> _taskList = new ArrayList<String>();
-	private static ArrayList<UserInterfaceObject> _todayList = new ArrayList<UserInterfaceObject>();
-	private static ArrayList<UserInterfaceObject> _tomorrowList = new ArrayList<UserInterfaceObject>();	
-	private static ArrayList<UserInterfaceObject> _upcomingList = new ArrayList<UserInterfaceObject>();	
-	private static ArrayList<UserInterfaceObject> _somedayList = new ArrayList<UserInterfaceObject>();	
+	private static ArrayList<String[]> _todayList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _tomorrowList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _upcomingList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _somedayList = new ArrayList<String[]>();
 	
 	private static int _numToday;
 	private static int _numTomorrow;
@@ -124,19 +123,19 @@ public class Main extends Application {
 		_feedback = newFeedback;
 	}
 	
-	public static void setTodayList(ArrayList<UserInterfaceObject> todayList){
+	public static void setTodayList(ArrayList<String[]> todayList){
 		_todayList = todayList;
 	}
 	
-	public static void setTomorrowList(ArrayList<UserInterfaceObject> tomorrowList){
+	public static void setTomorrowList(ArrayList<String[]> tomorrowList){
 		_tomorrowList = tomorrowList;
 	}
 	
-	public static void setUpcomingList(ArrayList<UserInterfaceObject> upcomingList){
+	public static void setUpcomingList(ArrayList<String[]> upcomingList){
 		_upcomingList = upcomingList;
 	}
 	
-	public static void setSomedayList(ArrayList<UserInterfaceObject> somedayList){
+	public static void setSomedayList(ArrayList<String[]> somedayList){
 		_somedayList = somedayList;
 	}
 	
