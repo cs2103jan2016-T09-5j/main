@@ -39,7 +39,7 @@ public class LayoutTemplate extends BorderPane {
 	private ArrayList<String[]> _list = new ArrayList<String[]>();
 	private Label _titleLabel;
 	private String _titleString;
-	private String _feedback;
+	private ArrayList<String> _feedbackList;
 	private Node _titleNode;
 
 	public static final String ColumnIndexMapKey = "Index";
@@ -50,10 +50,11 @@ public class LayoutTemplate extends BorderPane {
 	private TableView tableView;
 	private double scrollValue = 0.25f;
 
-	public LayoutTemplate(String title, ArrayList<String[]> list, String feedbackType) {
+	public LayoutTemplate(String title, ArrayList<String[]> list, ArrayList<String> feedbackList) {
+		if (feedbackList == null) System.out.println("Error: LayoutTemplate null");
 		_titleString = title;
 		_list = list;
-		_feedback = feedbackType;
+		_feedbackList = feedbackList;
 		setDisplayRegions();
 	}
 
@@ -179,21 +180,21 @@ public class LayoutTemplate extends BorderPane {
 	}
 
 	private Text createFeedbackLabel() {
-		Text feedbackText = new Text(_feedback);		
-		feedbackText.setText(_feedback);
+		Text feedbackText = new Text(_feedbackList.get(1));		
+		feedbackText.setText(_feedbackList.get(1));
 		feedbackText.setFill(Color.WHITE);
 		feedbackText.setFont(Font.font("Calibri", 12));
-		if (_feedback.equals("Added")) {
+		if ((_feedbackList.get(0)).equals("Added")) {
 			feedbackText.setFont(Font.font("Calibri", FontWeight.BOLD, 12));
-		} else if (_feedback.equals("Edited")) {
+		} else if ((_feedbackList.get(0)).equals("Edited")) {
 			feedbackText.setFont(Font.font("Calibri", FontPosture.ITALIC, 12));
-		} else if (_feedback.equals("Marked")) {
+		} else if ((_feedbackList.get(0)).equals("Marked")) {
 			feedbackText.setStrikethrough(true);
 			feedbackText.setFill(Color.GREY);
-		} else if (_feedback.equals("Redo")) {
+		} else if ((_feedbackList.get(0)).equals("Redo")) {
 			feedbackText.setUnderline(true);
-		} else if (_feedback.equals("Clash")) {
-			feedbackText.setText(_feedback);
+		} else if ((_feedbackList.get(0)).equals("Clash")) {
+			feedbackText.setText(_feedbackList.get(1));
 			feedbackText.setFill(Color.CRIMSON);
 		}		
 		return feedbackText;

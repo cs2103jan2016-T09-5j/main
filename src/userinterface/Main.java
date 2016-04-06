@@ -37,9 +37,9 @@ public class Main extends Application {
 	private static LayoutTemplate tomorrowLayout;
 	private static LayoutUpcoming upcomingLayout;
 	private static LayoutTemplate somedayLayout;
-	private static LayoutTemplate searchLayout;
+	private static LayoutUpcoming searchLayout;
 	private static LayoutUpcoming allLayout;
-	private static String _feedback;
+	private static ArrayList<String> _feedback;
 	private static Scene scene;
 	private static Stage stage;
 
@@ -120,7 +120,7 @@ public class Main extends Application {
 	* ===========================================
 	*/
 	
-	public static void setFeedback(String feedback){
+	public static void setFeedback(ArrayList<String> feedback){
 		_feedback = feedback;
 	}
 	
@@ -185,6 +185,7 @@ public class Main extends Application {
 	}
 	
 	public static TableView displayTodayScene(){
+		_feedback = Controller.getFeedback();
 		todayLayout = new LayoutTemplate("Today", _todayList, _feedback);
 		scene = new Scene(todayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
@@ -194,6 +195,7 @@ public class Main extends Application {
 	}
 	
 	public static void displayTomorrowScene(){
+		_feedback = Controller.getFeedback();
 		tomorrowLayout = new LayoutTemplate("Tomorrow", _tomorrowList, _feedback);
 		scene = new Scene(tomorrowLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
@@ -202,6 +204,7 @@ public class Main extends Application {
 	}
 	
 	public static void displayUpcomingScene(){
+		_feedback = Controller.getFeedback();
 		upcomingLayout = new LayoutUpcoming("Upcoming", _upcomingList,  _feedback);
 		scene = new Scene(upcomingLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
@@ -210,6 +213,7 @@ public class Main extends Application {
 	}
 	
 	public static void displaySomedayScene(){
+		_feedback = Controller.getFeedback();
 		somedayLayout = new LayoutTemplate("Someday", _somedayList,  _feedback);
 		scene = new Scene(somedayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
@@ -218,7 +222,8 @@ public class Main extends Application {
 	}
 	
 	public static void displaySearchScene(){
-		searchLayout = new LayoutTemplate("Search", _searchList,  _feedback);
+		_feedback = Controller.getFeedback();
+		searchLayout = new LayoutUpcoming("Search", _searchList,  _feedback);
 		scene = new Scene(searchLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
@@ -226,6 +231,7 @@ public class Main extends Application {
 	}
 	
 	public static void displayAllScene(){
+		_feedback = Controller.getFeedback();
 		allLayout = new LayoutUpcoming("All Tasks", _powerList,  _feedback);
 		scene = new Scene(allLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();

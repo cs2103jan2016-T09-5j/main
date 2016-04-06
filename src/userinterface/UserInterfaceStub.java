@@ -39,8 +39,8 @@ public class UserInterfaceStub {
 		return list;
 	}
 	
-	public static ArrayList<String> populateFeedbackList(ArrayList<String> feedbackList){
-		feedbackList.clear();
+	public static ArrayList<String> populateFeedbackList(){
+		ArrayList<String> feedbackList = new ArrayList<String>();
 		feedbackList.add("Added");
 		feedbackList.add("Added: Run with Felicia");
 		return feedbackList;

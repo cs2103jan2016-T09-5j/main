@@ -1,7 +1,7 @@
 package userinterface;
 
 import java.util.ArrayList;
-
+import java.util.Arrays;
 import java.util.logging.*;
 
 import javafx.collections.FXCollections;
@@ -23,7 +23,7 @@ public class Controller {
 
 	private static Logger _logger = java.util.logging.Logger.getLogger("ClockworkGUIController");
 	private static String _currentUserInput;
-	private static ArrayList<String> _feedback;
+	private static ArrayList<String> _feedback = new ArrayList<String>(Arrays.asList(" ", " "));
 	private static ClockWork _logic;
 	private static ArrayList<String[]> _todayList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _tomorrowList = new ArrayList<String[]>();
@@ -111,9 +111,6 @@ public class Controller {
 //					Main.setNumSomeday(getNumSomedayItems());
 //				}
 				
-				
-				Main.setFeedback("POTATO");
-				
 				Main.setNumToday(getNumTodayItems());
 				Main.setNumTomorrow(getNumTomorrowItems());
 				Main.setNumUpcoming(getNumUpcomingItems());
@@ -128,16 +125,25 @@ public class Controller {
 		_logger.log(Level.INFO, "Sucessfully called logic to process keypress.");
 	}
 	
+	//Get Logic to give you the feedback list here
+	public static ArrayList<String> getFeedback() {
+		_feedback = UserInterfaceStub.populateFeedbackList();
+//		_feedback = Logjvfdmdklvdf/...
+		return _feedback;
+	}
+	
 	public static void redirectScene(Button button, String sceneName) {
 		button.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent ke) {
 				if (ke.getCode().equals(KeyCode.ENTER)) {
 					if (sceneName.equals("Today")){
+						//_todayList = Logic.getngjkdfdefgrfkld
 						UserInterfaceStub.populateList(_todayList);
 						Main.setTodayList(_todayList);
 						currentTableView = Main.displayTodayScene();
 					} else if (sceneName.equals("Tomorrow")){				
+						//_tomorrowList = ...
 						Main.setTomorrowList(_tomorrowList);
 						Main.displayTomorrowScene();
 					} else if (sceneName.equals("Upcoming")){					
@@ -208,7 +214,12 @@ public class Controller {
 	
 	public static void setLogic(ClockWork l){
 		_logic = l;
-		processEnter("DISPLAY");
+		processUserEnter("display");
+	}
+
+	private static void processUserEnter(String string) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
