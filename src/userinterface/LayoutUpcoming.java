@@ -44,6 +44,9 @@ public class LayoutUpcoming extends BorderPane {
 	public static final String ColumnTimeMapKey = "Time";
 	public static final String ColumnDateMapKey = "Date";
 
+	private TableView tableView;
+	private double scrollValue = 0.25f;
+	
 	public LayoutUpcoming(String title, ArrayList<String[]> list, ArrayList<String> feedbackList) {
 		_titleString = title;
 		_list = list;
@@ -85,7 +88,7 @@ public class LayoutUpcoming extends BorderPane {
 		fourthDataColumn.setCellValueFactory(new MapValueFactory(ColumnDateMapKey));
 		fourthDataColumn.setMinWidth(100);
 
-		TableView tableView = new TableView<>(populateDataInMap());
+	    tableView = new TableView<>(populateDataInMap());
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		tableView.setEditable(false);
 		tableView.getSelectionModel().setCellSelectionEnabled(false);
@@ -123,14 +126,15 @@ public class LayoutUpcoming extends BorderPane {
 
 	private ObservableList<Map> populateDataInMap() {
 		ObservableList<Map> allData = FXCollections.observableArrayList();
-		for (int i = 0; i < _list.size(); i++) {
+		for (int i = 1; i < _list.size(); i++) {
 			Map<String, String> dataRow = new HashMap<>();
 
 			String index = _list.get(i)[0];
 			String name = _list.get(i)[1];
 			String time = _list.get(i)[2];
 			String date = _list.get(i)[3];
-
+			//System.out.println(date);
+			
 			dataRow.put(ColumnIndexMapKey, index);
 			dataRow.put(ColumnNameMapKey, name);
 			dataRow.put(ColumnTimeMapKey, time);
@@ -178,23 +182,29 @@ public class LayoutUpcoming extends BorderPane {
 	}
 
 	private Text createFeedbackLabel() {
-		Text feedbackText = new Text(_feedbackList.get(1));		
-		feedbackText.setText(_feedbackList.get(1));
+		 String[] result = _feedbackList.get(0).split(" ", 2);
+		    String first = result[0];
+		   // System.out.println(first);
+		Text feedbackText = new Text(_feedbackList.get(0));		
+		feedbackText.setText(_feedbackList.get(0));
 		feedbackText.setFill(Color.WHITE);
 		feedbackText.setFont(Font.font("Calibri", 12));
-		if ((_feedbackList.get(0)).equals("Added")) {
+		if (first.equals("Added")) {
 			feedbackText.setFont(Font.font("Calibri", FontWeight.BOLD, 12));
-		} else if ((_feedbackList.get(0)).equals("Edited")) {
+		} else if (first.equals("Edited")) {
 			feedbackText.setFont(Font.font("Calibri", FontPosture.ITALIC, 12));
-		} else if ((_feedbackList.get(0)).equals("Marked")) {
+		} else if (first.equals("Marked")) {
 			feedbackText.setStrikethrough(true);
 			feedbackText.setFill(Color.GREY);
-		} else if ((_feedbackList.get(0)).equals("Redo")) {
+		} else if (first.equals("Redo")) {
 			feedbackText.setUnderline(true);
-		} else if ((_feedbackList.get(0)).equals("Clash")) {
-			feedbackText.setText(_feedbackList.get(1));
+		} else if (first.equals("Clash")) {
+			feedbackText.setText(_feedbackList.get(0));
 			feedbackText.setFill(Color.CRIMSON);
 		}
 		return feedbackText;
+	}
+	public TableView getTableView(){
+		return this.tableView;
 	}
 }
