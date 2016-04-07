@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.*;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -66,21 +63,23 @@ public class Controller {
 				textField.clear();
 			}
 		} else if (ke.getCode().equals(KeyCode.ESCAPE)) {
-			// DISPLAY SUMMARY SCENE
-			Main.setNumToday(getNumTodayItems());
-			Main.setNumTomorrow(getNumTomorrowItems());
-			Main.setNumUpcoming(getNumUpcomingItems());
-			Main.setNumSomeday(getNumSomedayItems());
-			Main.displaySummaryScene();
+			processEnter("DISPLAY");
 		} else if (ke.getCode().equals(KeyCode.F1)){
 			// HELP SCENE
 			Main.displayHelpScene();
 		} else if (ke.getCode().equals(KeyCode.F2)) {
 			// DISPLAY CALENDAR
 			Main.displayCalendarScene();
-		} else if (ke.getCode().equals(KeyCode.F3)) {
+		} else if (ke.getCode().equals(KeyCode.F4)) {
 			// MINIMISE
 			Main.minimise();
+		} else if (ke.getCode().equals(KeyCode.DELETE)) {
+			// DISPLAY SUMMARY SCENE
+			Main.setNumToday(getNumTodayItems());
+			Main.setNumTomorrow(getNumTomorrowItems());
+			Main.setNumUpcoming(getNumUpcomingItems());
+			Main.setNumSomeday(getNumSomedayItems());
+			Main.displaySummaryScene();
 		} 
 	}
 
@@ -92,11 +91,11 @@ public class Controller {
 			if (keyword[0].equalsIgnoreCase("search")){
 				resetLists();
 				ClockWork.ClockworkLogicMain(userInput, _logic);
-					_feedback = SignalHandler.getArrListForGUI();
-					_searchList = SearchDisplay.getSearchArrListForGUI();
-					System.out.println(_searchList.get(0)[3]);
-					Main.setSearchList(_searchList);
-					Main.displaySearchScene();
+				_feedback = SignalHandler.getArrListForGUI();
+				_searchList = SearchDisplay.getSearchArrListForGUI();
+				System.out.println(_searchList.get(0)[3]);
+				Main.setSearchList(_searchList);
+				Main.displaySearchScene();
 			} else {
 				resetLists();
 				ClockWork.ClockworkLogicMain(userInput, _logic);
@@ -104,26 +103,6 @@ public class Controller {
 				_powerList = DisplayCategory.getCommandArrListForGUI();
 				Main.setPowerList(_powerList);
 				Main.displayAllScene();
-//				// FEEDBACK STRING
-//				if (!SignalHandler.getArrListForGUI().isEmpty()){
-//					System.out.println("SIGNAL HANDLER: " + SignalHandler.getArrListForGUI().get(0));
-//				}
-//				//CLASH DETECTOR STRING
-//				if (!ClashDetector.getArrListForGUI().isEmpty()){
-//					System.out.println("CLASH DETECTOR: " + ClashDetector.getArrListForGUI().get(0));
-//				}
-//				
-//				//SHOWS SEARCH STRINGS
-//				if (!SearchCommand.getArrListForGUI().isEmpty()){
-//					System.out.println("SEARCH COMMAND: " + SearchCommand.getArrListForGUI().get(0));
-//				}
-//				
-//				if (!DisplayCommand.getArrListForGUI().isEmpty()){			
-//					Main.setNumToday(getNumTodayItems());
-//					Main.setNumTomorrow(getNumTomorrowItems());
-//					Main.setNumUpcoming(getNumUpcomingItems());
-//					Main.setNumSomeday(getNumSomedayItems());
-//				}
 				
 				Main.setNumToday(getNumTodayItems());
 				Main.setNumTomorrow(getNumTomorrowItems());
@@ -139,9 +118,8 @@ public class Controller {
 		_logger.log(Level.INFO, "Sucessfully called logic to process keypress.");
 	}
 	
-	//Get Logic to give you the feedback list here
 	public static ArrayList<String> getFeedback() {
-		_feedback = UserInterfaceStub.populateFeedbackList();
+		resetFeedbackList();
 		if (!SignalHandler.getArrListForGUI().isEmpty()){
 			_feedback = SignalHandler.getArrListForGUI();
 		}
@@ -154,11 +132,8 @@ public class Controller {
 			public void handle(KeyEvent ke) {
 				if (ke.getCode().equals(KeyCode.ENTER)) {
 					ClockWork.ClockworkLogicMain("display", _logic);
-//					ArrayList<String[]> a = DisplayCategory.getTodayArrListForGUI();
-//					System.out.println(a.get(1)[0]);
 					if (sceneName.equals("Today")){
 						todayList = DisplayCategory.getTodayArrListForGUI();
-						//UserInterfaceStub.populateList(_todayList);
 						Main.setTodayList(todayList);
 						currentTableView = Main.displayTodayScene();
 						Main.displayTodayScene();
@@ -189,6 +164,12 @@ public class Controller {
 				}
 			}
 		});
+	}
+	
+	public static void resetFeedbackList(){
+		_feedback = new ArrayList<String>();
+		_feedback.add("");
+		_feedback.add("");
 	}
 	
 	public static void resetLists(){

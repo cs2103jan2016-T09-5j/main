@@ -31,7 +31,7 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
-public class LayoutUpcoming extends BorderPane {
+public class LayoutTemplateDate extends BorderPane {
 
 	private ArrayList<String[]> _list = new ArrayList<String[]>();
 	private Label _titleLabel;
@@ -47,7 +47,7 @@ public class LayoutUpcoming extends BorderPane {
 	private TableView tableView;
 	private double scrollValue = 0.25f;
 	
-	public LayoutUpcoming(String title, ArrayList<String[]> list, ArrayList<String> feedbackList) {
+	public LayoutTemplateDate(String title, ArrayList<String[]> list, ArrayList<String> feedbackList) {
 		_titleString = title;
 		_list = list;
 		_feedbackList = feedbackList;

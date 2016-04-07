@@ -8,6 +8,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import logic.ClockWork;
+import logic.DisplayCategory;
 import storage.StorageUtils;
 
 public class Main extends Application {
@@ -35,10 +36,10 @@ public class Main extends Application {
 	private static LayoutCalendar calendarLayout;
 	private static LayoutTemplate todayLayout;
 	private static LayoutTemplate tomorrowLayout;
-	private static LayoutUpcoming upcomingLayout;
+	private static LayoutTemplateDate upcomingLayout;
 	private static LayoutTemplate somedayLayout;
-	private static LayoutUpcoming searchLayout;
-	private static LayoutUpcoming allLayout;
+	private static LayoutTemplateDate searchLayout;
+	private static LayoutTemplateDate allLayout;
 	private static ArrayList<String> _feedback;
 	private static Scene scene;
 	private static Stage stage;
@@ -59,7 +60,6 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		stage = primaryStage;
-		displaySummaryScene();
 		setScene();
 		setStage();
 	}
@@ -72,10 +72,7 @@ public class Main extends Application {
 	
 	/** Initialise Scene for GUI */
 	private static void setScene(){
-		summaryLayout = new LayoutSummary(_numToday, _numTomorrow, _numUpcoming, _numSomeday);
-		scene = new Scene(summaryLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		Controller.processEnter("DISPLAY");
 	}
 	
 	/** Initialise Stage for GUI */
@@ -211,7 +208,7 @@ public class Main extends Application {
 	
 	public static void displayUpcomingScene(){
 		_feedback = Controller.getFeedback();
-		upcomingLayout = new LayoutUpcoming("Upcoming", _upcomingList,  _feedback);
+		upcomingLayout = new LayoutTemplateDate("Upcoming", _upcomingList,  _feedback);
 		scene = new Scene(upcomingLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
@@ -229,7 +226,7 @@ public class Main extends Application {
 	
 	public static void displaySearchScene(){
 		_feedback = Controller.getFeedback();
-		searchLayout = new LayoutUpcoming("Search", _searchList,  _feedback);
+		searchLayout = new LayoutTemplateDate("Search", _searchList,  _feedback);
 		scene = new Scene(searchLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
@@ -238,7 +235,7 @@ public class Main extends Application {
 	
 	public static void displayAllScene(){
 		_feedback = Controller.getFeedback();
-		allLayout = new LayoutUpcoming("All Tasks", _powerList,  _feedback);
+		allLayout = new LayoutTemplateDate("All Tasks", _powerList,  _feedback);
 		scene = new Scene(allLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
