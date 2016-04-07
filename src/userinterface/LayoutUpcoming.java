@@ -82,19 +82,13 @@ public class LayoutUpcoming extends BorderPane {
 		firstDataColumn.setCellValueFactory(new MapValueFactory(ColumnIndexMapKey));
 		firstDataColumn.setMinWidth(10);
 		secondDataColumn.setCellValueFactory(new MapValueFactory(ColumnNameMapKey));
-		secondDataColumn.setMinWidth(500);
+		secondDataColumn.setMinWidth(600);
 		thirdDataColumn.setCellValueFactory(new MapValueFactory(ColumnTimeMapKey));
-		thirdDataColumn.setMinWidth(190);
+		thirdDataColumn.setMinWidth(90);
 		fourthDataColumn.setCellValueFactory(new MapValueFactory(ColumnDateMapKey));
 		fourthDataColumn.setMinWidth(100);
 
-	    try {
-			tableView = new TableView<>(populateDataInMap());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			tableView = new TableView<>();
-			e.printStackTrace();
-		}
+	    tableView = new TableView<>(populateDataInMap());
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		tableView.setEditable(false);
 		tableView.getSelectionModel().setCellSelectionEnabled(false);
