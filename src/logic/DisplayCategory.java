@@ -13,9 +13,7 @@ public class DisplayCategory {
     private static  ArrayList<String[]> somedaysArrListForGUI = new ArrayList<String[]> ();
     private static  ArrayList<String[]> upcommingArrListForGUI = new ArrayList<String[]> ();
     private static  ArrayList<String[]> commandArrListForGUI = new ArrayList<String[]> ();
-	private static Calendar calendar = Calendar.getInstance();
 	private static DateFormat dateFormat = new SimpleDateFormat("EEE dd MMM yyyy");
-	private static Date today = calendar.getTime();
 	
     /**
 	 * ArrayList<String[]> sorted in to 5 categories:
@@ -50,12 +48,12 @@ public class DisplayCategory {
     	commandArrListForGUI.clear();
     }
 	private static boolean sortTodayList(){
-    	String todayAsString = dateFormat.format(today);
+		Calendar calendar = Calendar.getInstance();
+    	String todayAsString = dateFormat.format(calendar.getTime());
     	ArrayList<ArrayList<String[]>> display = taskListProcessor();
     	
     	for(int i=0; i<display.size(); i++){
     		if(display.get(i).get(0)[0].equals(todayAsString)){
-    			display.get(i).get(0)[1] = todayAsString;
     			todayArrListForGUI = display.get(i);
     			return true;
     		}
@@ -63,13 +61,12 @@ public class DisplayCategory {
     	return false;
     }
     private static boolean sortTmrList(){
+		Calendar calendar = Calendar.getInstance();
     	calendar.add(Calendar.DAY_OF_YEAR,1);
-    	Date tmr = calendar.getTime();
-    	String tmrAsString = dateFormat.format(tmr);
+    	String tmrAsString = dateFormat.format(calendar.getTime());
     	ArrayList<ArrayList<String[]>> display = taskListProcessor();
     	for(int i=0; i<display.size(); i++){
     		if(display.get(i).get(0)[0].equals(tmrAsString)){
-    			display.get(i).get(0)[1] = dateFormat.format(today);
     			tmrArrListForGUI = display.get(i);
     			return true;
     		}
@@ -80,7 +77,6 @@ public class DisplayCategory {
     	ArrayList<ArrayList<String[]>> display = taskListProcessor();
     	for(int i=0; i<display.size(); i++){
     		if(display.get(i).get(0)[0].equals("Anytime.")){
-    			display.get(i).get(0)[1] = dateFormat.format(today);
     			somedaysArrListForGUI = display.get(i);
     			return true;
     		}
@@ -88,14 +84,17 @@ public class DisplayCategory {
     	return false;
     }
     private static boolean sortUpcommingList(){
-    	ArrayList<ArrayList<String[]>> display = taskListProcessor();
+		Calendar calendar = Calendar.getInstance();
+    	String todayAsString = dateFormat.format(calendar.getTime());
     	calendar.add(Calendar.DAY_OF_YEAR,1);
-    	Date tmr = calendar.getTime();
+    	String tmrAsString = dateFormat.format(calendar.getTime());
+    	ArrayList<ArrayList<String[]>> display = taskListProcessor();
+    	upcommingArrListForGUI.clear();
     	for(int i=0; i<display.size(); i++){
-    		String str = display.get(i).get(0)[0];
-    		if(!str.equals("Anytime.") || !str.equals(dateFormat.format(tmr))
-    				|| !str.equals(dateFormat.format(today))){
-    			upcommingArrListForGUI.addAll(display.get(i));
+    		String str = display.get(i).get(1)[3];
+    		if(!str.equals("Anytime.") && !str.equals(tmrAsString)
+    				&& !str.equals(todayAsString)){
+    			combineArrList(display.get(i),upcommingArrListForGUI);
     		}
     	}
     	return true;
@@ -103,9 +102,17 @@ public class DisplayCategory {
     private static boolean sortCommandList(){
     	ArrayList<ArrayList<String[]>> display = taskListProcessor();
     	for(int i=0; i<display.size(); i++){
-    		commandArrListForGUI.addAll(display.get(i));
+    		combineArrList(display.get(i),commandArrListForGUI);
     	}
     	return true;
+    }
+    private static void combineArrList(ArrayList<String[]> displayAL, ArrayList<String[]> upComingAL){
+    	for(int i=1 ; i < displayAL.size(); i++){
+    			upComingAL.add(displayAL.get(i));
+    			for(int j=0; j < displayAL.get(i).length;j++){
+    		//	System.out.println(displayAL.get(i)[j]);
+    			}
+    	}
     }
     private static ArrayList<ArrayList<String[]>> taskListProcessor(){
         	ArrayList<ArrayList<String[]>> list = new ArrayList<ArrayList<String[]>>();

@@ -20,8 +20,6 @@ import logic.DisplayCommand;
 import logic.SearchCommand;
 import logic.SearchDisplay;
 import logic.SignalHandler;
-import logic.Todo;
-import logic.TodoState;
 
 public class Controller {
 
@@ -35,9 +33,6 @@ public class Controller {
 	private static ArrayList<String[]> _somedayList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _searchList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _powerList = new ArrayList<String[]>();
-	
-	private static ArrayList<Todo> todayObjectList = new ArrayList<Todo>();
-	
 	private static TableView currentTableView;
 	
 	/**
@@ -92,15 +87,16 @@ public class Controller {
 	public static void processEnter(String userInput) {
 		_logger.log(Level.INFO, "Calling logic to process keypress.");
 		try {
+			
 			String[] keyword = userInput.split(" ");
 			if (keyword[0].equalsIgnoreCase("search")){
+				resetLists();
 				ClockWork.ClockworkLogicMain(userInput, _logic);
-				if (!SignalHandler.getArrListForGUI().isEmpty()){
 					_feedback = SignalHandler.getArrListForGUI();
 					_searchList = SearchDisplay.getSearchArrListForGUI();
+					System.out.println(_searchList.get(0)[3]);
 					Main.setSearchList(_searchList);
 					Main.displaySearchScene();
-				}
 			} else {
 				resetLists();
 				ClockWork.ClockworkLogicMain(userInput, _logic);
@@ -158,29 +154,14 @@ public class Controller {
 			public void handle(KeyEvent ke) {
 				if (ke.getCode().equals(KeyCode.ENTER)) {
 					ClockWork.ClockworkLogicMain("display", _logic);
-					
-					TodoState todoState = DisplayCommand.getTodoState();
-					
+//					ArrayList<String[]> a = DisplayCategory.getTodayArrListForGUI();
+//					System.out.println(a.get(1)[0]);
 					if (sceneName.equals("Today")){
-//						todayObjectList = todoState.getTodayTodos();
-//						UserInterfaceObject testUserInterfaceObject = new UserInterfaceObject(todayObjectList.get(0));
-//						System.out.println(testUserInterfaceObject.getName());
-//						Main.setTodayObjectList(todayObjectList);
-//						Main.displayTodaySceneUsingObject();
-						
-						if (!todayObjectList.isEmpty()){
-							UserInterfaceObject testObj = new UserInterfaceObject(todoState.getTodayTodos().get(0));
-							System.out.println("CONTROLLER: " + testObj.getIndex());
-							System.out.println("CONTROLLER: " + testObj.getName());
-							System.out.println("CONTROLLER: " + testObj.getTime());
-						} else {
-							System.out.println("EMPTY");
-						}
-						
 						todayList = DisplayCategory.getTodayArrListForGUI();
+						//UserInterfaceStub.populateList(_todayList);
 						Main.setTodayList(todayList);
+						currentTableView = Main.displayTodayScene();
 						Main.displayTodayScene();
-						
 					} else if (sceneName.equals("Tomorrow")){				
 						_tomorrowList = DisplayCategory.geTmrArrListForGUI();
 						Main.setTomorrowList(_tomorrowList);
@@ -210,7 +191,7 @@ public class Controller {
 		});
 	}
 	
-	private static void resetLists(){
+	public static void resetLists(){
 		SignalHandler.clearArrListForGUI();
 		DisplayCommand.clearArrListForGUI();
 		SearchCommand.clearArrListForGUI();
@@ -223,7 +204,7 @@ public class Controller {
 		if (todayList.isEmpty()){
 			return 0;
 		} else {
-			return todayList.size();
+			return todayList.size()-1;
 		}
 	}
 	
@@ -231,7 +212,7 @@ public class Controller {
 		if (_tomorrowList.isEmpty()){
 			return 0;
 		} else {
-			return _tomorrowList.size();
+			return _tomorrowList.size()-1;
 		}
 	}
 	
@@ -247,7 +228,7 @@ public class Controller {
 		if (_somedayList.isEmpty()){
 			return 0;
 		} else {
-			return _somedayList.size();
+			return _somedayList.size()-1;
 		}
 	}
     
@@ -257,12 +238,6 @@ public class Controller {
 	
 	public static void setLogic(ClockWork l){
 		_logic = l;
-		processUserEnter("display");
-	}
-
-	private static void processUserEnter(String string) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }

@@ -8,7 +8,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import logic.ClockWork;
-import logic.Todo;
 import storage.StorageUtils;
 
 public class Main extends Application {
@@ -30,8 +29,6 @@ public class Main extends Application {
 	private static int _numUpcoming;
 	private static int _numSomeday;
 	
-	private static LayoutTemplateUsingObject todayObjectLayout;
-	private static ArrayList<Todo> _todayObjectList = new ArrayList<Todo>();
 
 	private static LayoutSummary summaryLayout;
 	private static LayoutHelp helpLayout;
@@ -99,6 +96,7 @@ public class Main extends Application {
 	 */
 	private static void initialiseLogic() {
 		Controller.setLogic(ClockWork.getInstance());
+		Controller.resetLists();
 	}
 	
 	/** 
@@ -164,10 +162,6 @@ public class Main extends Application {
 		_numSomeday = numSomeday;
 	}
 	
-	public static void setTodayObjectList(ArrayList<Todo> todayObjectList){
-		_todayObjectList = todayObjectList;		
-	}
-	
 	public static void minimise(){
 		stage.setIconified(true);
 	}
@@ -196,22 +190,14 @@ public class Main extends Application {
 		setStage();
 	}
 	
-	public static void displayTodayScene(){
+	public static TableView displayTodayScene(){
 		_feedback = Controller.getFeedback();
 		todayLayout = new LayoutTemplate("Today", _todayList, _feedback);
 		scene = new Scene(todayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();
-	}
-	
-	public static void displayTodaySceneUsingObject(){
-		_feedback = Controller.getFeedback();
-		todayObjectLayout = new LayoutTemplateUsingObject("Today", _todayObjectList, _feedback);
-		scene = new Scene(todayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
+		return todayLayout.getTableView();
 	}
 	
 	public static void displayTomorrowScene(){

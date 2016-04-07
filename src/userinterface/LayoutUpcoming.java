@@ -80,13 +80,13 @@ public class LayoutUpcoming extends BorderPane {
 		TableColumn<Map, String> fourthDataColumn = new TableColumn<>("Date");
 
 		firstDataColumn.setCellValueFactory(new MapValueFactory(ColumnIndexMapKey));
-		firstDataColumn.setMinWidth(10);
+		firstDataColumn.setMinWidth(20);
 		secondDataColumn.setCellValueFactory(new MapValueFactory(ColumnNameMapKey));
-		secondDataColumn.setMinWidth(600);
+		secondDataColumn.setMinWidth(400);
 		thirdDataColumn.setCellValueFactory(new MapValueFactory(ColumnTimeMapKey));
-		thirdDataColumn.setMinWidth(90);
+		thirdDataColumn.setMinWidth(170);
 		fourthDataColumn.setCellValueFactory(new MapValueFactory(ColumnDateMapKey));
-		fourthDataColumn.setMinWidth(100);
+		fourthDataColumn.setMinWidth(150);
 
 	    tableView = new TableView<>(populateDataInMap());
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -126,14 +126,13 @@ public class LayoutUpcoming extends BorderPane {
 
 	private ObservableList<Map> populateDataInMap() {
 		ObservableList<Map> allData = FXCollections.observableArrayList();
-		for (int i = 1; i < _list.size(); i++) {
+		for (int i = 0; i < _list.size(); i++) {
 			Map<String, String> dataRow = new HashMap<>();
-
 			String index = _list.get(i)[0];
 			String name = _list.get(i)[1];
 			String time = _list.get(i)[2];
 			String date = _list.get(i)[3];
-			//System.out.println(date);
+		//	System.out.println(_list.size());
 			
 			dataRow.put(ColumnIndexMapKey, index);
 			dataRow.put(ColumnNameMapKey, name);
