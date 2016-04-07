@@ -20,6 +20,8 @@ import logic.DisplayCommand;
 import logic.SearchCommand;
 import logic.SearchDisplay;
 import logic.SignalHandler;
+import logic.Todo;
+import logic.TodoState;
 
 public class Controller {
 
@@ -33,6 +35,9 @@ public class Controller {
 	private static ArrayList<String[]> _somedayList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _searchList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _powerList = new ArrayList<String[]>();
+	
+	private static ArrayList<Todo> todayObjectList = new ArrayList<Todo>();
+	
 	private static TableView currentTableView;
 	
 	/**
@@ -153,11 +158,10 @@ public class Controller {
 			public void handle(KeyEvent ke) {
 				if (ke.getCode().equals(KeyCode.ENTER)) {
 					ClockWork.ClockworkLogicMain("display", _logic);
-//					ArrayList<String[]> a = DisplayCategory.getTodayArrListForGUI();
-//					System.out.println(a.get(1)[0]);
+					TodoState todoState = DisplayCommand.getTodoState();
 					if (sceneName.equals("Today")){
+						todayObjectList = todoState.getTodayTodos();
 						todayList = DisplayCategory.getTodayArrListForGUI();
-						//UserInterfaceStub.populateList(_todayList);
 						Main.setTodayList(todayList);
 						currentTableView = Main.displayTodayScene();
 						Main.displayTodayScene();

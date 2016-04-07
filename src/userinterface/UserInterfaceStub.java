@@ -41,8 +41,8 @@ public class UserInterfaceStub {
 	
 	public static ArrayList<String> populateFeedbackList(){
 		ArrayList<String> feedbackList = new ArrayList<String>();
-		feedbackList.add("Added");
-		feedbackList.add("Added: Run with Felicia");
+		feedbackList.add(" ");
+		feedbackList.add(" ");
 		return feedbackList;
 	}
 }

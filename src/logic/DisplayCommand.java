@@ -22,7 +22,10 @@ import storage.Memory;
 
 public class DisplayCommand extends Command {
 
-    private static Logger logger = LoggerFactory
+    private static TodoState todoState;
+    private static Collection<Todo> todos;
+	
+	private static Logger logger = LoggerFactory
             .getLogger(DisplayCommand.class);
 
     private static final boolean LOGGING = false;
@@ -66,11 +69,13 @@ public class DisplayCommand extends Command {
 
     private static final String RELATIVE_PERIOD_PREFIX = " in ";
     private static final String FLOATING_TASK_HEADING = "Anytime";
+    
     // Relative timing format
     private static PeriodFormatter formatter = new PeriodFormatterBuilder()
             .appendHours().appendSuffix("h ")
             .printZeroNever().appendMinutes().appendSuffix("min ")
             .printZeroNever().toFormatter();
+    
     //For GUI display
     private static  ArrayList<String> ArrListForGUI = new ArrayList<String> ();
 	/**
@@ -89,11 +94,20 @@ public class DisplayCommand extends Command {
     public static void clearArrListForGUI(){
     	ArrListForGUI.clear();
     }
-
+    
+    //For GUI to get the TodoState object
+    public static TodoState getTodoState(){
+		todoState = new TodoState(todos);
+		return todoState;
+    }
+    
     @Override
 	public Signal execute() {
 		String displayString;
+		
 		Collection<Todo> todos = memory.getAllTodos();
+		todoState = new TodoState(todos);
+		
 		if (todos.size() == 0) {
             return new Signal(Signal.DISPLAY_EMPTY_TODO_SIGNAL, true);
 		}
