@@ -15,11 +15,13 @@ public class BoxHeader extends BorderPane {
 	private Node calNode;
 	private Node minNode;
 	private Node escNode;
+	private Node summaryNode;
 	
 	private Label taskLbl = new Label("     Tasks     ");
 	private Label helpLbl = new Label("F1");
 	private Label calLbl = new Label("F2");
-	private Label minLbl = new Label("F3");
+	private Label summaryLbl = new Label("F3");
+	private Label minLbl = new Label("Del");
 	private Label escLbl = new Label("Esc");
 	private Label dummyLbl = new Label(" ");
 	
@@ -35,16 +37,19 @@ public class BoxHeader extends BorderPane {
 		calNode = createCalNode();
 		minNode = createMinNode();
 		escNode = createEscNode();
+		summaryNode = createSummaryNode();
 	}
 	
 	private Node createShortcutBox(){
 		ComponentContentBoxHeader shortcutsBox = new ComponentContentBoxHeader();
 		
 		ComponentContentBoxHeader helpCalBox = createLeftShortcutBox();
-		ComponentContentBoxHeader minEscBox = createRightShortcutBox();
+		ComponentContentBoxHeader minSumBox = createCenterShortcutBox();
+		ComponentContentBoxHeader escBox = createRightShortcutBox();
 		
 		shortcutsBox.setLeft(helpCalBox);
-		shortcutsBox.setRight(minEscBox);
+		shortcutsBox.setCenter(minSumBox);
+		shortcutsBox.setRight(escBox);
 		
 		return shortcutsBox;
 	}
@@ -56,11 +61,17 @@ public class BoxHeader extends BorderPane {
 		return helpCalBox;
 	}
 
+	private ComponentContentBoxHeader createCenterShortcutBox() {
+		ComponentContentBoxHeader minSumBox = new ComponentContentBoxHeader();
+		minSumBox.setLeft(summaryNode);
+		minSumBox.setRight(minNode);
+		return minSumBox;
+	}
+	
 	private ComponentContentBoxHeader createRightShortcutBox() {
-		ComponentContentBoxHeader minEscBox = new ComponentContentBoxHeader();
-		minEscBox.setLeft(minNode);
-		minEscBox.setRight(escNode);
-		return minEscBox;
+		ComponentContentBoxHeader escBox = new ComponentContentBoxHeader();
+		escBox.setCenter(escNode);
+		return escBox;
 	}
 
 	private ComponentContentBoxHeader createTaskBox(){
@@ -118,6 +129,17 @@ public class BoxHeader extends BorderPane {
 		Node wrappedEscLabel = Borders.wrap(escShortcutBox).lineBorder().color(Color.WHITE).build().build();
 
 		return wrappedEscLabel;
+	}
+	
+	private Node createSummaryNode(){
+		ComponentContentBoxHeader summaryShortcutBox = new ComponentContentBoxHeader();
+		
+		summaryShortcutBox.setTop(summaryLbl);
+		summaryShortcutBox.setCenter(dummyLbl);
+		summaryShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.COLUMNS));
+		Node wrappedSummaryLabel = Borders.wrap(summaryShortcutBox).lineBorder().color(Color.WHITE).build().build();
+
+		return wrappedSummaryLabel;
 	}
 	
 	public void removeEscNode(){

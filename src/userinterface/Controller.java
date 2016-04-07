@@ -69,16 +69,16 @@ public class Controller {
 		} else if (ke.getCode().equals(KeyCode.F2)) {
 			// DISPLAY CALENDAR
 			Main.displayCalendarScene();
-		} else if (ke.getCode().equals(KeyCode.F4)) {
-			// MINIMISE
-			Main.minimise();
-		} else if (ke.getCode().equals(KeyCode.DELETE)) {
+		} else if (ke.getCode().equals(KeyCode.F3)) {
 			// DISPLAY SUMMARY SCENE
 			Main.setNumToday(getNumTodayItems());
 			Main.setNumTomorrow(getNumTomorrowItems());
 			Main.setNumUpcoming(getNumUpcomingItems());
 			Main.setNumSomeday(getNumSomedayItems());
 			Main.displaySummaryScene();
+		} else if (ke.getCode().equals(KeyCode.DELETE)) {
+			// MINIMISE
+			Main.minimise();
 		}
 	}
 
@@ -153,7 +153,7 @@ public class Controller {
 				} else if (ke.getCode().equals(KeyCode.F2)) {
 					// DISPLAY CALENDAR
 					Main.displayCalendarScene();
-				} else if (ke.getCode().equals(KeyCode.F3)) {
+				} else if (ke.getCode().equals(KeyCode.DELETE)) {
 					// MINIMISE
 					Main.minimise();
 				}
