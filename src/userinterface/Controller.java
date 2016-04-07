@@ -158,13 +158,29 @@ public class Controller {
 			public void handle(KeyEvent ke) {
 				if (ke.getCode().equals(KeyCode.ENTER)) {
 					ClockWork.ClockworkLogicMain("display", _logic);
+					
 					TodoState todoState = DisplayCommand.getTodoState();
+					
 					if (sceneName.equals("Today")){
-						todayObjectList = todoState.getTodayTodos();
+//						todayObjectList = todoState.getTodayTodos();
+//						UserInterfaceObject testUserInterfaceObject = new UserInterfaceObject(todayObjectList.get(0));
+//						System.out.println(testUserInterfaceObject.getName());
+//						Main.setTodayObjectList(todayObjectList);
+//						Main.displayTodaySceneUsingObject();
+						
+						if (!todayObjectList.isEmpty()){
+							UserInterfaceObject testObj = new UserInterfaceObject(todoState.getTodayTodos().get(0));
+							System.out.println("CONTROLLER: " + testObj.getIndex());
+							System.out.println("CONTROLLER: " + testObj.getName());
+							System.out.println("CONTROLLER: " + testObj.getTime());
+						} else {
+							System.out.println("EMPTY");
+						}
+						
 						todayList = DisplayCategory.getTodayArrListForGUI();
 						Main.setTodayList(todayList);
-						currentTableView = Main.displayTodayScene();
 						Main.displayTodayScene();
+						
 					} else if (sceneName.equals("Tomorrow")){				
 						_tomorrowList = DisplayCategory.geTmrArrListForGUI();
 						Main.setTomorrowList(_tomorrowList);

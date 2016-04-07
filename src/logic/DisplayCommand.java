@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import exceptions.NullTodoException;
 import parser.ParsedInput;
 import storage.Memory;
+import userinterface.UserInterfaceObject;
 
 
 public class DisplayCommand extends Command {
@@ -98,6 +99,10 @@ public class DisplayCommand extends Command {
     //For GUI to get the TodoState object
     public static TodoState getTodoState(){
 		todoState = new TodoState(todos);
+		UserInterfaceObject testObj = new UserInterfaceObject(todoState.getSomedayTodos().get(0));
+		System.out.println("DISPLAYCOMMAND: " + testObj.getIndex());
+		System.out.println("DISPLAYCOMMAND: " + testObj.getName());
+		System.out.println("DISPLAYCOMMAND: " + testObj.getTime());
 		return todoState;
     }
     
@@ -105,7 +110,7 @@ public class DisplayCommand extends Command {
 	public Signal execute() {
 		String displayString;
 		
-		Collection<Todo> todos = memory.getAllTodos();
+		todos = memory.getAllTodos();
 		todoState = new TodoState(todos);
 		
 		if (todos.size() == 0) {
