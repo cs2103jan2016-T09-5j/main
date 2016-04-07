@@ -13,9 +13,7 @@ public class DisplayCategory {
     private static  ArrayList<String[]> somedaysArrListForGUI = new ArrayList<String[]> ();
     private static  ArrayList<String[]> upcommingArrListForGUI = new ArrayList<String[]> ();
     private static  ArrayList<String[]> commandArrListForGUI = new ArrayList<String[]> ();
-	private static Calendar calendar = Calendar.getInstance();
 	private static DateFormat dateFormat = new SimpleDateFormat("EEE dd MMM yyyy");
-	private static Date today; 
 	
     /**
 	 * ArrayList<String[]> sorted in to 5 categories:
@@ -50,8 +48,8 @@ public class DisplayCategory {
     	commandArrListForGUI.clear();
     }
 	private static boolean sortTodayList(){
-		today = calendar.getTime();
-    	String todayAsString = dateFormat.format(today);
+		Calendar calendar = Calendar.getInstance();
+    	String todayAsString = dateFormat.format(calendar.getTime());
     	ArrayList<ArrayList<String[]>> display = taskListProcessor();
     	
     	for(int i=0; i<display.size(); i++){
@@ -63,10 +61,9 @@ public class DisplayCategory {
     	return false;
     }
     private static boolean sortTmrList(){
-    	today = calendar.getTime();
+		Calendar calendar = Calendar.getInstance();
     	calendar.add(Calendar.DAY_OF_YEAR,1);
-    	Date tmr = calendar.getTime();
-    	String tmrAsString = dateFormat.format(tmr);
+    	String tmrAsString = dateFormat.format(calendar.getTime());
     	ArrayList<ArrayList<String[]>> display = taskListProcessor();
     	for(int i=0; i<display.size(); i++){
     		if(display.get(i).get(0)[0].equals(tmrAsString)){
@@ -87,15 +84,16 @@ public class DisplayCategory {
     	return false;
     }
     private static boolean sortUpcommingList(){
-    	today = calendar.getTime();
-    	ArrayList<ArrayList<String[]>> display = taskListProcessor();
+		Calendar calendar = Calendar.getInstance();
+    	String todayAsString = dateFormat.format(calendar.getTime());
     	calendar.add(Calendar.DAY_OF_YEAR,1);
-    	Date tmr = calendar.getTime();
+    	String tmrAsString = dateFormat.format(calendar.getTime());
+    	ArrayList<ArrayList<String[]>> display = taskListProcessor();
     	upcommingArrListForGUI.clear();
     	for(int i=0; i<display.size(); i++){
     		String str = display.get(i).get(1)[3];
-    		if(!str.equals("Anytime.") && !str.equals(dateFormat.format(tmr))
-    				&& !str.equals(dateFormat.format(today)) && !str.equals("Thu 07 Apr 2016")){
+    		if(!str.equals("Anytime.") && !str.equals(tmrAsString)
+    				&& !str.equals(todayAsString)){
     			combineArrList(display.get(i),upcommingArrListForGUI);
     		}
     	}
