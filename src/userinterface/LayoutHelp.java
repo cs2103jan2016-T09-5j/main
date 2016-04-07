@@ -28,9 +28,7 @@ public class LayoutHelp extends BorderPane {
 	private Node wrappedUndo;
 	private Node wrappedRedo;
 	private Node wrappedSearch;
-	private Node wrappedDisplay;
 	private Node wrappedMark;
-	private Node wrappedEmail;
 
 	public LayoutHelp() {
 		setDisplayRegions();
@@ -57,9 +55,7 @@ public class LayoutHelp extends BorderPane {
 		wrappedUndo = createUndoNode();
 		wrappedRedo = createRedoNode();
 		wrappedSearch = createSearchNode();
-		wrappedDisplay = createDisplayNode();
 		wrappedMark = createMarkNode();
-		wrappedEmail = createEmailNode();
 
 		implementHelpContentBar();
 		implementHelpContentBox();
@@ -87,7 +83,7 @@ public class LayoutHelp extends BorderPane {
 
 	private void implementHelpContentBar() {
 		helpContentBar.getChildren().addAll(wrappedAdd, wrappedDelete, wrappedEdit, wrappedUndo, wrappedRedo,
-				wrappedSearch, wrappedDisplay, wrappedMark, wrappedEmail);
+				wrappedSearch, wrappedMark);
 		helpContentBar.setAlignment(Pos.CENTER);
 		helpContentBar.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;");
 	}
@@ -100,21 +96,7 @@ public class LayoutHelp extends BorderPane {
 	}
 
 	/** CREATING LAYOUT OBJECTS */
-
-	private Node createEmailNode() {
-		BorderPane emailBox = new BorderPane();
-
-		Label emailLbl = new Label("Email");
-
-		emailBox.setTop(emailLbl);
-		emailBox.setCenter(dummyLbl);
-		emailBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.ENVELOPE));
-
-		Node wrappedEmail = Borders.wrap(emailBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedEmail;
-	}
-
+	
 	private Node createMarkNode() {
 		BorderPane markBox = new BorderPane();
 
@@ -127,20 +109,6 @@ public class LayoutHelp extends BorderPane {
 		Node wrappedMark = Borders.wrap(markBox).lineBorder().color(Color.WHITE).build().build();
 
 		return wrappedMark;
-	}
-
-	private Node createDisplayNode() {
-		BorderPane displayBox = new BorderPane();
-
-		Label displayLbl = new Label("Display");
-
-		displayBox.setTop(displayLbl);
-		displayBox.setCenter(dummyLbl);
-		displayBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.TELEVISION));
-
-		Node wrappedDisplay = Borders.wrap(displayBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedDisplay;
 	}
 
 	private Node createSearchNode() {

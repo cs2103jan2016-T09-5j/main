@@ -136,7 +136,7 @@ public class BoxHeader extends BorderPane {
 		
 		summaryShortcutBox.setTop(summaryLbl);
 		summaryShortcutBox.setCenter(dummyLbl);
-		summaryShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.COLUMNS));
+		summaryShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.FOLDER));
 		Node wrappedSummaryLabel = Borders.wrap(summaryShortcutBox).lineBorder().color(Color.WHITE).build().build();
 
 		return wrappedSummaryLabel;
