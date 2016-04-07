@@ -30,7 +30,6 @@ public class Main extends Application {
 	private static int _numUpcoming;
 	private static int _numSomeday;
 	
-
 	private static LayoutSummary summaryLayout;
 	private static LayoutHelp helpLayout;
 	private static LayoutCalendar calendarLayout;
@@ -40,7 +39,9 @@ public class Main extends Application {
 	private static LayoutTemplate somedayLayout;
 	private static LayoutTemplateDate searchLayout;
 	private static LayoutTemplateDate allLayout;
+	
 	private static ArrayList<String> _feedback;
+	
 	private static Scene scene;
 	private static Stage stage;
 
@@ -187,14 +188,13 @@ public class Main extends Application {
 		setStage();
 	}
 	
-	public static TableView displayTodayScene(){
+	public static void displayTodayScene(){
 		_feedback = Controller.getFeedback();
 		todayLayout = new LayoutTemplate("Today", _todayList, _feedback);
 		scene = new Scene(todayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
 		setStage();
-		return todayLayout.getTableView();
 	}
 	
 	public static void displayTomorrowScene(){

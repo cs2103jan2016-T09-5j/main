@@ -9,7 +9,9 @@ import org.controlsfx.tools.Borders;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -19,6 +21,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -43,9 +47,12 @@ public class LayoutTemplateDate extends BorderPane {
 	public static final String ColumnNameMapKey = "Name";
 	public static final String ColumnTimeMapKey = "Time";
 	public static final String ColumnDateMapKey = "Date";
+	
+	private static int currentScrollIndex = 0;
+	private static int scrollDownIndex = 3;
+	private static int scrollUpIndex = -3;
 
 	private TableView tableView;
-	private double scrollValue = 0.25f;
 	
 	public LayoutTemplateDate(String title, ArrayList<String[]> list, ArrayList<String> feedbackList) {
 		_titleString = title;
@@ -110,12 +117,12 @@ public class LayoutTemplateDate extends BorderPane {
 		secondDataColumn.setCellFactory(cellFactoryForMap);
 		thirdDataColumn.setCellFactory(cellFactoryForMap);
 		fourthDataColumn.setCellFactory(cellFactoryForMap);
-
+		
 		grid.setHgrow(tableView, Priority.ALWAYS);
 
 		grid.add(_titleNode, 0, 0);
 		grid.add(tableView, 0, 1);
-
+		
 		HBox hbox = new HBox();
 		hbox.setAlignment(Pos.CENTER);
 		hbox.getChildren().add(grid);
@@ -170,7 +177,24 @@ public class LayoutTemplateDate extends BorderPane {
 
 	private BoxInput implementInputBox() {
 		BoxInput textField = new BoxInput();
-		TextFields.bindAutoCompletion(textField, "add", "delete", "undo", "search", "display", "mark", "edit");
+		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent ke) {
+				if (ke.getCode().equals(KeyCode.UP)) {
+					if ((currentScrollIndex + scrollUpIndex) >= 0){
+						tableView.scrollTo(currentScrollIndex + scrollUpIndex);
+						currentScrollIndex = currentScrollIndex + scrollUpIndex;
+					}
+				} else if (ke.getCode().equals(KeyCode.DOWN)){
+					if ((currentScrollIndex + scrollDownIndex) <= tableView.getItems().size()){
+						tableView.scrollTo(currentScrollIndex + scrollDownIndex);
+						currentScrollIndex = currentScrollIndex + scrollDownIndex;
+					}
+				}
+				Controller.executeKeyPress(textField, ke);
+			}
+		});
+		TextFields.bindAutoCompletion(textField, "add", "delete", "undo", "search", "mark", "edit");
 		return textField;
 	}
 
@@ -202,8 +226,5 @@ public class LayoutTemplateDate extends BorderPane {
 			feedbackText.setFill(Color.CRIMSON);
 		}
 		return feedbackText;
-	}
-	public TableView getTableView(){
-		return this.tableView;
 	}
 }

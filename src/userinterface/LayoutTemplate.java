@@ -21,6 +21,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -41,19 +43,24 @@ public class LayoutTemplate extends BorderPane {
 	private String _titleString;
 	private ArrayList<String> _feedbackList;
 	private Node _titleNode;
+	private int _listSize;
 
 	public static final String ColumnIndexMapKey = "Index";
 	public static final String ColumnNameMapKey = "Name";
 	public static final String ColumnTimeMapKey = "Time";
 	public static final String ColumnDateMapKey = "Date";
 	
+	private static int currentScrollIndex = 0;
+	private static int scrollDownIndex = 3;
+	private static int scrollUpIndex = -3;
+	
 	private TableView tableView;
-	private double scrollValue = 0.25f;
 
 	public LayoutTemplate(String title, ArrayList<String[]> list, ArrayList<String> feedbackList) {
 		if (feedbackList == null) System.out.println("Error: LayoutTemplate null");
 		_titleString = title;
 		_list = list;
+		_listSize = list.size();
 		_feedbackList = feedbackList;
 		setDisplayRegions();
 	}
@@ -111,7 +118,9 @@ public class LayoutTemplate extends BorderPane {
 		firstDataColumn.setCellFactory(cellFactoryForMap);
 		secondDataColumn.setCellFactory(cellFactoryForMap);
 		thirdDataColumn.setCellFactory(cellFactoryForMap);
-
+		
+//		System.out.println("Num of Rows: " + tableView.getItems().size());
+		
 		grid.setHgrow(tableView, Priority.ALWAYS);
 
 		grid.add(_titleNode, 0, 0);
@@ -127,7 +136,7 @@ public class LayoutTemplate extends BorderPane {
 
 	private ObservableList<Map> populateDataInMap() {
 		ObservableList<Map> allData = FXCollections.observableArrayList();
-		for (int i = 1; i < _list.size(); i++) {
+		for (int i = 1; i < _listSize; i++) {
 			Map<String, String> dataRow = new HashMap<>();
 
 			String index = _list.get(i)[0];
@@ -169,7 +178,24 @@ public class LayoutTemplate extends BorderPane {
 
 	private BoxInput implementInputBox() {
 		BoxInput textField = new BoxInput();
-		TextFields.bindAutoCompletion(textField, "add", "delete", "undo", "search", "display", "mark", "edit");
+		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent ke) {
+				if (ke.getCode().equals(KeyCode.UP)) {
+					if ((currentScrollIndex + scrollUpIndex) >= 0){
+						tableView.scrollTo(currentScrollIndex + scrollUpIndex);
+						currentScrollIndex = currentScrollIndex + scrollUpIndex;
+					}
+				} else if (ke.getCode().equals(KeyCode.DOWN)){
+					if ((currentScrollIndex + scrollDownIndex) <= tableView.getItems().size()){
+						tableView.scrollTo(currentScrollIndex + scrollDownIndex);
+						currentScrollIndex = currentScrollIndex + scrollDownIndex;
+					}
+				}
+				Controller.executeKeyPress(textField, ke);
+			}
+		});
+		TextFields.bindAutoCompletion(textField, "add", "delete", "undo", "search", "mark", "edit");
 		return textField;
 	}
 
@@ -201,25 +227,4 @@ public class LayoutTemplate extends BorderPane {
 		}
 		return feedbackText;
 	}
-	
-	public TableView getTableView(){
-		return this.tableView;
-	}
-	
-//	public double setScrollPosition(String action, double prevScrollValue){
-//		for (Node n: tableView.lookupAll(".scroll-bar")) {
-//			  if (n instanceof ScrollBar) {
-//			    ScrollBar bar = (ScrollBar) n;
-//			    System.out.println(bar.getOrientation() + ": range " + bar.getMin() + " => " + bar.getMax() + ", value " + bar.getValue());
-//			  }
-//		}
-//		if (action == "UP" && ((prevScrollValue - scrollValue) >= 0)){
-//			tableView.setVvalue(prevScrollValue - scrollValue);
-//		} else if (action == "DOWN" && ((prevScrollValue + scrollValue) <= 1)){
-//			tableView.setVvalue(prevScrollValue + scrollValue);
-//		} else {
-//			tableView.setVvalue(prevScrollValue);
-//		}
-//		return tableView.getVvalue();
-//	}
 }

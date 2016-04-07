@@ -30,7 +30,6 @@ public class Controller {
 	private static ArrayList<String[]> _somedayList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _searchList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _powerList = new ArrayList<String[]>();
-	private static TableView currentTableView;
 	
 	/**
 	 * Handle event after key is pressed
@@ -80,7 +79,7 @@ public class Controller {
 			Main.setNumUpcoming(getNumUpcomingItems());
 			Main.setNumSomeday(getNumSomedayItems());
 			Main.displaySummaryScene();
-		} 
+		}
 	}
 
 	public static void processEnter(String userInput) {
@@ -108,8 +107,6 @@ public class Controller {
 				Main.setNumTomorrow(getNumTomorrowItems());
 				Main.setNumUpcoming(getNumUpcomingItems());
 				Main.setNumSomeday(getNumSomedayItems());
-			
-				Main.displayAllScene();
 			}
 		
 		} catch (Exception ex) {
@@ -135,7 +132,7 @@ public class Controller {
 					if (sceneName.equals("Today")){
 						todayList = DisplayCategory.getTodayArrListForGUI();
 						Main.setTodayList(todayList);
-						currentTableView = Main.displayTodayScene();
+						Main.displayTodayScene();
 						Main.displayTodayScene();
 					} else if (sceneName.equals("Tomorrow")){				
 						_tomorrowList = DisplayCategory.geTmrArrListForGUI();
@@ -159,8 +156,6 @@ public class Controller {
 				} else if (ke.getCode().equals(KeyCode.F3)) {
 					// MINIMISE
 					Main.minimise();
-				} else if (ke.getCode().equals(KeyCode.UP)){
-					
 				}
 			}
 		});
@@ -180,7 +175,7 @@ public class Controller {
 	    DisplayCategory.clearArrListForGUI();
 	    SearchDisplay.clearSearchArrListForGUI();
 	}
-			
+	
 	public static int getNumTodayItems(){
 		if (todayList.isEmpty()){
 			return 0;
