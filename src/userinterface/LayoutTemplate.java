@@ -85,9 +85,9 @@ public class LayoutTemplate extends BorderPane {
 		firstDataColumn.setCellValueFactory(new MapValueFactory(ColumnIndexMapKey));
 		firstDataColumn.setMinWidth(10);
 		secondDataColumn.setCellValueFactory(new MapValueFactory(ColumnNameMapKey));
-		secondDataColumn.setMinWidth(600);
+		secondDataColumn.setMinWidth(500);
 		thirdDataColumn.setCellValueFactory(new MapValueFactory(ColumnTimeMapKey));
-		thirdDataColumn.setMinWidth(90);
+		thirdDataColumn.setMinWidth(190);
 
 		tableView = new TableView<>(populateDataInMap());
 		
