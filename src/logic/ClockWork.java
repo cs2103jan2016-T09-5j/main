@@ -192,6 +192,10 @@ public class ClockWork {
 		memory.setStorageHandler(storage);
 	}
 	
+	public Memory getMemory() {
+		return memory;
+	}
+	
 	public static String getStorageFileDirFromSettings(){
 		return StorageUtils.readSettingsFile();
 	}

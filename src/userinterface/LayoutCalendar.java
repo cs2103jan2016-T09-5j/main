@@ -1,15 +1,10 @@
 package userinterface;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import org.controlsfx.tools.Borders;
-import org.joda.time.DateTime;
+import java.time.LocalDateTime;
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -22,12 +17,19 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import javafx.util.Duration;
+import jfxtras.scene.control.agenda.Agenda;
 
 public class LayoutCalendar extends BorderPane {
 	
 	private Label currentTime = new DigitalClock();
-
+	private LocalDate selectedDate = LocalDate.now();
+	private LocalDateTime agendaScrollLocation = LocalDateTime.now();
+	private DatePicker datePicker = new DatePicker();
+	private BorderPane centralPane = new BorderPane();
+	private TextField cliTextField;
+	private Node calendarControl;
+	private Agenda agendaControl;
+	
 	public LayoutCalendar() {
 		setDisplayRegions();
 	}
@@ -48,30 +50,30 @@ public class LayoutCalendar extends BorderPane {
 
    /****************CALENDAR IMPLEMENTATION **********/
 	private void setCenterRegion() {
-		//Creating pane for calendar and current time
-		BorderPane centralPane = new BorderPane();
-		
-		// Create the non-interactive DatePicker object with today in focus.
-		DatePicker dp = new DatePicker();
-		dp.setValue(LocalDate.now());
-		// Add some action (in Java 8 lambda syntax style).
-		dp.setOnAction(event -> {
-		    LocalDate date = dp.getValue();
-		    System.out.println("Selected date: " + date);
-		});		
-		
+		//Utilize DatePicker JavaFX component to extract internal calendar component
+		datePicker.setValue(LocalDate.now());
+
 		//Isolate internal component, which was previously the component that "popped up"
-		DatePickerSkin skin = new DatePickerSkin(new DatePicker());
-		Node calendarControl = skin.getPopupContent();
+		DatePickerSkin skin = new DatePickerSkin(datePicker);
+		calendarControl = skin.getPopupContent();
 		calendarControl.setId("calendar-control");
 		calendarControl.setStyle("-fx-padding: 1;  -fx-background-insets: 0, 100;  "
 				+ "-fx-background-radius: 0, 0; -fx-background-color: rgba(0, 100, 100, 0.1);");
+		
+		//Set node in focus so that attached listeners are able to be utilized
+		Platform.runLater(new Runnable() {
+		     @Override
+		     public void run() {
+		         calendarControl.requestFocus();
+		     }
+		});
+		
+		installEventHandler(calendarControl);
 		
 		//Preparation of current time  
 		this.currentTime.setFont(Font.font("Cambria", 50));
 		this.currentTime.setTextFill(Color.WHITE);
 		this.currentTime.setTextAlignment(TextAlignment.CENTER);
-		
 		
 		//Affix isolated node along with the current time
 		centralPane.setCenter(calendarControl);
@@ -82,25 +84,145 @@ public class LayoutCalendar extends BorderPane {
 		//Exploit this component as our stand-alone calendar widget
 		this.setCenter(centralPane);
 	}
+	
 	/************* END IMPLEMENTATION ***************/
 	
 	private void setBottomRegion() {
-		TextField textField = implementTextField();
-		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent ke) {
-				if (ke.getCode().equals(KeyCode.ESCAPE)) {
-					Controller.processEnter("DISPLAY");
-				}
-				Controller.executeKeyPress(textField, ke);
-			}
-		});
-		this.setBottom(textField);
+		cliTextField = implementTextField();
+		this.setBottom(cliTextField);
 	}
 
 	private TextField implementTextField() {
 		BoxInput textField = new BoxInput();
 		textField.setEditable(false);
 		return textField;
+	}
+	
+	/***********************AGENDA VIEW***********************/
+	private void paintAgendaView() {
+		
+		//Utilize AgendaHelper factory method for necessary setup
+		agendaControl = AgendaHelper.generateAgendaHelperView(selectedDate);
+		
+		//Set node in focus so that attached listeners are able to be utilized
+		Platform.runLater(new Runnable() {
+		     @Override
+		     public void run() {
+		    	 agendaControl.setOnMouseClicked(null);
+		    	 agendaControl.setOnMousePressed(null);
+		         agendaControl.requestFocus();
+		     }
+		});
+		
+		//Override default mouse scroll with keypress scroll for the agenda
+		installEventAgendarHandler(agendaControl);
+		this.setCenter(agendaControl);
+	}
+		
+	/**************DECLARING NODE EVENT HANDLERS**************/
+	
+	private void installEventHandler(final Node calendar) {
+	    // handler for enter key press / release events, other keys are
+	    // handled by the parent (keyboard) node handler
+	    final EventHandler<KeyEvent> keyEventHandler =
+	        new EventHandler<KeyEvent>() {
+	    		@Override
+	            public void handle(final KeyEvent keyEvent) throws NullPointerException {
+	            	
+	            	//select date above
+	                if (keyEvent.getCode() == KeyCode.UP) {
+	                    setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
+	                    selectedDate = selectedDate.minusDays(7);
+	                    datePicker.setValue(selectedDate);
+	                    keyEvent.consume();
+	                }
+	                
+	                //select date below
+	                if (keyEvent.getCode() == KeyCode.DOWN) {
+	                    setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
+	                    selectedDate = selectedDate.plusDays(7);
+	                    datePicker.setValue(selectedDate);
+	                    keyEvent.consume();
+	                }
+	                
+	                //select date to right
+	                if (keyEvent.getCode() == KeyCode.RIGHT) {
+	                    setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
+	                    selectedDate = selectedDate.plusDays(1);
+	                    datePicker.setValue(selectedDate);
+	                    keyEvent.consume();
+	                }
+	                
+	                //select date to left
+	                if (keyEvent.getCode() == KeyCode.LEFT) {
+	                    setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
+	                    selectedDate = selectedDate.minusDays(1);
+	                    datePicker.setValue(selectedDate);
+	                    keyEvent.consume();
+	                }
+	                
+	                //trigger agenda view with events contained in currently selected day
+	                if (keyEvent.getCode() == KeyCode.ENTER) {
+	                    setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);              
+	                    //remove handlers when clearing component
+	                    calendar.setOnKeyPressed(null);
+	                    //we need to delay removing the component until we are outside of the component's
+	                    // handler, otherwise we would run into a null pointer exception
+                		Platform.runLater(new Runnable() {
+               		     @Override
+               		     public void run() {
+               		    	centralPane.getChildren().remove(calendarControl);
+               		    	paintAgendaView();
+               		     }
+	               		});
+	                }
+	                
+	                //Rewind to previous view upon pressing escape
+	                if (keyEvent.getCode().equals(KeyCode.ESCAPE)) {
+	                    setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
+						Controller.processEnter("DISPLAY");
+	                    keyEvent.consume();
+					}
+					Controller.executeKeyPress(cliTextField, keyEvent);
+	            }
+	        };
+	 
+	    calendar.setOnKeyPressed(keyEventHandler);
+	}
+	
+	private void installEventAgendarHandler(final Node agendaListener) {
+	    // handler for enter key press / release events, other keys are
+	    // handled by the parent (keyboard) node handler
+	    final EventHandler<KeyEvent> keyEventHandler =
+	        new EventHandler<KeyEvent>() {
+	    		@Override
+	            public void handle(final KeyEvent keyEvent){
+	    			//Scrolls the agenda view up
+	    			if(keyEvent.getCode() == KeyCode.UP) {
+		    			setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
+		    			agendaScrollLocation = agendaScrollLocation.minusHours(1);
+		    			agendaControl.setDisplayedLocalDateTime(agendaScrollLocation);
+		    			keyEvent.consume();
+	    			} 
+	    			
+	    			//Scrolls the agenda view down
+	    			if(keyEvent.getCode() == KeyCode.DOWN) {
+		    			setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
+		    			agendaScrollLocation = agendaScrollLocation.plusHours(1);
+		    			agendaControl.setDisplayedLocalDateTime(agendaScrollLocation);
+		    			keyEvent.consume();
+	    			}   
+	    			
+	                //Rewind to previous view upon pressing escape
+	                if (keyEvent.getCode().equals(KeyCode.ESCAPE)) {
+	                    setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
+						Controller.processEnter("DISPLAY");
+	                    keyEvent.consume();
+					}
+					Controller.executeKeyPress(cliTextField, keyEvent);
+	            }
+	        };
+	 
+	    agendaListener.setOnKeyPressed(keyEventHandler);
 	}
 }

@@ -252,4 +252,8 @@ public class Controller {
 		_logic = l;
 	}
 	
+	public static ClockWork getLogic() {
+		return _logic;
+	}
+	
 }
