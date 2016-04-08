@@ -89,9 +89,9 @@ public class LayoutTemplateDate extends BorderPane {
 		firstDataColumn.setCellValueFactory(new MapValueFactory(ColumnIndexMapKey));
 		firstDataColumn.setMinWidth(20);
 		secondDataColumn.setCellValueFactory(new MapValueFactory(ColumnNameMapKey));
-		secondDataColumn.setMinWidth(400);
+		secondDataColumn.setMinWidth(320);
 		thirdDataColumn.setCellValueFactory(new MapValueFactory(ColumnTimeMapKey));
-		thirdDataColumn.setMinWidth(170);
+		thirdDataColumn.setMinWidth(250);
 		fourthDataColumn.setCellValueFactory(new MapValueFactory(ColumnDateMapKey));
 		fourthDataColumn.setMinWidth(150);
 
@@ -190,6 +190,13 @@ public class LayoutTemplateDate extends BorderPane {
 						tableView.scrollTo(currentScrollIndex + scrollDownIndex);
 						currentScrollIndex = currentScrollIndex + scrollDownIndex;
 					}
+				} else if (ke.getCode().equals(KeyCode.ESCAPE)){
+					// DISPLAY SUMMARY SCENE
+					Main.setNumToday(Controller.getNumTodayItems());
+					Main.setNumTomorrow(Controller.getNumTomorrowItems());
+					Main.setNumUpcoming(Controller.getNumUpcomingItems());
+					Main.setNumSomeday(Controller.getNumSomedayItems());
+					Main.displaySummaryScene();
 				}
 				Controller.executeKeyPress(textField, ke);
 			}

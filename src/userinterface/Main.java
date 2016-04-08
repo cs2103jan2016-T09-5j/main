@@ -38,7 +38,7 @@ public class Main extends Application {
 	private static LayoutTemplateDate upcomingLayout;
 	private static LayoutTemplate somedayLayout;
 	private static LayoutTemplateDate searchLayout;
-	private static LayoutTemplateDate allLayout;
+	private static LayoutTemplateAll allLayout;
 	
 	private static ArrayList<String> _feedback;
 	
@@ -235,7 +235,7 @@ public class Main extends Application {
 	
 	public static void displayAllScene(){
 		_feedback = Controller.getFeedback();
-		allLayout = new LayoutTemplateDate("All Tasks", _powerList,  _feedback);
+		allLayout = new LayoutTemplateAll("All Tasks", _powerList,  _feedback);
 		scene = new Scene(allLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
 		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());

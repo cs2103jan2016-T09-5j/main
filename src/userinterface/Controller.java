@@ -61,8 +61,6 @@ public class Controller {
 				processEnter(_currentUserInput);
 				textField.clear();
 			}
-		} else if (ke.getCode().equals(KeyCode.ESCAPE)) {
-			processEnter("DISPLAY");
 		} else if (ke.getCode().equals(KeyCode.F1)){
 			// HELP SCENE
 			Main.displayHelpScene();

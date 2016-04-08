@@ -65,7 +65,7 @@ public class DisplayCommand extends Command {
 			.forPattern("HH:mm");
 
     private static final String RELATIVE_PERIOD_PREFIX = " in ";
-    private static final String FLOATING_TASK_HEADING = "Anytime";
+    private static final String FLOATING_TASK_HEADING = "NIL";
     // Relative timing format
     private static PeriodFormatter formatter = new PeriodFormatterBuilder()
             .appendHours().appendSuffix("h ")

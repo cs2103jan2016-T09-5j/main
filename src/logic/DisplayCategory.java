@@ -130,6 +130,7 @@ public class DisplayCategory {
         				String dateString = splitString[i];
         				dateString = dateString.replace("...", "");
         				dateString = dateString.replace("..", "");
+        				dateString = dateString.replace(".", "");
         				currDate = dateString;
         				String[] inputDate = {dateString, "", ""};
         				currList.add(inputDate);

@@ -9,12 +9,12 @@ import org.controlsfx.tools.Borders;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -23,7 +23,6 @@ import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -36,14 +35,13 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
-public class LayoutTemplate extends BorderPane {
+public class LayoutTemplateAll extends BorderPane {
 
 	private ArrayList<String[]> _list = new ArrayList<String[]>();
 	private Label _titleLabel;
 	private String _titleString;
 	private ArrayList<String> _feedbackList;
 	private Node _titleNode;
-	private int _listSize;
 
 	public static final String ColumnIndexMapKey = "Index";
 	public static final String ColumnNameMapKey = "Name";
@@ -53,14 +51,12 @@ public class LayoutTemplate extends BorderPane {
 	private static int currentScrollIndex = 0;
 	private static int scrollDownIndex = 3;
 	private static int scrollUpIndex = -3;
-	
-	private TableView tableView;
 
-	public LayoutTemplate(String title, ArrayList<String[]> list, ArrayList<String> feedbackList) {
-		if (feedbackList == null) System.out.println("Error: LayoutTemplate null");
+	private TableView tableView;
+	
+	public LayoutTemplateAll(String title, ArrayList<String[]> list, ArrayList<String> feedbackList) {
 		_titleString = title;
 		_list = list;
-		_listSize = list.size();
 		_feedbackList = feedbackList;
 		setDisplayRegions();
 	}
@@ -88,20 +84,22 @@ public class LayoutTemplate extends BorderPane {
 		TableColumn<Map, String> firstDataColumn = new TableColumn<>("No");
 		TableColumn<Map, String> secondDataColumn = new TableColumn<>("Name");
 		TableColumn<Map, String> thirdDataColumn = new TableColumn<>("Time");
+		TableColumn<Map, String> fourthDataColumn = new TableColumn<>("Date");
 
 		firstDataColumn.setCellValueFactory(new MapValueFactory(ColumnIndexMapKey));
-		firstDataColumn.setMinWidth(10);
+		firstDataColumn.setMinWidth(20);
 		secondDataColumn.setCellValueFactory(new MapValueFactory(ColumnNameMapKey));
-		secondDataColumn.setMinWidth(460);
+		secondDataColumn.setMinWidth(320);
 		thirdDataColumn.setCellValueFactory(new MapValueFactory(ColumnTimeMapKey));
-		thirdDataColumn.setMinWidth(290);
+		thirdDataColumn.setMinWidth(250);
+		fourthDataColumn.setCellValueFactory(new MapValueFactory(ColumnDateMapKey));
+		fourthDataColumn.setMinWidth(150);
 
-		tableView = new TableView<>(populateDataInMap());
-		
+	    tableView = new TableView<>(populateDataInMap());
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		tableView.setEditable(false);
 		tableView.getSelectionModel().setCellSelectionEnabled(false);
-		tableView.getColumns().setAll(firstDataColumn, secondDataColumn, thirdDataColumn);
+		tableView.getColumns().setAll(firstDataColumn, secondDataColumn, thirdDataColumn, fourthDataColumn);
 		Callback<TableColumn<Map, String>, TableCell<Map, String>> cellFactoryForMap = (
 				TableColumn<Map, String> p) -> new TextFieldTableCell(new StringConverter() {
 					@Override
@@ -118,14 +116,13 @@ public class LayoutTemplate extends BorderPane {
 		firstDataColumn.setCellFactory(cellFactoryForMap);
 		secondDataColumn.setCellFactory(cellFactoryForMap);
 		thirdDataColumn.setCellFactory(cellFactoryForMap);
-		
-//		System.out.println("Num of Rows: " + tableView.getItems().size());
+		fourthDataColumn.setCellFactory(cellFactoryForMap);
 		
 		grid.setHgrow(tableView, Priority.ALWAYS);
 
 		grid.add(_titleNode, 0, 0);
 		grid.add(tableView, 0, 1);
-
+		
 		HBox hbox = new HBox();
 		hbox.setAlignment(Pos.CENTER);
 		hbox.getChildren().add(grid);
@@ -136,16 +133,18 @@ public class LayoutTemplate extends BorderPane {
 
 	private ObservableList<Map> populateDataInMap() {
 		ObservableList<Map> allData = FXCollections.observableArrayList();
-		for (int i = 1; i < _listSize; i++) {
+		for (int i = 0; i < _list.size(); i++) {
 			Map<String, String> dataRow = new HashMap<>();
-
 			String index = _list.get(i)[0];
 			String name = _list.get(i)[1];
 			String time = _list.get(i)[2];
-
+			String date = _list.get(i)[3];
+		//	System.out.println(_list.size());
+			
 			dataRow.put(ColumnIndexMapKey, index);
 			dataRow.put(ColumnNameMapKey, name);
 			dataRow.put(ColumnTimeMapKey, time);
+			dataRow.put(ColumnDateMapKey, date);
 
 			allData.add(dataRow);
 		}
@@ -191,15 +190,7 @@ public class LayoutTemplate extends BorderPane {
 						tableView.scrollTo(currentScrollIndex + scrollDownIndex);
 						currentScrollIndex = currentScrollIndex + scrollDownIndex;
 					}
-				}  else if (ke.getCode().equals(KeyCode.ESCAPE)){
-					// DISPLAY SUMMARY SCENE
-					Main.setNumToday(Controller.getNumTodayItems());
-					Main.setNumTomorrow(Controller.getNumTomorrowItems());
-					Main.setNumUpcoming(Controller.getNumUpcomingItems());
-					Main.setNumSomeday(Controller.getNumSomedayItems());
-					Main.displaySummaryScene();
 				}
-				
 				Controller.executeKeyPress(textField, ke);
 			}
 		});
@@ -216,6 +207,7 @@ public class LayoutTemplate extends BorderPane {
 	private Text createFeedbackLabel() {
 		 String[] result = _feedbackList.get(0).split(" ", 2);
 		    String first = result[0];
+		   // System.out.println(first);
 		Text feedbackText = new Text(_feedbackList.get(0));		
 		feedbackText.setText(_feedbackList.get(0));
 		feedbackText.setFill(Color.WHITE);

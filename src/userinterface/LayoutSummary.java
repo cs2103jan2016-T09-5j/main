@@ -3,10 +3,13 @@ package userinterface;
 import org.controlsfx.control.textfield.TextFields;
 import org.controlsfx.tools.Borders;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -102,6 +105,15 @@ public class LayoutSummary extends BorderPane {
 
 	private void setBottomRegion() {
 		TextField textField = implementTextField();
+		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent ke) {
+				if (ke.getCode().equals(KeyCode.ESCAPE)) {
+					Controller.processEnter("DISPLAY");
+				}
+				Controller.executeKeyPress(textField, ke);
+			}
+		});
 		this.setBottom(textField);
 	}
 	
