@@ -33,6 +33,7 @@ public class LayoutHelp extends BorderPane {
 	private Node wrappedSearch;
 	private Node wrappedMark;
 
+	//@@author Rebekah
 	public LayoutHelp() {
 		setDisplayRegions();
 	}

@@ -27,7 +27,8 @@ import javafx.util.Duration;
 public class LayoutCalendar extends BorderPane {
 	
 	private Label currentTime = new DigitalClock();
-
+	
+	//@@author Morgan
 	public LayoutCalendar() {
 		setDisplayRegions();
 	}

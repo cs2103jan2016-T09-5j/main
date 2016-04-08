@@ -22,6 +22,7 @@ import parser.Parser;
 
 public class ParserTest {
 
+	//@@author Prem
 	@Test
 	public void testAddFloating() throws InvalidTodoNameException,
 			InvalidRecurringException, ParsingFailureException {
@@ -532,7 +533,8 @@ public class ParserTest {
 				new Period().withDays(1), true, false, new DateTime(0));
 		assertEquals(parsed6, Parser.parseInput(add6));
 	}
-
+	
+	//@@author Rebekah
 	@Test
 	public void testAddRecurringEvent() throws InvalidRecurringException,
 			InvalidTodoNameException, ParsingFailureException {

@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DisplayCategory {
-
+	
 	// For GUI display
 	private static ArrayList<String[]> todayArrListForGUI = new ArrayList<String[]>();
 	private static ArrayList<String[]> tmrArrListForGUI = new ArrayList<String[]>();
@@ -15,7 +15,8 @@ public class DisplayCategory {
 	private static ArrayList<String[]> upcommingArrListForGUI = new ArrayList<String[]>();
 	private static ArrayList<String[]> commandArrListForGUI = new ArrayList<String[]>();
 	private static DateFormat dateFormat = new SimpleDateFormat("EEE dd MMM yyyy");
-
+	
+	//@@author Regine
 	/**
 	 * ArrayList<String[]> sorted in to 5 categories: Today, Tomorrow, Somedays,
 	 * Upcoming, Command

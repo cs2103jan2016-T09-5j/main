@@ -1,5 +1,3 @@
-
-
 package exceptions;
 
 public final class ExceptionMessages {

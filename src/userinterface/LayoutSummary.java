@@ -39,6 +39,7 @@ public class LayoutSummary extends BorderPane {
 	private int _numUpcoming;
 	private int _numSomeday;
 	
+	//@@author Rebekah
 	public LayoutSummary(int numToday, int numTomorrow, int numUpcoming, int numSomeday) {
 		_numToday = numToday;
 		_numTomorrow = numTomorrow;

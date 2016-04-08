@@ -5,6 +5,7 @@ import storage.Memory;
 
 public class ExitCommand extends Command {
 
+	//@@author Regine
 	/**
 	 * Creates an ExitCommand object.
 	 * 

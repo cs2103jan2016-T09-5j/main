@@ -51,7 +51,7 @@ public class RecurringTodoRule implements UndoableRedoable<RecurringTodoRule> {
     			.toFormatter();
     }
     
-
+    //@@author Rebekah
     /**
      * Constructor for the RecurringTodoRule without specifying limit
      * 

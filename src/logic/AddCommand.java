@@ -14,6 +14,7 @@ import storage.Memory;
 
 public class AddCommand extends Command {
 
+	//@@author Regine
 	/**
 	 * Creates an AddCommand object.
 	 * 

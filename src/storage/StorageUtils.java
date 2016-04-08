@@ -45,23 +45,24 @@ public class StorageUtils {
 		private static String settingsFilePath;
 		private static File settingsFile;
 		
-	/**
-	 * Processes the user-specified path.
-	 * 
-	 * If the path is valid, and there exists a Storage file (storageFile.json)
-	 * at that user-specified path, the file will be checked if it is a valid
-	 * JSON file. If it is, it will be used automatically.
-	 * 
-	 * If the file at the user-specified path is corrupt or invalid, the user
-	 * will be asked to choose the following options, which would be executed accordingly.
-	 * 1. Copy the storage file from the default location 
-	 * 2. Create and use a new storage file at the user-specified path 
-	 * 3. Revert back to using the storage file at the default location 
-	 * 4. Exit
-	 * 
-	 * @param String customFileDirPath
-	 * @return String Path of storageFile.json after processing
-	 */
+		//@@author Morgan
+		/**
+		 * Processes the user-specified path.
+		 * 
+		 * If the path is valid, and there exists a Storage file (storageFile.json)
+		 * at that user-specified path, the file will be checked if it is a valid
+		 * JSON file. If it is, it will be used automatically.
+		 * 
+		 * If the file at the user-specified path is corrupt or invalid, the user
+		 * will be asked to choose the following options, which would be executed accordingly.
+		 * 1. Copy the storage file from the default location 
+		 * 2. Create and use a new storage file at the user-specified path 
+		 * 3. Revert back to using the storage file at the default location 
+		 * 4. Exit
+		 * 
+		 * @param String customFileDirPath
+		 * @return String Path of storageFile.json after processing
+		 */
 		public static String processStorageDirectory(String customFileDirPath) {
 			Scanner scn = ClockWork.scn;
 			// If valid: copy any existing storageFile from its current location to

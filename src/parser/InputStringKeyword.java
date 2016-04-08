@@ -66,6 +66,7 @@ public class InputStringKeyword {
         
     }
 
+    //@@author Morgan
     /**
      * Checks if the String encodes a keyword
      * 

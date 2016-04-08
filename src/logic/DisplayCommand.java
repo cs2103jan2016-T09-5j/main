@@ -73,7 +73,9 @@ public class DisplayCommand extends Command {
             .printZeroNever().toFormatter();
     //For GUI display
     private static  ArrayList<String> ArrListForGUI = new ArrayList<String> ();
-	/**
+	
+    //@@author Regine
+    /**
      * Creates a DisplayCommand object.
      * 
      * @param input the ParsedInput object containing the parameters.

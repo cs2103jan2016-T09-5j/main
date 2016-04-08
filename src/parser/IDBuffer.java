@@ -17,7 +17,8 @@ public class IDBuffer<E> {
 	private TreeSet<Integer> buffer;
 	private int minFreeId;
 	private HashMap<Integer, E> memory;
-
+	
+	//@@author Prem
 	public IDBuffer(HashMap<Integer, E> memory) {
 		this.buffer = new TreeSet<Integer>();
 		this.minFreeId = ID_INITIAL;

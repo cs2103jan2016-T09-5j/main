@@ -27,6 +27,7 @@ public class BoxHeader extends BorderPane {
 	private Label escLbl = new Label("Esc");
 	private Label dummyLbl = new Label(" ");
 	
+	//@@author Rebekah
 	public BoxHeader() {
 		implementHeaderNodes();
 		this.setLeft(createTaskBox());

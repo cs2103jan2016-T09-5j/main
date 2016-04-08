@@ -23,7 +23,8 @@ public class SearchCommand extends Command {
 
 	private static  ArrayList<String> ArrListForGUI = new ArrayList<String> ();
 	private static final String REGEX_SPACE = "\\s";
-
+	
+	//@@author Regine
 	/**
 	 * Creates a SearchCommand object.
 	 * 

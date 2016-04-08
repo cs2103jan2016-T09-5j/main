@@ -30,6 +30,7 @@ public class Controller {
 	private static ArrayList<String[]> _searchList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _powerList = new ArrayList<String[]>();
 	
+	//@@author Regine
 	/**
 	 * Handle event after key is pressed
 	 * 

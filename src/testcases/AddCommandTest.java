@@ -29,6 +29,7 @@ public class AddCommandTest {
 	Keywords addCommand = Keywords.ADD;
 	ClockWork logic;
 
+	//@@author Prem
 	public enum TYPE {
 		ADD, MARK, DELETE, SEARCH, EDIT, DISPLAY, UNDO, ERROR;
 	}
@@ -605,7 +606,8 @@ public class AddCommandTest {
 		}
 
 	}
-
+	
+	//@@author Regine
 	/*
 	 * Test adding of events
 	 */

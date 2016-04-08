@@ -44,6 +44,8 @@ public class Parser {
 	private static final String STRING_SUNDAY = "sunday";
 	private static final String EMPTY_STRING = "";
 
+	
+	//@@author Prem
 	/**
 	 * Tries to parse the specified String into ParsedInput object for various
 	 * commands to work on. If the recurring todo which user is trying to add
@@ -317,7 +319,8 @@ public class Parser {
 		}
 		return period;
 	}
-
+	
+	//@@author Morgan
 	/**
 	 * This method tries to parse the parameters at the given index as a date.
 	 * If parsing as date is not successful and addToName is true, method
