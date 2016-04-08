@@ -6,7 +6,6 @@ import java.util.logging.*;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -86,14 +85,17 @@ public class Controller {
 			
 			String[] keyword = userInput.split(" ");
 			if (keyword[0].equalsIgnoreCase("search")){
-				resetLists();
+				resetSearchLists();
 				ClockWork.ClockworkLogicMain(userInput, _logic);
 				_feedback = SignalHandler.getArrListForGUI();
 				_searchList = SearchDisplay.getSearchArrListForGUI();
-				System.out.println(_searchList.get(0)[3]);
 				Main.setSearchList(_searchList);
 				Main.displaySearchScene();
-			} else {
+			} else if(keyword[0].equalsIgnoreCase("add") || keyword[0].equalsIgnoreCase("delete")
+					|| keyword[0].equalsIgnoreCase("mark") || keyword[0].equalsIgnoreCase("delete")
+					|| keyword[0].equalsIgnoreCase("redo") || keyword[0].equalsIgnoreCase("undo")
+					|| keyword[0].equalsIgnoreCase("delete") || keyword[0].equalsIgnoreCase("edit")
+				    || keyword[0].equalsIgnoreCase("exit")){
 				resetLists();
 				ClockWork.ClockworkLogicMain(userInput, _logic);
 				
@@ -105,7 +107,26 @@ public class Controller {
 				Main.setNumTomorrow(getNumTomorrowItems());
 				Main.setNumUpcoming(getNumUpcomingItems());
 				Main.setNumSomeday(getNumSomedayItems());
+			} else if (keyword[0].equalsIgnoreCase("display")) {
+				if ( keyword.length == 1 ) {
+					resetDisplayLists();
+					ClockWork.ClockworkLogicMain(userInput, _logic);
+					_powerList = DisplayCategory.getCommandArrListForGUI();
+					Main.setPowerList(_powerList);
+					Main.displayAllScene();
+				} else {
+					SignalHandler.clearArrListForGUI();
+					ClockWork.ClockworkLogicMain(userInput, _logic);
+					Main.setPowerList(_powerList);
+					Main.displayAllScene();
+				}
+			} else {
+				SignalHandler.clearArrListForGUI();
+				ClockWork.ClockworkLogicMain(userInput, _logic);
+				Main.setPowerList(_powerList);
+				Main.displayAllScene();
 			}
+			
 		
 		} catch (Exception ex) {
 			_logger.log(Level.WARNING, "Keypress detected, but failed to process.", ex);
@@ -165,7 +186,7 @@ public class Controller {
 		_feedback.add("");
 	}
 	
-	public static void resetLists(){
+	protected static void resetLists(){
 		SignalHandler.clearArrListForGUI();
 		DisplayCommand.clearArrListForGUI();
 		SearchCommand.clearArrListForGUI();
@@ -173,7 +194,16 @@ public class Controller {
 	    DisplayCategory.clearArrListForGUI();
 	    SearchDisplay.clearSearchArrListForGUI();
 	}
-	
+	private static void resetSearchLists(){
+		SignalHandler.clearArrListForGUI();
+		SearchCommand.clearArrListForGUI();
+		SearchDisplay.clearSearchArrListForGUI();
+	}
+	private static void resetDisplayLists(){
+		SignalHandler.clearArrListForGUI();
+		DisplayCommand.clearArrListForGUI();
+		DisplayCategory.clearArrListForGUI();
+	}
 	public static int getNumTodayItems(){
 		if (todayList.isEmpty()){
 			return 0;
