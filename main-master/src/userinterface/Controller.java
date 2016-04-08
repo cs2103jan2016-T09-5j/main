@@ -104,7 +104,7 @@ public class Controller {
 				if ( keyword.length == 1 ) {
 					resetDisplayLists();
 					ClockWork.ClockworkLogicMain(userInput, _logic);
-					getFourMainLists();
+					//getFourMainLists();
 					_powerList = DisplayCategory.getCommandArrListForGUI();
 					processDefaultLogicToDisplay();
 				} else {

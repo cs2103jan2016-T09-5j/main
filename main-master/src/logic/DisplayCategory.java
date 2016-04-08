@@ -66,15 +66,21 @@ public class DisplayCategory {
 		String todayAsString = dateFormat.format(calendar.getTime());
 		ArrayList<ArrayList<String[]>> display = taskListProcessor();
 		todayArrListForGUI.clear();
-		if (!display.isEmpty()) {
-			for (int i = 0; i < display.size(); i++) {
-				if (display.get(i).get(0)[0].equals(todayAsString)) {
-					todayArrListForGUI = display.get(i);
-					return true;
+		try {
+			if (!display.isEmpty()) {
+				for (int i = 0; i < display.size(); i++) {
+					if (!display.get(i).isEmpty()) {
+						if (display.get(i).get(0)[0].equals(todayAsString)) {
+							todayArrListForGUI = display.get(i);
+							return true;
+						}
+					}
 				}
 			}
+			return false;
+		} catch (Exception e) {
+			return false;
 		}
-		return false;
 	}
 
 	private static boolean sortTmrList() {
@@ -83,29 +89,41 @@ public class DisplayCategory {
 		String tmrAsString = dateFormat.format(calendar.getTime());
 		ArrayList<ArrayList<String[]>> display = taskListProcessor();
 		tmrArrListForGUI.clear();
-		if (!display.isEmpty()) {
-			for (int i = 0; i < display.size(); i++) {
-				if (display.get(i).get(0)[0].equals(tmrAsString)) {
-					tmrArrListForGUI = display.get(i);
-					return true;
+		try {
+			if (!display.isEmpty()) {
+				for (int i = 0; i < display.size(); i++) {
+					if (!display.get(i).isEmpty()) {
+						if (display.get(i).get(0)[0].equals(tmrAsString)) {
+							tmrArrListForGUI = display.get(i);
+							return true;
+						}
+					}
 				}
 			}
+			return false;
+		} catch (Exception e) {
+			return false;
 		}
-		return false;
 	}
 
 	private static boolean sortSomedayList() {
 		ArrayList<ArrayList<String[]>> display = taskListProcessor();
 		somedaysArrListForGUI.clear();
-		if (!display.isEmpty()) {
-			for (int i = 0; i < display.size(); i++) {
-				if (display.get(i).get(0)[0].equals("Anytime")) {
-					somedaysArrListForGUI = display.get(i);
-					return true;
+		try {
+			if (!display.isEmpty()) {
+				for (int i = 0; i < display.size(); i++) {
+					if (!display.get(i).isEmpty()) {
+						if (display.get(i).get(0)[0].equals("Anytime")) {
+							somedaysArrListForGUI = display.get(i);
+							return true;
+						}
+					}
 				}
 			}
+			return false;
+		} catch (Exception e) {
+			return false;
 		}
-		return false;
 	}
 
 	private static boolean sortUpcommingList() {
@@ -115,35 +133,47 @@ public class DisplayCategory {
 		String tmrAsString = dateFormat.format(calendar.getTime());
 		ArrayList<ArrayList<String[]>> display = taskListProcessor();
 		upcommingArrListForGUI.clear();
-		if (!display.isEmpty()) {
-			for (int i = 0; i < display.size(); i++) {
-				String str = display.get(i).get(1)[3];
-				if (!str.equals("Anytime") && !str.equals(tmrAsString) && !str.equals(todayAsString)) {
-					combineArrList(display.get(i), upcommingArrListForGUI);
+		try {
+			if (!display.isEmpty()) {
+				for (int i = 0; i < display.size(); i++) {
+					if (!display.get(i).isEmpty()) {
+						String str = display.get(i).get(1)[3];
+						if (!str.equals("Anytime") && !str.equals(tmrAsString) && !str.equals(todayAsString)) {
+							combineArrList(display.get(i), upcommingArrListForGUI);
+						}
+					}
 				}
 			}
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
-		return true;
 	}
 
 	private static boolean sortCommandList() {
 		ArrayList<ArrayList<String[]>> display = taskListProcessor();
 		commandArrListForGUI.clear();
-		if (!display.isEmpty()) {
-			for (int i = 0; i < display.size(); i++) {
-				combineArrList(display.get(i), commandArrListForGUI);
+		try {
+			if (!display.isEmpty()) {
+				for (int i = 0; i < display.size(); i++) {
+					if (!display.get(i).isEmpty()) {
+						combineArrList(display.get(i), commandArrListForGUI);
+					}
+				}
 			}
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
-		return true;
 	}
 
 	private static void combineArrList(ArrayList<String[]> displayAL, ArrayList<String[]> upComingAL) {
 		if (!displayAL.isEmpty()) {
 			for (int i = 1; i < displayAL.size(); i++) {
 				upComingAL.add(displayAL.get(i));
-				for (int j = 0; j < displayAL.get(i).length; j++) {
-					System.out.println(displayAL.get(i)[j]);
-				}
+				// for (int j = 0; j < displayAL.get(i).length; j++) {
+				// System.out.println(displayAL.get(i)[j]);
+				// }
 			}
 		}
 	}
