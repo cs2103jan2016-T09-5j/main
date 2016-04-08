@@ -210,17 +210,20 @@ public class LayoutTemplateAll extends BorderPane {
 		   // System.out.println(first);
 		Text feedbackText = new Text(_feedbackList.get(0));		
 		feedbackText.setText(_feedbackList.get(0));
+		feedbackText.setWrappingWidth(500);
 		feedbackText.setFill(Color.WHITE);
 		feedbackText.setFont(Font.font("Calibri", 12));
 		if (first.equals("Added")) {
 			feedbackText.setFont(Font.font("Calibri", FontWeight.BOLD, 12));
 		} else if (first.equals("Edited")) {
 			feedbackText.setFont(Font.font("Calibri", FontPosture.ITALIC, 12));
-		} else if (first.equals("Marked")) {
+		} else if (first.equals("Marked") || first.equals("Deleted")) {
 			feedbackText.setStrikethrough(true);
 			feedbackText.setFill(Color.GREY);
 		} else if (first.equals("Redo")) {
 			feedbackText.setUnderline(true);
+		} else if (first.equals("Undo")) {
+			feedbackText.setFill(Color.GREY);
 		} else if (first.equals("Clash")) {
 			feedbackText.setText(_feedbackList.get(0));
 			feedbackText.setFill(Color.CRIMSON);

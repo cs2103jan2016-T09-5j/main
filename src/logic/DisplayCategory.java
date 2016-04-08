@@ -76,7 +76,7 @@ public class DisplayCategory {
     private static boolean sortSomedayList(){
     	ArrayList<ArrayList<String[]>> display = taskListProcessor();
     	for(int i=0; i<display.size(); i++){
-    		if(display.get(i).get(0)[0].equals("Anytime.")){
+    		if(display.get(i).get(0)[0].equals("Anytime")){
     			somedaysArrListForGUI = display.get(i);
     			return true;
     		}
@@ -92,7 +92,7 @@ public class DisplayCategory {
     	upcommingArrListForGUI.clear();
     	for(int i=0; i<display.size(); i++){
     		String str = display.get(i).get(1)[3];
-    		if(!str.equals("Anytime.") && !str.equals(tmrAsString)
+    		if(!str.equals("Anytime") && !str.equals(tmrAsString)
     				&& !str.equals(todayAsString)){
     			combineArrList(display.get(i),upcommingArrListForGUI);
     		}
