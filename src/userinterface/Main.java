@@ -25,10 +25,10 @@ public class Main extends Application {
 	private static ArrayList<String[]> _searchList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _powerList = new ArrayList<String[]>();
 	
-	private static int _numToday;
-	private static int _numTomorrow;
-	private static int _numUpcoming;
-	private static int _numSomeday;
+	private static int _numToday = 0;
+	private static int _numTomorrow = 0;
+	private static int _numUpcoming = 0;
+	private static int _numSomeday = 0;
 	
 	private static LayoutSummary summaryLayout;
 	private static LayoutHelp helpLayout;
@@ -94,7 +94,7 @@ public class Main extends Application {
 	 */
 	private static void initialiseLogic() {
 		Controller.setLogic(ClockWork.getInstance());
-		Controller.resetLists();
+		Controller.resetAllLists();
 	}
 	
 	/** 
