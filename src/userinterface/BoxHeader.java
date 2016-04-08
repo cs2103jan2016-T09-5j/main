@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import logic.DisplayCategory;
 
 public class BoxHeader extends BorderPane {
 
@@ -17,7 +18,8 @@ public class BoxHeader extends BorderPane {
 	private Node escNode;
 	private Node summaryNode;
 	
-	private Label taskLbl = new Label("     Tasks     ");
+	private Label taskLbl1 = new Label("     Today's date:     ");
+	private Label taskLbl2 = new Label("     "+ DisplayCategory.getTodayDate()+"     ");
 	private Label helpLbl = new Label("F1");
 	private Label calLbl = new Label("F2");
 	private Label summaryLbl = new Label("F3");
@@ -76,7 +78,7 @@ public class BoxHeader extends BorderPane {
 
 	private ComponentContentBoxHeader createTaskBox(){
 		ComponentContentBoxHeader taskBox = new ComponentContentBoxHeader();
-		Node wrappedTaskLabel = Borders.wrap(taskLbl).lineBorder().color(Color.WHITE).build().build();
+		Node wrappedTaskLabel = Borders.wrap(taskLbl2).lineBorder().color(Color.WHITE).build().build();
 		taskBox.setLeft(wrappedTaskLabel);
 		
 		return taskBox;
