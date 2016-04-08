@@ -48,8 +48,8 @@ public class Signal {
 	 * Display Command Signals
 	 */
 	public static final String DISPLAY_SUCCESS_SIGNAL = "";
-    public static final String DISPLAY_EMPTY_TODO_SIGNAL = "Empty list";
-    public static final String DISPLAY_EMPTY_RULE_SIGNAL = "Empty recurring";
+    public static final String DISPLAY_EMPTY_TODO_SIGNAL = "";
+    public static final String DISPLAY_EMPTY_RULE_SIGNAL = "";
 	public static final String DISPLAY_ID_NOT_FOUND = "ID %1$s does not exist";
 	public static final String DISPLAY_INVALID_PARAM = "Parameter %1$s is not recognized."
 			+ System.lineSeparator()
