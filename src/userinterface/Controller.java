@@ -92,39 +92,30 @@ public class Controller {
 				Main.setSearchList(_searchList);
 				Main.displaySearchScene();
 			} else if(keyword[0].equalsIgnoreCase("add") || keyword[0].equalsIgnoreCase("delete")
-					|| keyword[0].equalsIgnoreCase("mark") || keyword[0].equalsIgnoreCase("delete")
+					|| keyword[0].equalsIgnoreCase("mark") || keyword[0].equalsIgnoreCase("exit")
 					|| keyword[0].equalsIgnoreCase("redo") || keyword[0].equalsIgnoreCase("undo")
-					|| keyword[0].equalsIgnoreCase("delete") || keyword[0].equalsIgnoreCase("edit")
-				    || keyword[0].equalsIgnoreCase("exit")){
-				resetLists();
+					|| keyword[0].equalsIgnoreCase("delete") || keyword[0].equalsIgnoreCase("edit")){
+				resetAllLists();
 				ClockWork.ClockworkLogicMain(userInput, _logic);
-				
+				getFourMainLists();
 				_powerList = DisplayCategory.getCommandArrListForGUI();
-				Main.setPowerList(_powerList);
-				Main.displayAllScene();
-				
-				Main.setNumToday(getNumTodayItems());
-				Main.setNumTomorrow(getNumTomorrowItems());
-				Main.setNumUpcoming(getNumUpcomingItems());
-				Main.setNumSomeday(getNumSomedayItems());
+				processDefaultLogicToDisplay();
 			} else if (keyword[0].equalsIgnoreCase("display")) {
 				if ( keyword.length == 1 ) {
 					resetDisplayLists();
 					ClockWork.ClockworkLogicMain(userInput, _logic);
+					getFourMainLists();
 					_powerList = DisplayCategory.getCommandArrListForGUI();
-					Main.setPowerList(_powerList);
-					Main.displayAllScene();
+					processDefaultLogicToDisplay();
 				} else {
 					SignalHandler.clearArrListForGUI();
 					ClockWork.ClockworkLogicMain(userInput, _logic);
-					Main.setPowerList(_powerList);
-					Main.displayAllScene();
+					processDefaultLogicToDisplay();
 				}
 			} else {
 				SignalHandler.clearArrListForGUI();
 				ClockWork.ClockworkLogicMain(userInput, _logic);
-				Main.setPowerList(_powerList);
-				Main.displayAllScene();
+				processDefaultLogicToDisplay();
 			}
 			
 		
@@ -186,7 +177,24 @@ public class Controller {
 		_feedback.add("");
 	}
 	
-	protected static void resetLists(){
+	private static void getFourMainLists(){
+		_powerList = DisplayCategory.getCommandArrListForGUI();
+		todayList = DisplayCategory.getTodayArrListForGUI();
+		_tomorrowList = DisplayCategory.geTmrArrListForGUI();
+		_upcomingList = DisplayCategory.getUpcommingArrListForGUI();
+		_somedayList = DisplayCategory.getSomedaysArrListForGUI();
+	}
+	
+	private static void processDefaultLogicToDisplay(){
+		Main.setPowerList(_powerList);
+		Main.displayAllScene();
+		
+		Main.setNumToday(getNumTodayItems());
+		Main.setNumTomorrow(getNumTomorrowItems());
+		Main.setNumUpcoming(getNumUpcomingItems());
+		Main.setNumSomeday(getNumSomedayItems());
+	}
+	protected static void resetAllLists(){
 		SignalHandler.clearArrListForGUI();
 		DisplayCommand.clearArrListForGUI();
 		SearchCommand.clearArrListForGUI();
