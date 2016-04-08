@@ -20,6 +20,7 @@ public class UndoRedoStack<T extends UndoableRedoable<T>> {
 	private IDBuffer<T> idBuffer;
 	private int maxStates;
 	
+	//@@author Prem
 	public UndoRedoStack(HashMap<Integer, T> memory, IDBuffer<T> idBuffer, int maxStates) {
 		this.undoStack = new LinkedList<T>();
 		this.redoStack = new LinkedList<T>();

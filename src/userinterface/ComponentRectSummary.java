@@ -5,6 +5,7 @@ import javafx.scene.shape.Rectangle;
 
 public class ComponentRectSummary extends Rectangle {
 	
+	//@@author Rebekah
 	public ComponentRectSummary(){
 		this.setWidth(150);
 		this.setHeight(150);

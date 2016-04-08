@@ -86,6 +86,7 @@ public class EditCommandTest {
 	Todo event;
 	RecurringTodoRule rule;
 	
+	//@@author Rebekah
 	@Before
 	public void setUp() throws InvalidRecurringException, InvalidTodoNameException, ParsingFailureException {
 		String fileDirectory = ClockWork.getStorageFileDirFromSettings();

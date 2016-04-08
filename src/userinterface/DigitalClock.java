@@ -23,7 +23,9 @@ import javafx.util.Duration;
  * Time is the system time for the local timezone.
  */
 class DigitalClock extends Label {
-  public DigitalClock() {
+	
+	//@@author Morgan
+	public DigitalClock() {
     bindToTime();
   }
 

@@ -7,6 +7,7 @@ public class SignalHandler {
  //   private static final String PREFIX = "";
     private static  ArrayList<String> ArrListForGUI = new ArrayList<String> ();
     
+    //@@author Regine
     public static ArrayList<String> getArrListForGUI(){
     	return ArrListForGUI;
     }

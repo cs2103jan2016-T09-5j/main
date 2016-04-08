@@ -11,7 +11,8 @@ import storage.Memory;
  */
 
 public class EmailCommand extends Command {
-
+	
+	//@@author Morgan
 	/**
 	 * Creates an EmailCommand object.
 	 * 

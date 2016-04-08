@@ -30,6 +30,7 @@ public class LayoutCalendar extends BorderPane {
 	private Node calendarControl;
 	private Agenda agendaControl;
 	
+	//@@author Morgan
 	public LayoutCalendar() {
 		setDisplayRegions();
 	}

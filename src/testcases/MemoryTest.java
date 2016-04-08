@@ -18,6 +18,7 @@ public class MemoryTest {
 	Memory memory;
 	Todo todo1, todo2, todo3;
 
+	//@@author Regine
 	@Before
 	public void setUp() throws InvalidDateException {
 		memory = new Memory();

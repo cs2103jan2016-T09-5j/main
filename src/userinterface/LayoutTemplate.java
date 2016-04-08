@@ -55,7 +55,8 @@ public class LayoutTemplate extends BorderPane {
 	private static int scrollUpIndex = -3;
 	
 	private TableView tableView;
-
+	
+	//@@author Rebekah
 	public LayoutTemplate(String title, ArrayList<String[]> list, ArrayList<String> feedbackList) {
 		if (feedbackList == null) System.out.println("Error: LayoutTemplate null");
 		_titleString = title;

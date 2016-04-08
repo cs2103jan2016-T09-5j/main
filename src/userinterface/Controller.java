@@ -30,6 +30,7 @@ public class Controller {
 	private static ArrayList<String[]> _searchList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _powerList = new ArrayList<String[]>();
 	
+	//@@author Regine
 	/**
 	 * Handle event after key is pressed
 	 * 
@@ -104,7 +105,7 @@ public class Controller {
 				if ( keyword.length == 1 ) {
 					resetDisplayLists();
 					ClockWork.ClockworkLogicMain(userInput, _logic);
-					getFourMainLists();
+					//getFourMainLists();
 					_powerList = DisplayCategory.getCommandArrListForGUI();
 					processDefaultLogicToDisplay();
 				} else {
@@ -178,7 +179,6 @@ public class Controller {
 	}
 	
 	private static void getFourMainLists(){
-		_powerList = DisplayCategory.getCommandArrListForGUI();
 		todayList = DisplayCategory.getTodayArrListForGUI();
 		_tomorrowList = DisplayCategory.geTmrArrListForGUI();
 		_upcomingList = DisplayCategory.getUpcommingArrListForGUI();

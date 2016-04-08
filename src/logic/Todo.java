@@ -47,6 +47,7 @@ public class Todo implements UndoableRedoable<Todo> {
 
 	protected static final String FloatingTaskStringFormat = "Floating task \"%1$s\"";
 
+	//@@author Prem
 	/**
 	 * Constructs a Todo of type: TASK.
 	 * 
@@ -228,7 +229,7 @@ public class Todo implements UndoableRedoable<Todo> {
 		this.startTime = startTime;
 		modifiedOn = new DateTime();
 	}
-
+	
 	/**
 	 * Returns the end time of the Todo.
 	 * 
@@ -296,7 +297,8 @@ public class Todo implements UndoableRedoable<Todo> {
 	public TYPE getType() {
 		return type;
 	}
-
+	
+	//@@author Morgan
 	public Integer getRecurringId() throws NotRecurringException {
 		if (recurringId == null) {
 			throw new NotRecurringException(

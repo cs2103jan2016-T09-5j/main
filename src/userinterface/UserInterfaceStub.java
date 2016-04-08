@@ -3,6 +3,8 @@ package userinterface;
 import java.util.ArrayList;
 
 public class UserInterfaceStub {
+	
+	//@@author Rebekah
 	public static ArrayList<String[]> populateList(ArrayList<String[]> list){
 		
 		list.clear();

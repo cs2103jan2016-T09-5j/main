@@ -45,6 +45,7 @@ public class Main extends Application {
 	private static Scene scene;
 	private static Stage stage;
 
+	//@@author Rebekah
 	/*
 	* ===========================================
 	* Main Program

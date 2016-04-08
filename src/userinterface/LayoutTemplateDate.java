@@ -54,6 +54,7 @@ public class LayoutTemplateDate extends BorderPane {
 
 	private TableView tableView;
 	
+	//@@author Rebekah
 	public LayoutTemplateDate(String title, ArrayList<String[]> list, ArrayList<String> feedbackList) {
 		_titleString = title;
 		_list = list;

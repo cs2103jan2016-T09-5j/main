@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class SearchDisplay{
 	private static  ArrayList<String[]> searchArrListForGUI = new ArrayList<String[]> ();
+	
+	//@@author Regine
 	private static boolean sortSearchList(){
 		ArrayList<ArrayList<String[]>> display = taskListProcessor();
 		for(int i=0; i<display.size(); i++){

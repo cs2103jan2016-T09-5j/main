@@ -29,6 +29,7 @@ public class VolatileMemory {
 	private UndoRedoStack<RecurringTodoRule> ruleStacks;
 	private static final int STATE_STACK_MAX_SIZE = 5;
 
+	//@@author Regine
 	public VolatileMemory(HashMap<Integer, Todo> allTodos, IDBuffer<Todo> idBuffer, HashMap<Integer, RecurringTodoRule> recurringRules, IDBuffer<RecurringTodoRule> recurringIdBuffer) {
 		this.undoIsRule = new Stack<Boolean>();
 		this.redoIsRule = new Stack<Boolean>();

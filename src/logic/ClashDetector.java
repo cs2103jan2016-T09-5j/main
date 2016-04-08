@@ -10,6 +10,7 @@ public class ClashDetector {
 	public static Scanner scn = new Scanner(System.in);
 	private static  ArrayList<String> ArrListForGUI = new ArrayList<String> ();
 	
+	//@@author Morgan
 	public static ArrayList<String> getArrListForGUI(){
 	    	return ArrListForGUI;
 	}
