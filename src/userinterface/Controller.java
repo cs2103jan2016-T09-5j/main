@@ -105,16 +105,18 @@ public class Controller {
 				if ( keyword.length == 1 ) {
 					resetDisplayLists();
 					ClockWork.ClockworkLogicMain(userInput, _logic);
-					//getFourMainLists();
+					getFourMainLists();
 					_powerList = DisplayCategory.getCommandArrListForGUI();
 					processDefaultLogicToDisplay();
 				} else {
 					SignalHandler.clearArrListForGUI();
+					ClashDetector.clearArrListForGUI();
 					ClockWork.ClockworkLogicMain(userInput, _logic);
 					processDefaultLogicToDisplay();
 				}
 			} else {
 				SignalHandler.clearArrListForGUI();
+				ClashDetector.clearArrListForGUI();
 				ClockWork.ClockworkLogicMain(userInput, _logic);
 				processDefaultLogicToDisplay();
 			}
@@ -128,8 +130,10 @@ public class Controller {
 	
 	public static ArrayList<String> getFeedback() {
 		resetFeedbackList();
-		if (!SignalHandler.getArrListForGUI().isEmpty()){
+		if (!SignalHandler.getArrListForGUI().isEmpty() && ClashDetector.getArrListForGUI().isEmpty()){
 			_feedback = SignalHandler.getArrListForGUI();
+		} else if (!ClashDetector.getArrListForGUI().isEmpty()){
+			_feedback = ClashDetector.getArrListForGUI();
 		}
 		return _feedback;
 	}
@@ -203,11 +207,13 @@ public class Controller {
 	    SearchDisplay.clearSearchArrListForGUI();
 	}
 	private static void resetSearchLists(){
+		ClashDetector.clearArrListForGUI();
 		SignalHandler.clearArrListForGUI();
 		SearchCommand.clearArrListForGUI();
 		SearchDisplay.clearSearchArrListForGUI();
 	}
 	private static void resetDisplayLists(){
+		ClashDetector.clearArrListForGUI();
 		SignalHandler.clearArrListForGUI();
 		DisplayCommand.clearArrListForGUI();
 		DisplayCategory.clearArrListForGUI();

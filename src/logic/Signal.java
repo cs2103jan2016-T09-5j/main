@@ -125,8 +125,8 @@ public class Signal {
 	 * Time Clash Signals
 	 */
 	public static final String CLASH_DOES_NOT_EXIST = "";
-	public static final String CLASH_DEADLINE_DOES_EXIST = "";
-	public static final String CLASH_EVENT_DOES_EXIST = "Clash tasks deteched \"%1$s\"";
+	public static final String CLASH_DEADLINE_DOES_EXIST = "Clash tasks detected \"%1$s\" \"%2$s\" ";
+	public static final String CLASH_EVENT_DOES_EXIST = "Clash tasks detected \"%1$s\" \"%2$s\" ";
 	public static final String CLASH_CONTINUE_PROPOSITION = "";
 	public static final String CLASH_USER_OVERRIDE = "";
 	public static final String CLASH_USER_VOID_TASK = "The entry has not been added, remove using 'delete' conflict to continue,";

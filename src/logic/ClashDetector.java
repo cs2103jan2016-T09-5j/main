@@ -28,15 +28,15 @@ public class ClashDetector {
 			case DEADLINE:
 				todoClashExists = isDeadlineClash();
 				if(todoClashExists) {
-					ArrListForGUI.add("WARNING : "+String.format(Signal.CLASH_DEADLINE_DOES_EXIST, 
-							attemptedTodo.endTime));
+					ArrListForGUI.add("Clash WARNING : "+String.format(Signal.CLASH_DEADLINE_DOES_EXIST, 
+							attemptedTodo.name, attemptedTodo.endTime ));
 				}
 				break;
 			case EVENT:
 				todoClashExists = isEventClash();
 				if(todoClashExists) {
-					ArrListForGUI.add("WARNING : "+String.format(Signal.CLASH_EVENT_DOES_EXIST,
-							 attemptedTodo.endTime));
+					ArrListForGUI.add("Clash WARNING : "+String.format(Signal.CLASH_EVENT_DOES_EXIST,
+							 attemptedTodo.name, attemptedTodo.endTime));
 				}
 				break;
 			default:
