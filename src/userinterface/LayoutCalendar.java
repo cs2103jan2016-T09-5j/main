@@ -227,16 +227,22 @@ public class LayoutCalendar extends BorderPane {
 	    			//Scrolls the agenda view up
 	    			if(keyEvent.getCode() == KeyCode.UP) {
 		    			setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
-		    			agendaScrollLocation = agendaScrollLocation.minusHours(1);
-		    			agendaControl.setDisplayedLocalDateTime(agendaScrollLocation);
+		    			//limit scrolling to the single day selected
+		    			if(agendaScrollLocation.getHour() > 0){
+			    			agendaScrollLocation = agendaScrollLocation.minusHours(1);
+			    			agendaControl.setDisplayedLocalDateTime(agendaScrollLocation);
+		    			}
 		    			keyEvent.consume();
 	    			} 
 	    			
 	    			//Scrolls the agenda view down
 	    			if(keyEvent.getCode() == KeyCode.DOWN) {
 		    			setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
-		    			agendaScrollLocation = agendaScrollLocation.plusHours(1);
-		    			agendaControl.setDisplayedLocalDateTime(agendaScrollLocation);
+		    			//limit scrolling to the single day selected
+		    			if(agendaScrollLocation.getHour() < 23) {
+		    				agendaScrollLocation = agendaScrollLocation.plusHours(1);
+		    				agendaControl.setDisplayedLocalDateTime(agendaScrollLocation);
+		    			}
 		    			keyEvent.consume();
 	    			}   
 	    			
