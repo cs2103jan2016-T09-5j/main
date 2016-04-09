@@ -24,29 +24,63 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class LayoutHelp extends BorderPane {
+	private enum NODETYPE { ADD, DELETE, EDIT, SEARCH, MARK, UNDO, REDO, EXIT, FORMAT };
+	
+	//Strings that inside the displayed boxes
+	private final String TEXT_NODE_ADD = "Add";
+	private final String TEXT_NODE_DELETE = "Delete";
+	private final String TEXT_NODE_EDIT = "Edit";
+	private final String TEXT_NODE_SEARCH = "Search";
+	private final String TEXT_NODE_MARK = "Mark";
+	private final String TEXT_NODE_UNDO = "Undo";
+	private final String TEXT_NODE_REDO = "Redo";
+	private final String TEXT_NODE_EXIT = "Exit";
+	private final String TEXT_NODE_FORMAT = "<Tab>";
+	
+	//Icons inside the displayed boxes
+	private final Node ICON_ADD = GlyphsDude.createIcon(FontAwesomeIcon.PLUS);
+	private final Node ICON_DELETE = GlyphsDude.createIcon(FontAwesomeIcon.MINUS);
+	private final Node ICON_EDIT = GlyphsDude.createIcon(FontAwesomeIcon.PENCIL);
+	private final Node ICON_SEARCH = GlyphsDude.createIcon(FontAwesomeIcon.SEARCH);
+	private final Node ICON_MARK = GlyphsDude.createIcon(FontAwesomeIcon.CHECK);
+	private final Node ICON_UNDO = GlyphsDude.createIcon(FontAwesomeIcon.UNDO);
+	private final Node ICON_REDO = GlyphsDude.createIcon(FontAwesomeIcon.REPEAT);
+	private final Node ICON_EXIT = GlyphsDude.createIcon(FontAwesomeIcon.CLOSE);
+	private final Node ICON_FORMAT = GlyphsDude.createIcon(FontAwesomeIcon.INFO);
+	
+	//Styles of the items in the scene
+	private final String STYLE_MAIN_BORDERPANE = "-fx-background-color: #182733";
+	private final String STYLE_MAIN_STACKPANE = "-fx-background-color: #182733";
+	private final String STYLE_HELPBOX = "-fx-background-color: #182733";
+	private final String STYLE_CONTENT_BAR = "-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;";
+	
+	//Dimensions of items in the scene
+	private final int HEIGHT_CONTENT_BOX = 300;
+	private final int HEIGHT_MAIN_STACKPANE = 150;
+	private final int WIDTH_MAIN_STACKPANE = 900;
 	
 	private Label dummyLbl = new Label(" ");
-
 	private GridPane helpContentBox = new GridPane();
 	private HBox helpContentBar = new HBox();
 
-	private Node wrappedAdd;
-	private Node wrappedDelete;
-	private Node wrappedEdit;
-	private Node wrappedSearch;
-	private Node wrappedMark;
-	private Node wrappedUndo;
-	private Node wrappedRedo;
-	private Node wrappedExit;
-	private Node wrappedFormat;
+	//Nodes in the scene
+	private Node addNode;
+	private Node deleteNode;
+	private Node editNode;
+	private Node searchNode;
+	private Node markNode;
+	private Node undoNode;
+	private Node redoNode;
+	private Node exitNode;
+	private Node formatNode;
 	
-	private String formatString = new String("add [task name] from [starting period] to [ending period]\n"
+	private final String formatString = new String("add [task name] from [starting period] to [ending period]\n"
 			+ "delete [task IDs] \n"
 			+ "edit <ID> [<newName>] [from <newStartTime>] [ to <newEndTime>] [by;on;at <newDeadline>] [every  <interval> ] [until <limit>] \n"
 			+ "search [<taskName>; <date>] \n"
 			+ "mark <ID>");
 
-	private Text formatText = new Text(formatString);
+	private final Text formatText = new Text(formatString);
 	
 
 	//@@author Rebekah
@@ -69,27 +103,27 @@ public class LayoutHelp extends BorderPane {
 	}
 
 	private void setCenterRegion() {
-		wrappedAdd = createAddNode();
-		wrappedDelete = createDeleteNode();
-		wrappedEdit = createEditNode();
-		wrappedSearch = createSearchNode();
-		wrappedMark = createMarkNode();
-		wrappedUndo = createUndoNode();
-		wrappedRedo = createRedoNode();
-		wrappedFormat = createFormatNode();
-		wrappedExit = createExitNode();
+		addNode = createNode(NODETYPE.ADD);
+		deleteNode = createNode(NODETYPE.DELETE);
+		editNode = createNode(NODETYPE.EDIT);
+		searchNode = createNode(NODETYPE.SEARCH);
+		markNode = createNode(NODETYPE.MARK);
+		undoNode = createNode(NODETYPE.UNDO);
+		redoNode = createNode(NODETYPE.REDO);
+		formatNode = createNode(NODETYPE.FORMAT);
+		exitNode = createNode(NODETYPE.EXIT);
 		
 		implementHelpContentBar();
 		implementHelpContentBox();
 		
 		BorderPane borderPane = new BorderPane();
-		borderPane.setStyle("-fx-background-color: #182733");
+		borderPane.setStyle(STYLE_MAIN_BORDERPANE);
 		
 		formatText.setFill(Color.WHITE);
 		
 		StackPane sp = new StackPane();
-		sp.setStyle("-fx-background-color: #182733");
-		sp.setPrefSize(900, 150);
+		sp.setStyle(STYLE_MAIN_STACKPANE);
+		sp.setPrefSize(WIDTH_MAIN_STACKPANE, HEIGHT_MAIN_STACKPANE);
 		sp.getChildren().add(formatText);
 				
 		borderPane.setTop(helpContentBox);
@@ -103,13 +137,12 @@ public class LayoutHelp extends BorderPane {
 		this.setBottom(textField);
 	}
 
-	/** IMPLEMENTING REGION OBJECTS */
-
+	/** CREATES THE BOX THAT HOLDS ALL CONTENT */
 	private void implementHelpContentBox() {	
 		helpContentBox.getChildren().add(helpContentBar);
 		helpContentBox.setAlignment(Pos.BOTTOM_CENTER);
-		helpContentBox.setStyle("-fx-background-color: #182733");
-		helpContentBox.setPrefHeight(300);
+		helpContentBox.setStyle(STYLE_HELPBOX);
+		helpContentBox.setPrefHeight(HEIGHT_CONTENT_BOX);
 		
 		ColumnConstraints columnConstraints = new ColumnConstraints();
 		columnConstraints.setFillWidth(true);
@@ -117,13 +150,16 @@ public class LayoutHelp extends BorderPane {
 		helpContentBox.getColumnConstraints().add(columnConstraints);
 	}
 
+	/** CREATES THE TOP BAR THAT HOLDS THE COMMAND BOXES */
 	private void implementHelpContentBar() {
-		helpContentBar.getChildren().addAll(wrappedAdd, wrappedDelete, wrappedEdit,
-				wrappedSearch, wrappedMark, wrappedUndo, wrappedRedo, wrappedExit, wrappedFormat);
+		helpContentBar.getChildren().addAll(
+				addNode, deleteNode, editNode, searchNode, markNode, 
+				undoNode, redoNode, exitNode, formatNode);
 		helpContentBar.setAlignment(Pos.CENTER);
-		helpContentBar.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;");
+		helpContentBar.setStyle(STYLE_CONTENT_BAR);
 	}
 
+	/** CREATES THE TEXT FIELD WHERE THE USER TYPES */
 	private TextField implementTextField() {
 		BoxInput textField = new BoxInput();
 		textField.setEditable(false);
@@ -139,130 +175,54 @@ public class LayoutHelp extends BorderPane {
 		return textField;
 	}
 
-	/** CREATING LAYOUT OBJECTS */
-	
-	private Node createExitNode() {
-		BorderPane exitBox = new BorderPane();
-
-		Label exitLbl = new Label("Exit");
-
-		exitBox.setTop(exitLbl);
-		exitBox.setCenter(dummyLbl);
-		exitBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.CLOSE));
-
-		Node wrappedExit = Borders.wrap(exitBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedExit;
-	}
-	
-	private Node createFormatNode() {
-		BorderPane formatBox = new BorderPane();
-
-		Label formatLbl = new Label("<Tab>");
-
-		formatBox.setTop(formatLbl);
-		formatBox.setCenter(dummyLbl);
-		formatBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.INFO));
-
-		Node wrappedFormat = Borders.wrap(formatBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedFormat;
-	}
-	
-	private Node createMarkNode() {
-		BorderPane markBox = new BorderPane();
-
-		Label markLbl = new Label("Mark");
-
-		markBox.setTop(markLbl);
-		markBox.setCenter(dummyLbl);
-		markBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.CHECK));
-
-		Node wrappedMark = Borders.wrap(markBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedMark;
-	}
-
-	private Node createSearchNode() {
-		BorderPane searchBox = new BorderPane();
-
-		Label searchLbl = new Label("Search");
-
-		searchBox.setTop(searchLbl);
-		searchBox.setCenter(dummyLbl);
-		searchBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.SEARCH));
-
-		Node wrappedSearch = Borders.wrap(searchBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedSearch;
-	}
-
-	private Node createRedoNode() {
-		BorderPane redoBox = new BorderPane();
-
-		Label redoLbl = new Label("Redo");
-
-		redoBox.setTop(redoLbl);
-		redoBox.setCenter(dummyLbl);
-		redoBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.REPEAT));
-
-		Node wrappedRedo = Borders.wrap(redoBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedRedo;
-	}
-
-	private Node createUndoNode() {
-		BorderPane undoBox = new BorderPane();
-
-		Label undoLbl = new Label("Undo");
-
-		undoBox.setTop(undoLbl);
-		undoBox.setCenter(dummyLbl);
-		undoBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.UNDO));
-
-		Node wrappedUndo = Borders.wrap(undoBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedUndo;
-	}
-
-	private Node createEditNode() {
-		BorderPane editBox = new BorderPane();
-
-		Label editLbl = new Label("Edit");
-
-		editBox.setTop(editLbl);
-		editBox.setCenter(dummyLbl);
-		editBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.PENCIL));
-
-		Node wrappedEdit = Borders.wrap(editBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedEdit;
-	}
-
-	private Node createAddNode() {
-		BorderPane addBox = new BorderPane();
-
-		Label addLbl = new Label("Add");
-
-		addBox.setTop(addLbl);
-		addBox.setCenter(dummyLbl);
-		addBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.PLUS));
-
-		Node wrappedAdd = Borders.wrap(addBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedAdd;
-	}
-
-	private Node createDeleteNode() {
-		BorderPane deleteBox = new BorderPane();
-
-		Label deleteLbl = new Label("Delete");
-
-		deleteBox.setTop(deleteLbl);
-		deleteBox.setCenter(dummyLbl);
-		deleteBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.MINUS));
-
-		Node wrappedDelete = Borders.wrap(deleteBox).lineBorder().color(Color.WHITE).build().build();
-		return wrappedDelete;
+	/** Creates a Node of the specified NODETYPE */
+	private Node createNode(NODETYPE type){
+		BorderPane borderPane = new BorderPane();
+		Label label = null;
+		Node icon = null;
+		switch (type){
+		case ADD:
+			label = new Label(TEXT_NODE_ADD);
+			icon = ICON_ADD;
+			break;
+		case DELETE:
+			label = new Label(TEXT_NODE_DELETE);
+			icon = ICON_DELETE;
+			break;
+		case EDIT:
+			label = new Label(TEXT_NODE_EDIT);
+			icon = ICON_EDIT;
+			break;
+		case SEARCH:
+			label = new Label(TEXT_NODE_SEARCH);
+			icon = ICON_SEARCH;
+			break;
+		case MARK:
+			label = new Label(TEXT_NODE_MARK);
+			icon = ICON_MARK;
+			break;
+		case UNDO:
+			label = new Label(TEXT_NODE_UNDO);
+			icon = ICON_UNDO;
+			break;
+		case REDO:
+			label = new Label(TEXT_NODE_REDO);
+			icon = ICON_REDO;
+			break;
+		case EXIT:
+			label = new Label(TEXT_NODE_EXIT);
+			icon = ICON_EXIT;
+			break;
+		default:
+			label = new Label(TEXT_NODE_FORMAT);
+			icon = ICON_FORMAT;
+			break;
+		}
+		
+		borderPane.setTop(label);
+		borderPane.setCenter(dummyLbl);
+		borderPane.setBottom(icon);
+		Node node = Borders.wrap(borderPane).lineBorder().color(Color.WHITE).build().build();
+		return node;
 	}
 }

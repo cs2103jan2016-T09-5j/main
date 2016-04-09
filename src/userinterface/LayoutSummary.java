@@ -22,24 +22,32 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+//This BorderPane is for the Summary scene where the user can choose from the 4 buttons
 public class LayoutSummary extends BorderPane {
-
+	//Buttons in the summary scene
 	private Button todayButton = new Button();
 	private Button tomorrowButton = new Button();
 	private Button upcomingButton = new Button();
 	private Button somedayButton = new Button();
 	
-	private String todayString = "Today";
-	private String tomorrowString = "Tomorrow";
-	private String upcomingString = "Upcoming";
-	private String somedayString = "Someday";
+	//Strings to display in the StackPane
+	private final String todayString = "Today";
+	private final String tomorrowString = "Tomorrow";
+	private final String upcomingString = "Upcoming";
+	private final String somedayString = "Someday";
 	
+	//These integers denote the number to display for each category
 	private int _numToday;
 	private int _numTomorrow;
 	private int _numUpcoming;
 	private int _numSomeday;
 	
+	//These integers denote the size of the buttons
+	private final int WIDTH_BUTTON_SIZE = 150;
+	private final int HEIGHT_BUTTON_SIZE = 150;
+	
 	//@@author Rebekah
+	//Constructor - Sets the Summary scene with the numbers to display for each category
 	public LayoutSummary(int numToday, int numTomorrow, int numUpcoming, int numSomeday) {
 		_numToday = numToday;
 		_numTomorrow = numTomorrow;
@@ -133,7 +141,7 @@ public class LayoutSummary extends BorderPane {
 	private Node createSummaryButton(Button button, String summaryType, String summaryString){
 		button.setText(summaryString);
 		button.setWrapText(true);
-		button.setPrefSize(150, 150);
+		button.setPrefSize(WIDTH_BUTTON_SIZE, HEIGHT_BUTTON_SIZE);
 		button.setTextFill(Color.WHITE);
 		Controller.redirectScene(button, summaryType);
 		Node wrappedButton = Borders.wrap(button).lineBorder().color(Color.AQUAMARINE).build().build();

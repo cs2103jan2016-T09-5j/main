@@ -2,6 +2,7 @@ package userinterface;
 
 import javafx.scene.control.TextField;
 
+//This class is for displaying the text box
 public class BoxInput extends TextField {
 	
 	//@@author Rebekah

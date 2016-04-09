@@ -44,25 +44,57 @@ public class LayoutTemplate extends BorderPane {
 	private ArrayList<String> _feedbackList;
 	private Node _titleNode;
 	private int _listSize;
+	private boolean _displayDate;
+	private boolean _exitEnabled;
 
-	public static final String ColumnIndexMapKey = "Index";
-	public static final String ColumnNameMapKey = "Name";
-	public static final String ColumnTimeMapKey = "Time";
-	public static final String ColumnDateMapKey = "Date";
+	//Keys for the stored tasks in the HashMap
+	public static final String KEY_COLUMN_INDEX = "Index";
+	public static final String KEY_COLUMN_NAME = "Name";
+	public static final String KEY_COLUMN_TIME = "Time";
+	public static final String KEY_COLUMN_DATE = "Date";
 	
+	//Settings for the scrollpane scrolling speed
 	private static int currentScrollIndex = 0;
-	private static int scrollDownIndex = 3;
-	private static int scrollUpIndex = -3;
+	private static final int SPEED_SCROLL_DOWN = 3;
+	private static final int SPEED_SCROLL_UP = -3;
+
+	//Indexes of the task variables in the string array
+	private final int INDEX_TASK_INDEX = 0;
+	private final int INDEX_TASK_NAME = 1;
+	private final int INDEX_TASK_TIME = 2;
+	private final int INDEX_TASK_DATE = 3;
 	
+	//Styling for the objects in the scene
+	public static final String STYLE_CENTRE_REGION = "-fx-background-color: #182733;";
+	public static final String STYLE_USER_BOX = "-fx-background-color: #182733;";
+	public static final String FONT_FEEDBACK = "Calibri";
+	
+	//Sizes for the elements in the scene
+	private final int FONTSIZE_FEEDBACK = 12;
+	//Display sizes if the scene has 3 columns
+	private final int WIDTH_WRAPPING_FEEDBACK = 500;
+	private final int WIDTH_DISPLAY3_WRAPPING_DATACOLUMN_1 = 10;
+	private final int WIDTH_DISPLAY3_WRAPPING_DATACOLUMN_2 = 460;
+	private final int WIDTH_DISPLAY3_WRAPPING_DATACOLUMN_3 = 290;
+	//Display sizes if the scene has 4 columns
+	private final int WIDTH_DISPLAY4_WRAPPING_DATACOLUMN_1 = 20;
+	private final int WIDTH_DISPLAY4_WRAPPING_DATACOLUMN_2 = 320;
+	private final int WIDTH_DISPLAY4_WRAPPING_DATACOLUMN_3 = 250;
+	private final int WIDTH_DISPLAY4_WRAPPING_DATACOLUMN_4 = 150;
+	
+	//Column that holds all the task information
 	private TableView tableView;
 	
 	//@@author Rebekah
-	public LayoutTemplate(String title, ArrayList<String[]> list, ArrayList<String> feedbackList) {
+	public LayoutTemplate(String title, ArrayList<String[]> list, 
+			ArrayList<String> feedbackList, boolean displayDate, boolean enableExit) {
 		if (feedbackList == null) System.out.println("Error: LayoutTemplate null");
 		_titleString = title;
 		_list = list;
 		_listSize = list.size();
 		_feedbackList = feedbackList;
+		_displayDate = displayDate;
+		_exitEnabled = enableExit;
 		setDisplayRegions();
 	}
 
@@ -84,25 +116,43 @@ public class LayoutTemplate extends BorderPane {
 		implementTitle();
 
 		GridPane grid = new GridPane();
-		grid.setStyle("-fx-background-color: #182733;");
+		grid.setStyle(STYLE_CENTRE_REGION);
 
-		TableColumn<Map, String> firstDataColumn = new TableColumn<>("No");
+		TableColumn<Map, String> firstDataColumn = new TableColumn<>("Index");
 		TableColumn<Map, String> secondDataColumn = new TableColumn<>("Name");
 		TableColumn<Map, String> thirdDataColumn = new TableColumn<>("Time");
 
-		firstDataColumn.setCellValueFactory(new MapValueFactory(ColumnIndexMapKey));
-		firstDataColumn.setMinWidth(10);
-		secondDataColumn.setCellValueFactory(new MapValueFactory(ColumnNameMapKey));
-		secondDataColumn.setMinWidth(460);
-		thirdDataColumn.setCellValueFactory(new MapValueFactory(ColumnTimeMapKey));
-		thirdDataColumn.setMinWidth(290);
+		int firstColWidth = _displayDate ? WIDTH_DISPLAY4_WRAPPING_DATACOLUMN_1
+				: WIDTH_DISPLAY3_WRAPPING_DATACOLUMN_1;
+		int secondColWidth = _displayDate ? WIDTH_DISPLAY4_WRAPPING_DATACOLUMN_2
+				: WIDTH_DISPLAY3_WRAPPING_DATACOLUMN_2;
+		int thirdColWidth = _displayDate ? WIDTH_DISPLAY4_WRAPPING_DATACOLUMN_3
+				: WIDTH_DISPLAY3_WRAPPING_DATACOLUMN_3;
+		
+		firstDataColumn.setCellValueFactory(new MapValueFactory(KEY_COLUMN_INDEX));
+		firstDataColumn.setMinWidth(firstColWidth);
+		secondDataColumn.setCellValueFactory(new MapValueFactory(KEY_COLUMN_NAME));
+		secondDataColumn.setMinWidth(secondColWidth);
+		thirdDataColumn.setCellValueFactory(new MapValueFactory(KEY_COLUMN_TIME));
+		thirdDataColumn.setMinWidth(thirdColWidth);
+		
+		TableColumn<Map, String> fourthDataColumn = new TableColumn<>("Date");
+		if (_displayDate) {
+			fourthDataColumn.setCellValueFactory(new MapValueFactory(KEY_COLUMN_DATE));
+			fourthDataColumn.setMinWidth(WIDTH_DISPLAY4_WRAPPING_DATACOLUMN_4);
+		}
 
 		tableView = new TableView<>(populateDataInMap());
 		
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		tableView.setEditable(false);
 		tableView.getSelectionModel().setCellSelectionEnabled(false);
-		tableView.getColumns().setAll(firstDataColumn, secondDataColumn, thirdDataColumn);
+		
+		if (_displayDate){
+			tableView.getColumns().setAll(firstDataColumn, secondDataColumn, thirdDataColumn, fourthDataColumn);
+		} else {
+			tableView.getColumns().setAll(firstDataColumn, secondDataColumn, thirdDataColumn);
+		}
 		Callback<TableColumn<Map, String>, TableCell<Map, String>> cellFactoryForMap = (
 				TableColumn<Map, String> p) -> new TextFieldTableCell(new StringConverter() {
 					@Override
@@ -135,18 +185,24 @@ public class LayoutTemplate extends BorderPane {
 		this.setCenter(hbox);
 	}
 
+	//Fills up the tableView with all the task information
 	private ObservableList<Map> populateDataInMap() {
 		ObservableList<Map> allData = FXCollections.observableArrayList();
 		for (int i = 1; i < _listSize; i++) {
 			Map<String, String> dataRow = new HashMap<>();
 
-			String index = _list.get(i)[0];
-			String name = _list.get(i)[1];
-			String time = _list.get(i)[2];
+			String index = _list.get(i)[INDEX_TASK_INDEX];
+			String name = _list.get(i)[INDEX_TASK_NAME];
+			String time = _list.get(i)[INDEX_TASK_TIME];
 
-			dataRow.put(ColumnIndexMapKey, index);
-			dataRow.put(ColumnNameMapKey, name);
-			dataRow.put(ColumnTimeMapKey, time);
+			dataRow.put(KEY_COLUMN_INDEX, index);
+			dataRow.put(KEY_COLUMN_NAME, name);
+			dataRow.put(KEY_COLUMN_TIME, time);
+			
+			if (_displayDate) {
+				String date = _list.get(i)[INDEX_TASK_DATE];
+				dataRow.put(KEY_COLUMN_DATE, date);
+			}
 
 			allData.add(dataRow);
 		}
@@ -173,7 +229,7 @@ public class LayoutTemplate extends BorderPane {
 		BorderPane userBox = new BorderPane();
 		userBox.setTop(feedbackBox);
 		userBox.setBottom(inputBox);
-		userBox.setStyle("-fx-background-color: #182733;");
+		userBox.setStyle(STYLE_USER_BOX);
 		return userBox;
 	}
 
@@ -183,16 +239,16 @@ public class LayoutTemplate extends BorderPane {
 			@Override
 			public void handle(KeyEvent ke) {
 				if (ke.getCode().equals(KeyCode.UP)) {
-					if ((currentScrollIndex + scrollUpIndex) >= 0){
-						tableView.scrollTo(currentScrollIndex + scrollUpIndex);
-						currentScrollIndex = currentScrollIndex + scrollUpIndex;
+					if ((currentScrollIndex + SPEED_SCROLL_UP) >= 0){
+						tableView.scrollTo(currentScrollIndex + SPEED_SCROLL_UP);
+						currentScrollIndex = currentScrollIndex + SPEED_SCROLL_UP;
 					}
 				} else if (ke.getCode().equals(KeyCode.DOWN)){
-					if ((currentScrollIndex + scrollDownIndex) <= tableView.getItems().size()){
-						tableView.scrollTo(currentScrollIndex + scrollDownIndex);
-						currentScrollIndex = currentScrollIndex + scrollDownIndex;
+					if ((currentScrollIndex + SPEED_SCROLL_DOWN) <= tableView.getItems().size()){
+						tableView.scrollTo(currentScrollIndex + SPEED_SCROLL_DOWN);
+						currentScrollIndex = currentScrollIndex + SPEED_SCROLL_DOWN;
 					}
-				}  else if (ke.getCode().equals(KeyCode.ESCAPE)){
+				}  else if (_exitEnabled && ke.getCode().equals(KeyCode.ESCAPE)){
 					// DISPLAY SUMMARY SCENE
 					Main.setNumToday(Controller.getNumTodayItems());
 					Main.setNumTomorrow(Controller.getNumTomorrowItems());
@@ -215,17 +271,17 @@ public class LayoutTemplate extends BorderPane {
 	}
 
 	private Text createFeedbackLabel() {
-		 String[] result = _feedbackList.get(0).split(" ", 2);
-		    String first = result[0];
+		String[] result = _feedbackList.get(0).split(" ", 2);
+		String first = result[0];
 		Text feedbackText = new Text(_feedbackList.get(0));		
 		feedbackText.setText(_feedbackList.get(0));
-		feedbackText.setWrappingWidth(500);
+		feedbackText.setWrappingWidth(WIDTH_WRAPPING_FEEDBACK);
 		feedbackText.setFill(Color.WHITE);
-		feedbackText.setFont(Font.font("Calibri", 12));
+		feedbackText.setFont(Font.font(FONT_FEEDBACK, FONTSIZE_FEEDBACK));
 		if (first.equals("Added")) {
-			feedbackText.setFont(Font.font("Calibri", FontWeight.BOLD, 12));
+			feedbackText.setFont(Font.font(FONT_FEEDBACK, FontWeight.BOLD, FONTSIZE_FEEDBACK));
 		} else if (first.equals("Edited")) {
-			feedbackText.setFont(Font.font("Calibri", FontPosture.ITALIC, 12));
+			feedbackText.setFont(Font.font(FONT_FEEDBACK, FontPosture.ITALIC, FONTSIZE_FEEDBACK));
 		} else if (first.equals("Marked") || first.equals("Deleted")) {
 			feedbackText.setStrikethrough(true);
 			feedbackText.setFill(Color.GREY);
