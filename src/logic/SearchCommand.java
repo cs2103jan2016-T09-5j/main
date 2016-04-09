@@ -13,6 +13,7 @@ import exceptions.InvalidParamException;
 import exceptions.NotRecurringException;
 import exceptions.NullRuleException;
 import exceptions.NullTodoException;
+import logic.Todo.TYPE;
 import parser.KeyParamPair;
 import parser.Keywords;
 import parser.ParsedInput;
@@ -261,9 +262,20 @@ public class SearchCommand extends Command {
 		
 		for(Todo item : todos) {
 			//track items that are within the same day queried for
-			if(item != null && item.endTime != null && 
-					searchDate.getDayOfYear() == item.endTime.getDayOfYear() && !item.isRecurring()) {
-				queriedTodos.add(item);
+			if(item != null && item.endTime != null && !item.isRecurring()) {
+				
+				//verify the end date is within the same day
+				if(item.getType() == TYPE.DEADLINE && 
+						searchDate.getDayOfYear() == item.endTime.getDayOfYear()) {
+					queriedTodos.add(item);
+				}
+				//verify the start date or end date is within same day
+				if(item.getType() == TYPE.EVENT) {
+					if(searchDate.getDayOfYear() == item.endTime.getDayOfYear() ||
+							searchDate.getDayOfYear() == item.startTime.getDayOfYear()){
+						queriedTodos.add(item);
+					}	
+				}
 			}
 			//track items that recur on same queried day
 			else if(item != null && item.isRecurring()) {
