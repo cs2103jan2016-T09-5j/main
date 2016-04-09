@@ -2,6 +2,8 @@ package userinterface;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import javafx.application.Platform;
@@ -99,6 +101,18 @@ public class LayoutCalendar extends BorderPane {
 		return textField;
 	}
 	
+	private void clearChildren() {
+		//refresh internal components
+		datePicker = new DatePicker();
+		centralPane = new BorderPane();
+		selectedDate = LocalDate.now();
+		agendaScrollLocation = LocalDateTime.now();
+		
+		//clear all children from top-level
+		this.getChildren().removeAll();
+		this.getChildren().clear();
+	}
+	
 	/***********************AGENDA VIEW***********************/
 	private void paintAgendaView() {
 		
@@ -118,6 +132,17 @@ public class LayoutCalendar extends BorderPane {
 		//Override default mouse scroll with keypress scroll for the agenda
 		installEventAgendarHandler(agendaControl);
 		this.setCenter(agendaControl);
+	}
+	
+	/**
+	  * Helper function for converting LocalDate objects to LocalDateTime objects that are compatible with the Agenda view
+	  * @param LocalDate objects intended to be casted
+	  * @return LocalDateTime object fully-compatible with the Agenda View, specifically for scroll location
+	*/
+	private LocalDateTime convertToLocalDateTime(LocalDate date) {
+	    Date javaCompatDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+	    LocalDateTime agendaScrollCompatible = javaCompatDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+	    return agendaScrollCompatible;
 	}
 		
 	/**************DECLARING NODE EVENT HANDLERS**************/
@@ -173,6 +198,7 @@ public class LayoutCalendar extends BorderPane {
                		     @Override
                		     public void run() {
                		    	centralPane.getChildren().remove(calendarControl);
+    	                    agendaScrollLocation = convertToLocalDateTime(selectedDate);
                		    	paintAgendaView();
                		     }
 	               		});
@@ -216,11 +242,18 @@ public class LayoutCalendar extends BorderPane {
 	    			
 	                //Rewind to previous view upon pressing escape
 	                if (keyEvent.getCode().equals(KeyCode.ESCAPE)) {
-	                    setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
-						Controller.processEnter("DISPLAY");
+	                    setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);	                    
+	                    //we need to delay removing the component until we are outside of the component's
+	                    // handler, otherwise we would run into a null pointer exception
+                		Platform.runLater(new Runnable() {
+               		     @Override
+               		     public void run() {
+     	                    clearChildren();
+    	                    setDisplayRegions();
+               		     }
+	               		});
 	                    keyEvent.consume();
 					}
-					Controller.executeKeyPress(cliTextField, keyEvent);
 	            }
 	        };
 	 
