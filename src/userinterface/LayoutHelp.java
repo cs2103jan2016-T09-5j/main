@@ -37,13 +37,14 @@ public class LayoutHelp extends BorderPane {
 	private Node wrappedMark;
 	private Node wrappedUndo;
 	private Node wrappedRedo;
+	private Node wrappedExit;
 	private Node wrappedFormat;
 	
-	private String formatString = new String("add <task> [from <date> to <date>] [by <date>] [priority high | medium | low] \n"
-			+ "delete <taskID> [<taskID> <taskID> ...] \n"
-			+ "edit <taskID> [<new_task_description>] [from <date> to <date> | by <date> | date none] [priority high | medium | low | none] \n"
-			+ "search <keyword> [between <date> and <date> | after <date> | before <date> | date none] [priority high | medium | low | none] [type comp | pend] \n"
-			+ "mark <taskID> [<taskID> <taskID> ...] | all \n");
+	private String formatString = new String("add [task name] from [starting period] to [ending period]\n"
+			+ "delete [task IDs] \n"
+			+ "edit <ID> [<newName>] [from <newStartTime>] [ to <newEndTime>] [by;on;at <newDeadline>] [every  <interval> ] [until <limit>] \n"
+			+ "search [<taskName>; <date>] \n"
+			+ "mark <ID>");
 
 	private Text formatText = new Text(formatString);
 	
@@ -76,6 +77,7 @@ public class LayoutHelp extends BorderPane {
 		wrappedUndo = createUndoNode();
 		wrappedRedo = createRedoNode();
 		wrappedFormat = createFormatNode();
+		wrappedExit = createExitNode();
 		
 		implementHelpContentBar();
 		implementHelpContentBox();
@@ -83,11 +85,11 @@ public class LayoutHelp extends BorderPane {
 		BorderPane borderPane = new BorderPane();
 		borderPane.setStyle("-fx-background-color: #182733");
 		
-		formatText.setFill(Color.TRANSPARENT);
+		formatText.setFill(Color.WHITE);
 		
 		StackPane sp = new StackPane();
 		sp.setStyle("-fx-background-color: #182733");
-		sp.setPrefSize(900, 80);
+		sp.setPrefSize(900, 150);
 		sp.getChildren().add(formatText);
 				
 		borderPane.setTop(helpContentBox);
@@ -117,7 +119,7 @@ public class LayoutHelp extends BorderPane {
 
 	private void implementHelpContentBar() {
 		helpContentBar.getChildren().addAll(wrappedAdd, wrappedDelete, wrappedEdit,
-				wrappedSearch, wrappedMark, wrappedUndo, wrappedRedo, wrappedFormat);
+				wrappedSearch, wrappedMark, wrappedUndo, wrappedRedo, wrappedExit, wrappedFormat);
 		helpContentBar.setAlignment(Pos.CENTER);
 		helpContentBar.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;");
 	}
@@ -130,12 +132,6 @@ public class LayoutHelp extends BorderPane {
 			public void handle(KeyEvent ke) {
 				if (ke.getCode().equals(KeyCode.ESCAPE)) {
 					Controller.processEnter("DISPLAY");
-				} else if (ke.getCode().equals(KeyCode.TAB)) {
-					if (formatText.getFill().equals(Color.WHITE)){
-						formatText.setFill(Color.TRANSPARENT);
-					} else {
-						formatText.setFill(Color.WHITE);
-					}
 				}
 				Controller.executeKeyPress(textField, ke);
 			}
@@ -144,6 +140,20 @@ public class LayoutHelp extends BorderPane {
 	}
 
 	/** CREATING LAYOUT OBJECTS */
+	
+	private Node createExitNode() {
+		BorderPane exitBox = new BorderPane();
+
+		Label exitLbl = new Label("Exit");
+
+		exitBox.setTop(exitLbl);
+		exitBox.setCenter(dummyLbl);
+		exitBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.CLOSE));
+
+		Node wrappedExit = Borders.wrap(exitBox).lineBorder().color(Color.WHITE).build().build();
+
+		return wrappedExit;
+	}
 	
 	private Node createFormatNode() {
 		BorderPane formatBox = new BorderPane();

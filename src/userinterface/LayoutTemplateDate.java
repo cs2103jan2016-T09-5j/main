@@ -202,7 +202,7 @@ public class LayoutTemplateDate extends BorderPane {
 				Controller.executeKeyPress(textField, ke);
 			}
 		});
-		TextFields.bindAutoCompletion(textField, "add", "delete", "undo", "search", "mark", "edit");
+		TextFields.bindAutoCompletion(textField, "add", "delete", "undo", "search", "mark", "edit", "exit");
 		return textField;
 	}
 
