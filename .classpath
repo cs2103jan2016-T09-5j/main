@@ -15,8 +15,8 @@
 	<classpathentry kind="lib" path="/Users/mjhowell/Dropbox/self/natty-0.10.1.jar"/>
 	<classpathentry kind="lib" path="/Users/mjhowell/Dropbox/self/slf4j-api-1.7.18.jar"/>
 	<classpathentry kind="lib" path="/Users/mjhowell/Dropbox/self/slf4j-simple-1.7.18.jar"/>
-	<classpathentry kind="lib" path="/Users/mjhowell/Desktop/jfxtras-common-8.0-r4.jar"/>
-	<classpathentry kind="lib" path="/Users/mjhowell/Desktop/jfxtras-controls-8.0-r4.jar"/>
-	<classpathentry kind="lib" path="/Users/mjhowell/Desktop/jfxtras-agenda-8.0-r4.jar"/>
+	<classpathentry kind="lib" path="/Users/mjhowell/DEV/uiwork-cs2103/main/ClockWork/lib/jfxtras-agenda-8.0-r4.jar"/>
+	<classpathentry kind="lib" path="/Users/mjhowell/DEV/uiwork-cs2103/main/ClockWork/lib/jfxtras-common-8.0-r4.jar"/>
+	<classpathentry kind="lib" path="/Users/mjhowell/DEV/uiwork-cs2103/main/ClockWork/lib/jfxtras-controls-8.0-r4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
