@@ -5,10 +5,13 @@ import java.util.Collection;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.Period;
 
 import exceptions.ExceptionMessages;
 import exceptions.InvalidDateException;
 import exceptions.InvalidParamException;
+import exceptions.NotRecurringException;
+import exceptions.NullRuleException;
 import exceptions.NullTodoException;
 import parser.KeyParamPair;
 import parser.Keywords;
@@ -238,11 +241,13 @@ public class SearchCommand extends Command {
 		}
 		return todos;
 	}	
+	
+	//@@author Morgan
 	/**
 	 * Operation queries all of memory and returns events that occur on a specific day of the year. Useful for
 	 * operations including time collisions and time comparators.
 	 * 
-	 * @param typeKey
+	 * @param typeKey (null typeKey signifies AgendaHelper is accessing search for recurrence alignment)
 	 * @param searchDate
 	 * @param memory
 	 * @return Collection of Todo
@@ -254,12 +259,76 @@ public class SearchCommand extends Command {
 		Collection<Todo> todos = memory.getAllTodos();
 		Collection<Todo> queriedTodos = new ArrayList<Todo>();
 		
-		for(Todo item: todos) {
-			if(item != null && item.endTime != null && searchDate.getDayOfYear() == item.endTime.getDayOfYear()) {
+		for(Todo item : todos) {
+			//track items that are within the same day queried for
+			if(item != null && item.endTime != null && 
+					searchDate.getDayOfYear() == item.endTime.getDayOfYear() && !item.isRecurring()) {
 				queriedTodos.add(item);
 			}
+			//track items that recur on same queried day
+			else if(item != null && item.isRecurring()) {
+				//Grab associated recurrence rule from item set as recurring
+				RecurringTodoRule itemRule = null;
+				try {
+					itemRule = memory.getRule(item.getRecurringId());
+				} catch (NullRuleException | NotRecurringException e) {
+					continue;
+				}
+			
+				//grab recurrence rule for the item
+				Period recurPeriod = itemRule.getRecurringInterval();
+			
+				//automatically add items recurring daily
+				if(recurPeriod.getDays() == 1){
+					item = alignRecurringTask(item, searchDate);
+					queriedTodos.add(item);
+				}
+				//ensure weekly recurring items share same day
+				else if(recurPeriod.getWeeks() == 1 
+						&& item.endTime.dayOfWeek().equals(searchDate.dayOfWeek())) {
+					item = alignRecurringTask(item, searchDate);
+					queriedTodos.add(item);
+				}
+				//ensure monthly recurring items share same month
+				else if(recurPeriod.getMonths() == 1 &&
+						item.endTime.dayOfMonth().equals(searchDate.dayOfMonth())) {
+					item = alignRecurringTask(item, searchDate);
+					queriedTodos.add(item);
+				}
+				//ensure yearly recurring items share same date
+				else if(recurPeriod.getYears() == 1
+						&& item.endTime.dayOfYear().equals(searchDate.dayOfYear())) {
+					item = alignRecurringTask(item, searchDate);
+					queriedTodos.add(item);
+				}
+				
+			}
 		}
-
 		return queriedTodos;	
 	}
+	
+	/**
+	 * Aligns recurring tasks that originate in the past to the correct time frame of a query
+	 * 
+	 * @param item
+	 * @param searchDate
+	 * @return modified item with same day as query
+	 */
+	private static Todo alignRecurringTask(Todo item, DateTime searchDate) {
+		//change original task to occur on selected date by calculating delta of original and selected
+		if (item.getType() == Todo.TYPE.DEADLINE) {
+			DateTime originalEnd = item.getEndTime();
+			originalEnd = originalEnd.plusDays(searchDate.getDayOfYear() - originalEnd.getDayOfYear());
+			item.setEndTime(originalEnd);
+		} else if (item.getType() == Todo.TYPE.EVENT) {
+			DateTime originalStart = item.getStartTime();
+			DateTime originalEnd = item.getEndTime();
+			originalStart = originalStart.plusDays(searchDate.getDayOfYear() - originalEnd.getDayOfYear());
+			originalEnd = originalEnd.plusDays(searchDate.getDayOfYear() - originalEnd.getDayOfYear());
+			item.setStartTime(originalStart);
+			item.setEndTime(originalEnd);
+		}
+		return item;
+	}
+
 }
