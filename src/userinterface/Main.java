@@ -4,20 +4,24 @@ import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import logic.ClockWork;
-import logic.DisplayCategory;
 import storage.StorageUtils;
 
+//@@author Rebekah
+/**
+* The Main class contains the main method to run the entire Clockwork program. Clockwork 
+* functions as a scheduler for the user to schedule tasks with only typed commands and 
+* keypress.
+*/
 public class Main extends Application {
 	
 	/** Application window dimensions */
 	private static int WIDTH_WINDOW_DEFAULT = 900;
 	private static int HEIGHT_WINDOW_DEFAULT = 600;
 
-	/** Static variables */
+	/** Lists containing tasks to display in each scene */
 	private static ArrayList<String[]> _todayList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _tomorrowList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _upcomingList = new ArrayList<String[]>();
@@ -25,12 +29,14 @@ public class Main extends Application {
 	private static ArrayList<String[]> _searchList = new ArrayList<String[]>();
 	private static ArrayList<String[]> _powerList = new ArrayList<String[]>();
 	
+	/** Integer containing number of tasks for each category */
 	private static int _numToday = 0;
 	private static int _numTomorrow = 0;
 	private static int _numUpcoming = 0;
 	private static int _numSomeday = 0;
 	
-	private static LayoutSummary summaryLayout;
+	/** Layouts used to display tasks in different scenes */
+	private static LayoutCategory categoryLayout;
 	private static LayoutHelp helpLayout;
 	private static LayoutCalendar calendarLayout;
 	private static LayoutTemplate todayLayout;
@@ -40,17 +46,12 @@ public class Main extends Application {
 	private static LayoutTemplate searchLayout;
 	private static LayoutTemplate allLayout;
 	
+	/** List to display feedback to user */
 	private static ArrayList<String> _feedback;
 	
+	/** Stage and scene to display to user */
 	private static Scene scene;
 	private static Stage stage;
-
-	//@@author Rebekah
-	/*
-	* ===========================================
-	* Main Program
-	* ===========================================
-	*/
 	
 	public static void main(String[] args) {
 		initialiseStorage(args);
@@ -65,12 +66,6 @@ public class Main extends Application {
 		setScene();
 		setStage();
 	}
-	
-	/*
-	* ===========================================
-	* Initialising Methods
-	* ===========================================
-	*/
 	
 	/** Initialise Scene for GUI */
 	private static void setScene(){
@@ -114,13 +109,101 @@ public class Main extends Application {
 		}
 	}
 	
-	/*
-	* ===========================================
-	* Public Methods
-	* ===========================================
-	*/
+	/** Minimises the window */
+	public static void minimise(){
+		stage.setIconified(true);
+	}
 	
-	public static void setFeedback(ArrayList<String> feedback){
+	/** Displays the help scene */
+	public static void displayHelpScene(){
+		helpLayout = new LayoutHelp();
+		scene = new Scene(helpLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	/** Displays the calendar scene */
+	public static void displayCalendarScene(){
+		calendarLayout = new LayoutCalendar();
+		scene = new Scene(calendarLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	/** Displays the overall category scene */
+	public static void displayCategoryScene(){
+		categoryLayout = new LayoutCategory(_numToday, _numTomorrow, _numUpcoming, _numSomeday);
+		scene = new Scene(categoryLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	/** Displays the category scene for today */
+	public static void displayTodayScene(){
+		_feedback = Controller.getFeedback();
+		todayLayout = new LayoutTemplate("Today", _todayList, _feedback, false, true);
+		scene = new Scene(todayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	/** Displays the category scene for tomorrow */
+	public static void displayTomorrowScene(){
+		_feedback = Controller.getFeedback();
+		tomorrowLayout = new LayoutTemplate("Tomorrow", _tomorrowList, _feedback, false, true);
+		scene = new Scene(tomorrowLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	/** Displays the category scene for upcoming tasks not scheduled today or tomorrow but 
+	 * with a specified date
+	 */
+	public static void displayUpcomingScene(){
+		_feedback = Controller.getFeedback();
+		upcomingLayout = new LayoutTemplate("Upcoming", _upcomingList,  _feedback, true, true);
+		scene = new Scene(upcomingLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	/** Displays the category scene for floating tasks */
+	public static void displaySomedayScene(){
+		_feedback = Controller.getFeedback();
+		somedayLayout = new LayoutTemplate("Someday", _somedayList,  _feedback, false, true);
+		scene = new Scene(somedayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	/** Displays the search scene */
+	public static void displaySearchScene(){
+		_feedback = Controller.getFeedback();
+		searchLayout = new LayoutTemplate("Search", _searchList,  _feedback, true, true);
+		scene = new Scene(searchLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	/** Displays the all tasks scene */
+	public static void displayAllScene(){
+		_feedback = Controller.getFeedback();
+		allLayout = new LayoutTemplate("All Tasks", _powerList,  _feedback, true, false);
+		scene = new Scene(allLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	public static void setFeedbackList(ArrayList<String> feedback){
 		_feedback = feedback;
 	}
 	
@@ -160,88 +243,4 @@ public class Main extends Application {
 	public static void setNumSomeday(int numSomeday){
 		_numSomeday = numSomeday;
 	}
-	
-	public static void minimise(){
-		stage.setIconified(true);
-	}
-	
-	public static void displayHelpScene(){
-		helpLayout = new LayoutHelp();
-		scene = new Scene(helpLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
-	public static void displayCalendarScene(){
-		calendarLayout = new LayoutCalendar();
-		scene = new Scene(calendarLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
-	public static void displaySummaryScene(){
-		summaryLayout = new LayoutSummary(_numToday, _numTomorrow, _numUpcoming, _numSomeday);
-		scene = new Scene(summaryLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
-	public static void displayTodayScene(){
-		_feedback = Controller.getFeedback();
-		todayLayout = new LayoutTemplate("Today", _todayList, _feedback, false, true);
-		scene = new Scene(todayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
-	public static void displayTomorrowScene(){
-		_feedback = Controller.getFeedback();
-		tomorrowLayout = new LayoutTemplate("Tomorrow", _tomorrowList, _feedback, false, true);
-		scene = new Scene(tomorrowLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
-	public static void displayUpcomingScene(){
-		_feedback = Controller.getFeedback();
-		upcomingLayout = new LayoutTemplate("Upcoming", _upcomingList,  _feedback, true, true);
-		scene = new Scene(upcomingLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
-	public static void displaySomedayScene(){
-		_feedback = Controller.getFeedback();
-		somedayLayout = new LayoutTemplate("Someday", _somedayList,  _feedback, false, true);
-		scene = new Scene(somedayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
-	public static void displaySearchScene(){
-		_feedback = Controller.getFeedback();
-		searchLayout = new LayoutTemplate("Search", _searchList,  _feedback, true, true);
-		scene = new Scene(searchLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
-	public static void displayAllScene(){
-		_feedback = Controller.getFeedback();
-		allLayout = new LayoutTemplate("All Tasks", _powerList,  _feedback, true, false);
-		scene = new Scene(allLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-
-	
 }

@@ -2,12 +2,15 @@ package userinterface;
 
 import java.util.ArrayList;
 
+//@@author Rebekah
+/**
+* The UserInterfaceStub class is used in place of the Logic and Storage component and is mostly 
+* used while testing the GUI to check if the correct information is displayed on GUI.
+*/
 public class UserInterfaceStub {
-	
-	//@@author Rebekah
-	public static ArrayList<String[]> populateList(ArrayList<String[]> list){
-		
-		list.clear();
+	/** Populates the task with placeholder task information */
+	public static ArrayList<String[]> populateList(ArrayList<String[]> taskList){
+		taskList.clear();
 		
 		String[] indivTask = new String[4];
 		
@@ -16,31 +19,32 @@ public class UserInterfaceStub {
 		indivTask[2] = "17:00 - 19:00";
 		indivTask[3] = "7 Apr 2016";
 		
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
 		
-		return list;
+		return taskList;
 	}
 	
+	/** Populates the feedback list with placeholder text and type */
 	public static ArrayList<String> populateFeedbackList(){
 		ArrayList<String> feedbackList = new ArrayList<String>();
 		feedbackList.add("Added");

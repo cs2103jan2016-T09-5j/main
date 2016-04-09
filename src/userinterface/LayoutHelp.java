@@ -1,14 +1,11 @@
 package userinterface;
 
-import org.controlsfx.control.HiddenSidesPane;
-import org.controlsfx.control.InfoOverlay;
 import org.controlsfx.tools.Borders;
 
 import de.jensd.fx.glyphs.GlyphsDude;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -23,21 +20,28 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+//@@author Rebekah
+/**
+* The LayoutHelp class creates the layout to display help to the user. The available command 
+* types the user can use, as well as the input format to call the commands are shown in this 
+* class to visually aid the user in using Clockwork.
+*/
 public class LayoutHelp extends BorderPane {
+	/** Enumerator for nodes used in BoxHeader */
 	private enum NODETYPE { ADD, DELETE, EDIT, SEARCH, MARK, UNDO, REDO, EXIT, FORMAT };
 	
-	//Strings that inside the displayed boxes
-	private final String TEXT_NODE_ADD = "Add";
-	private final String TEXT_NODE_DELETE = "Delete";
-	private final String TEXT_NODE_EDIT = "Edit";
-	private final String TEXT_NODE_SEARCH = "Search";
-	private final String TEXT_NODE_MARK = "Mark";
-	private final String TEXT_NODE_UNDO = "Undo";
-	private final String TEXT_NODE_REDO = "Redo";
-	private final String TEXT_NODE_EXIT = "Exit";
-	private final String TEXT_NODE_FORMAT = "<Tab>";
+	/** Strings to display in the help bar */
+	private static final String TEXT_NODE_ADD = "Add";
+	private static final String TEXT_NODE_DELETE = "Delete";
+	private static final String TEXT_NODE_EDIT = "Edit";
+	private static final String TEXT_NODE_SEARCH = "Search";
+	private static final String TEXT_NODE_MARK = "Mark";
+	private static final String TEXT_NODE_UNDO = "Undo";
+	private static final String TEXT_NODE_REDO = "Redo";
+	private static final String TEXT_NODE_EXIT = "Exit";
+	private static final String TEXT_NODE_FORMAT = "<Tab>";
 	
-	//Icons inside the displayed boxes
+	/** Icons to display in the help bar */
 	private final Node ICON_ADD = GlyphsDude.createIcon(FontAwesomeIcon.PLUS);
 	private final Node ICON_DELETE = GlyphsDude.createIcon(FontAwesomeIcon.MINUS);
 	private final Node ICON_EDIT = GlyphsDude.createIcon(FontAwesomeIcon.PENCIL);
@@ -48,22 +52,21 @@ public class LayoutHelp extends BorderPane {
 	private final Node ICON_EXIT = GlyphsDude.createIcon(FontAwesomeIcon.CLOSE);
 	private final Node ICON_FORMAT = GlyphsDude.createIcon(FontAwesomeIcon.INFO);
 	
-	//Styles of the items in the scene
+	/** Background colour for nodes */
 	private final String STYLE_MAIN_BORDERPANE = "-fx-background-color: #182733";
 	private final String STYLE_MAIN_STACKPANE = "-fx-background-color: #182733";
 	private final String STYLE_HELPBOX = "-fx-background-color: #182733";
 	private final String STYLE_CONTENT_BAR = "-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;";
 	
-	//Dimensions of items in the scene
-	private final int HEIGHT_CONTENT_BOX = 300;
-	private final int HEIGHT_MAIN_STACKPANE = 150;
-	private final int WIDTH_MAIN_STACKPANE = 900;
+	/** Dimensions of items used in the class */
+	private static final int HEIGHT_CONTENT_BOX = 300;
+	private static final int HEIGHT_MAIN_STACKPANE = 150;
+	private static final int WIDTH_MAIN_STACKPANE = 900;
 	
-	private Label dummyLbl = new Label(" ");
-	private GridPane helpContentBox = new GridPane();
-	private HBox helpContentBar = new HBox();
-
-	//Nodes in the scene
+	/** Dummy label used to set a placeholder for nodes */
+	private static final Label LABEL_DUMMY = new Label(" ");
+	
+	/** Nodes containing both label and icon to display in BoxHeader */
 	private Node addNode;
 	private Node deleteNode;
 	private Node editNode;
@@ -74,23 +77,26 @@ public class LayoutHelp extends BorderPane {
 	private Node exitNode;
 	private Node formatNode;
 	
-	private final String formatString = new String("add [task name] from [starting period] to [ending period]\n"
+	/** Layouts used to contain the help nodes */
+	private StackPane formatBox = new StackPane();
+	private GridPane barBox = new GridPane();
+	private HBox helpBar = new HBox();
+	private BorderPane helpBox = new BorderPane();
+	
+	/** Text used to show available command formats */
+	private Text formatText = new Text();
+	
+	/** String used to show available command formats */
+	private static final String formatString = new String(
+			"add [task name] from [starting period] to [ending period]\n"
 			+ "delete [task IDs] \n"
-			+ "edit <ID> [<newName>] [from <newStartTime>] [ to <newEndTime>] [by;on;at <newDeadline>] [every  <interval> ] [until <limit>] \n"
+			+ "edit <ID> [<newName>] [from <newStartTime>] [ to <newEndTime>] "
+			+ "[by;on;at <newDeadline>] [every  <interval> ] [until <limit>] \n"
 			+ "search [<taskName>; <date>] \n"
 			+ "mark <ID>");
 
-	private final Text formatText = new Text(formatString);
-	
-
-	//@@author Rebekah
+	/** Constructor for LayoutHelp */
 	public LayoutHelp() {
-		setDisplayRegions();
-	}
-
-	/** POPULATING LAYOUT */
-
-	private void setDisplayRegions() {
 		setBottomRegion();
 		setTopRegion();
 		setCenterRegion();
@@ -101,8 +107,22 @@ public class LayoutHelp extends BorderPane {
 		BoxHeader headerBox = new BoxHeader();
 		this.setTop(headerBox);
 	}
-
+	
+	/** Set center region to display available help commands and input format */
 	private void setCenterRegion() {
+		implementHelpNodes();
+		implementHelpBar();
+		createFormatText();
+		this.setCenter(createHelpBox());
+	}
+
+	/** Set bottom region for user input */
+	private void setBottomRegion() {
+		this.setBottom(implementTextField());
+	}
+	
+	/** Implement all nodes to be used for help bar */
+	private void implementHelpNodes() {
 		addNode = createNode(NODETYPE.ADD);
 		deleteNode = createNode(NODETYPE.DELETE);
 		editNode = createNode(NODETYPE.EDIT);
@@ -112,54 +132,18 @@ public class LayoutHelp extends BorderPane {
 		redoNode = createNode(NODETYPE.REDO);
 		formatNode = createNode(NODETYPE.FORMAT);
 		exitNode = createNode(NODETYPE.EXIT);
-		
-		implementHelpContentBar();
-		implementHelpContentBox();
-		
-		BorderPane borderPane = new BorderPane();
-		borderPane.setStyle(STYLE_MAIN_BORDERPANE);
-		
-		formatText.setFill(Color.WHITE);
-		
-		StackPane sp = new StackPane();
-		sp.setStyle(STYLE_MAIN_STACKPANE);
-		sp.setPrefSize(WIDTH_MAIN_STACKPANE, HEIGHT_MAIN_STACKPANE);
-		sp.getChildren().add(formatText);
-				
-		borderPane.setTop(helpContentBox);
-		borderPane.setBottom(sp);
-		
-		this.setCenter(borderPane);
 	}
-
-	private void setBottomRegion() {
-		TextField textField = implementTextField();
-		this.setBottom(textField);
-	}
-
-	/** CREATES THE BOX THAT HOLDS ALL CONTENT */
-	private void implementHelpContentBox() {	
-		helpContentBox.getChildren().add(helpContentBar);
-		helpContentBox.setAlignment(Pos.BOTTOM_CENTER);
-		helpContentBox.setStyle(STYLE_HELPBOX);
-		helpContentBox.setPrefHeight(HEIGHT_CONTENT_BOX);
-		
-		ColumnConstraints columnConstraints = new ColumnConstraints();
-		columnConstraints.setFillWidth(true);
-		columnConstraints.setHgrow(Priority.ALWAYS);
-		helpContentBox.getColumnConstraints().add(columnConstraints);
-	}
-
-	/** CREATES THE TOP BAR THAT HOLDS THE COMMAND BOXES */
-	private void implementHelpContentBar() {
-		helpContentBar.getChildren().addAll(
+	
+	/** Implement the help bar that holds the help nodes */
+	private void implementHelpBar() {
+		helpBar.getChildren().addAll(
 				addNode, deleteNode, editNode, searchNode, markNode, 
 				undoNode, redoNode, exitNode, formatNode);
-		helpContentBar.setAlignment(Pos.CENTER);
-		helpContentBar.setStyle(STYLE_CONTENT_BAR);
+		helpBar.setAlignment(Pos.CENTER);
+		helpBar.setStyle(STYLE_CONTENT_BAR);
 	}
-
-	/** CREATES THE TEXT FIELD WHERE THE USER TYPES */
+	
+	/** Implement the textfield for user to enter input */
 	private TextField implementTextField() {
 		BoxInput textField = new BoxInput();
 		textField.setEditable(false);
@@ -174,10 +158,41 @@ public class LayoutHelp extends BorderPane {
 		});
 		return textField;
 	}
+	
+	/** Creates the help box containing the help bar and the input format help box */
+	private BorderPane createHelpBox(){
+		helpBox.setStyle(STYLE_MAIN_BORDERPANE);
+		helpBox.setTop(createBarBox());
+		helpBox.setBottom(createFormatBox());
+		return helpBox;
+	}
+	
+	/** Creates the box that holds the help bar */
+	private GridPane createBarBox() {	
+		barBox.getChildren().add(helpBar);
+		barBox.setAlignment(Pos.BOTTOM_CENTER);
+		barBox.setStyle(STYLE_HELPBOX);
+		barBox.setPrefHeight(HEIGHT_CONTENT_BOX);
+		
+		ColumnConstraints barColumnConstraints = new ColumnConstraints();
+		barColumnConstraints.setFillWidth(true);
+		barColumnConstraints.setHgrow(Priority.ALWAYS);
+		barBox.getColumnConstraints().add(barColumnConstraints);
+		
+		return barBox;
+	}
+	
+	/** Creates the box that holds the input format help */
+	private StackPane createFormatBox(){
+		formatBox.setStyle(STYLE_MAIN_STACKPANE);
+		formatBox.setPrefSize(WIDTH_MAIN_STACKPANE, HEIGHT_MAIN_STACKPANE);
+		formatBox.getChildren().add(formatText);
+		return formatBox;
+	}
 
 	/** Creates a Node of the specified NODETYPE */
 	private Node createNode(NODETYPE type){
-		BorderPane borderPane = new BorderPane();
+		BorderPane nodeBox = new BorderPane();
 		Label label = null;
 		Node icon = null;
 		switch (type){
@@ -219,10 +234,16 @@ public class LayoutHelp extends BorderPane {
 			break;
 		}
 		
-		borderPane.setTop(label);
-		borderPane.setCenter(dummyLbl);
-		borderPane.setBottom(icon);
-		Node node = Borders.wrap(borderPane).lineBorder().color(Color.WHITE).build().build();
+		nodeBox.setTop(label);
+		nodeBox.setCenter(LABEL_DUMMY);
+		nodeBox.setBottom(icon);
+		Node node = Borders.wrap(nodeBox).lineBorder().color(Color.WHITE).build().build();
 		return node;
+	}
+	
+	/** Create input format help to show available command formats */
+	private void createFormatText(){
+		formatText = new Text(formatString);
+		formatText.setFill(Color.WHITE);
 	}
 }

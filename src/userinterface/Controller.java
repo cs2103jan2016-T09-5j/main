@@ -73,7 +73,7 @@ public class Controller {
 			Main.setNumTomorrow(getNumTomorrowItems());
 			Main.setNumUpcoming(getNumUpcomingItems());
 			Main.setNumSomeday(getNumSomedayItems());
-			Main.displaySummaryScene();
+			Main.displayCategoryScene();
 		} else if (ke.getCode().equals(KeyCode.DELETE)) {
 			// MINIMISE
 			Main.minimise();
