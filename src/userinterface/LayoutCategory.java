@@ -63,7 +63,14 @@ public class LayoutCategory extends BorderPane {
 	private HBox categoryRow = new HBox();
 	private GridPane categoryGrid = new GridPane();
 	
-	/** Constructor for LayoutCategory */
+	/**
+	 * Creates a LayoutCategory object.
+	 * 
+	 * @param numToday				The number of items shown on box for Today
+	 * @param numTomorrow			The number of items shown on box for Tomorrow
+	 * @param numUpcoming			The number of items shown on box for Upcoming
+	 * @param numSomeday			The number of items shown on box for Tomorrow
+	 */
 	public LayoutCategory(int numToday, int numTomorrow, int numUpcoming, int numSomeday) {
 		_numToday = numToday;
 		_numTomorrow = numTomorrow;
@@ -91,16 +98,9 @@ public class LayoutCategory extends BorderPane {
 	
 	/** Set bottom region for user input */
 	private void setBottomRegion() {
-		TextField textField = implementTextField();
-		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent ke) {
-				if (ke.getCode().equals(KeyCode.ESCAPE)) {
-					Controller.processEnter("DISPLAY");
-				}
-				Controller.executeKeyPress(textField, ke);
-			}
-		});
+		BoxInput textField = new BoxInput();
+		textField = implementTextField(textField);
+		
 		this.setBottom(textField);
 	}
 	
@@ -135,10 +135,17 @@ public class LayoutCategory extends BorderPane {
 	}
 	
 	/** Implement the textfield for user to enter input */
-	private TextField implementTextField() {
-		BoxInput textField = new BoxInput();
+	private BoxInput implementTextField(BoxInput textField) {
 		textField.setEditable(false);
-
+		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent ke) {
+				if (ke.getCode().equals(KeyCode.ESCAPE)) {
+					Controller.processEnter("DISPLAY");
+				}
+				Controller.executeKeyPress(textField, ke);
+			}
+		});
 		return textField;
 	}
 	

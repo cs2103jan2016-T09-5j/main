@@ -95,7 +95,7 @@ public class LayoutHelp extends BorderPane {
 			+ "search [<taskName>; <date>] \n"
 			+ "mark <ID>");
 
-	/** Constructor for LayoutHelp */
+	/** Constructor for LayoutHelp object*/
 	public LayoutHelp() {
 		setBottomRegion();
 		setTopRegion();

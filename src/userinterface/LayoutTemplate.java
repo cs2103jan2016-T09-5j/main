@@ -105,7 +105,16 @@ public class LayoutTemplate extends BorderPane {
 	private GridPane innerTableBox = new GridPane();
 	private HBox outerTableBox = new HBox();
 
-	/** Constructor for LayoutTemplate */
+	/**
+	 * Constructor for LayoutTemplate
+	 * 
+	 * @param title					the title for the template when used in the scene
+	 * @param list					the ArrayList list to display tasks
+	 * @param feedbackList			the ArrayList feedback list to show feedback to user
+	 * @param displayDate			the boolean condition to decide if date column should be shown
+	 * @param enableExit			the boolean condition to enable escape to go to the
+	 * 								previous page
+	 */
 	public LayoutTemplate(String title, ArrayList<String[]> list, ArrayList<String> feedbackList, boolean displayDate,
 			boolean enableExit) {
 		if (feedbackList == null) {

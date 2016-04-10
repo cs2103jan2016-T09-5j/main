@@ -9,7 +9,7 @@ import javafx.scene.shape.Rectangle;
 * the LayoutSummary class.
 */
 public class LayoutCategoryRectangle extends Rectangle {
-	/** Constructor for LayoutSummaryRectangle */
+	/** Constructor for LayoutSummaryRectangle object*/
 	public LayoutCategoryRectangle(){
 		this.setWidth(150);
 		this.setHeight(150);

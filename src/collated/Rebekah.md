@@ -1167,7 +1167,7 @@ public class EditCommandTest {
  * on the user input to the user.
  */
 public class BoxFeedback extends StackPane {
-	/** Constructor for BoxFeedback */
+	/** Constructor for BoxFeedback object */
 	public BoxFeedback() {
 		this.setPadding(new Insets(10,10,10,10));
 		this.setStyle("-fx-background-color: #182733;");
@@ -1212,7 +1212,7 @@ public class BoxHeader extends BorderPane {
 	/** Background colour for nodes */
 	private static final String STYLE_BOX_HEADER = "-fx-background-color: #272b39;";
 	
-	/** Constructor for BoxHeader */
+	/** Constructor for BoxHeader object*/
 	public BoxHeader() {
 		implementHeaderNodes();
 		this.setLeft(createDateBox());
@@ -1230,8 +1230,8 @@ public class BoxHeader extends BorderPane {
 	}
 	
 	/** Create date box to contain date for left side of HeaderBox */
-	private BoxHeaderContent createDateBox(){
-		BoxHeaderContent dateBox = new BoxHeaderContent();
+	private BoxHeaderInnerBox createDateBox(){
+		BoxHeaderInnerBox dateBox = new BoxHeaderInnerBox();
 		Node dateNode = Borders.wrap(LABEL_DATE).lineBorder().color(Color.WHITE).build().build();
 		dateBox.setLeft(dateNode);
 		
@@ -1240,11 +1240,11 @@ public class BoxHeader extends BorderPane {
 	
 	/** Create shortcut box to contain nodes for right side of HeaderBox */
 	private Node createShortcutBox(){
-		BoxHeaderContent shortcutsBox = new BoxHeaderContent();
+		BoxHeaderInnerBox shortcutsBox = new BoxHeaderInnerBox();
 		
-		BoxHeaderContent helpCalBox = createLeftShortcutBox();
-		BoxHeaderContent minSumBox = createCenterShortcutBox();
-		BoxHeaderContent escBox = createRightShortcutBox();
+		BoxHeaderInnerBox helpCalBox = createLeftShortcutBox();
+		BoxHeaderInnerBox minSumBox = createCenterShortcutBox();
+		BoxHeaderInnerBox escBox = createRightShortcutBox();
 		
 		shortcutsBox.setLeft(helpCalBox);
 		shortcutsBox.setCenter(minSumBox);
@@ -1254,31 +1254,31 @@ public class BoxHeader extends BorderPane {
 	}
 	
 	/** Create left section of shortcut box */
-	private BoxHeaderContent createLeftShortcutBox() {
-		BoxHeaderContent helpCalBox = new BoxHeaderContent();
+	private BoxHeaderInnerBox createLeftShortcutBox() {
+		BoxHeaderInnerBox helpCalBox = new BoxHeaderInnerBox();
 		helpCalBox.setLeft(helpNode);
 		helpCalBox.setRight(calendarNode);
 		return helpCalBox;
 	}
 	
 	/** Create center section of shortcut box */
-	private BoxHeaderContent createCenterShortcutBox() {
-		BoxHeaderContent minSumBox = new BoxHeaderContent();
+	private BoxHeaderInnerBox createCenterShortcutBox() {
+		BoxHeaderInnerBox minSumBox = new BoxHeaderInnerBox();
 		minSumBox.setLeft(summaryNode);
 		minSumBox.setRight(minimiseNode);
 		return minSumBox;
 	}
 	
 	/** Create right section of shortcut box */
-	private BoxHeaderContent createRightShortcutBox() {
-		BoxHeaderContent escBox = new BoxHeaderContent();
+	private BoxHeaderInnerBox createRightShortcutBox() {
+		BoxHeaderInnerBox escBox = new BoxHeaderInnerBox();
 		escBox.setCenter(escapeNode);
 		return escBox;
 	}
 
 	/** Create all nodes to be used for shortcut box */
 	private Node createNode(NODETYPE type) {
-		BoxHeaderContent nodeBox = new BoxHeaderContent();
+		BoxHeaderInnerBox nodeBox = new BoxHeaderInnerBox();
 		switch (type){
 		case HELP:
 			nodeBox.setTop(LABEL_HELP);
@@ -1309,14 +1309,14 @@ public class BoxHeader extends BorderPane {
 	}
 }
 ```
-###### \userinterface\BoxHeaderContent.java
+###### \userinterface\BoxHeaderInnerBox.java
 ``` java
 /**
-* The BoxHeaderContent class creates the layout to place nodes from the BoxHeader class.
+* The BoxHeaderInnerBox class creates the layout to place nodes from the BoxHeader class.
 */
-public class BoxHeaderContent extends BorderPane {
-	/** Constructor for BoxHeaderContent */
-	public BoxHeaderContent() {
+public class BoxHeaderInnerBox extends BorderPane {
+	/** Constructor for BoxHeaderInnerBox object*/
+	public BoxHeaderInnerBox() {
 		this.setStyle("-fx-background-color: #272b39;");
 	}
 }
@@ -1328,7 +1328,7 @@ public class BoxHeaderContent extends BorderPane {
 * to the Controller class to handle user input and key events.
 */
 public class BoxInput extends TextField {
-	/** Constructor for BoxInput */
+	/** Constructor for BoxInput object*/
 	public BoxInput() {
 		Controller.implementKeystrokeEvents(this);
 		this.setStyle("-fx-background-color: #272b39; -fx-text-inner-color: white;");
@@ -1342,7 +1342,7 @@ public class BoxInput extends TextField {
  * user tasks to the user.
  */
 public class BoxTask extends BorderPane{
-	/** Constructor for BoxTask */
+	/** Constructor for BoxTask object*/
 	public BoxTask() {
 		this.setStyle("-fx-background-color: #182733;");
 		this.setPadding(new Insets(10,10,10,10));
@@ -1478,7 +1478,14 @@ public class LayoutCategory extends BorderPane {
 	private HBox categoryRow = new HBox();
 	private GridPane categoryGrid = new GridPane();
 	
-	/** Constructor for LayoutCategory */
+	/**
+	 * Creates a LayoutCategory object.
+	 * 
+	 * @param numToday				The number of items shown on box for Today
+	 * @param numTomorrow			The number of items shown on box for Tomorrow
+	 * @param numUpcoming			The number of items shown on box for Upcoming
+	 * @param numSomeday			The number of items shown on box for Tomorrow
+	 */
 	public LayoutCategory(int numToday, int numTomorrow, int numUpcoming, int numSomeday) {
 		_numToday = numToday;
 		_numTomorrow = numTomorrow;
@@ -1506,16 +1513,9 @@ public class LayoutCategory extends BorderPane {
 	
 	/** Set bottom region for user input */
 	private void setBottomRegion() {
-		TextField textField = implementTextField();
-		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent ke) {
-				if (ke.getCode().equals(KeyCode.ESCAPE)) {
-					Controller.processEnter("DISPLAY");
-				}
-				Controller.executeKeyPress(textField, ke);
-			}
-		});
+		BoxInput textField = new BoxInput();
+		textField = implementTextField(textField);
+		
 		this.setBottom(textField);
 	}
 	
@@ -1550,10 +1550,17 @@ public class LayoutCategory extends BorderPane {
 	}
 	
 	/** Implement the textfield for user to enter input */
-	private TextField implementTextField() {
-		BoxInput textField = new BoxInput();
+	private BoxInput implementTextField(BoxInput textField) {
 		textField.setEditable(false);
-
+		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent ke) {
+				if (ke.getCode().equals(KeyCode.ESCAPE)) {
+					Controller.processEnter("DISPLAY");
+				}
+				Controller.executeKeyPress(textField, ke);
+			}
+		});
 		return textField;
 	}
 	
@@ -1596,7 +1603,7 @@ public class LayoutCategory extends BorderPane {
 * the LayoutSummary class.
 */
 public class LayoutCategoryRectangle extends Rectangle {
-	/** Constructor for LayoutSummaryRectangle */
+	/** Constructor for LayoutSummaryRectangle object*/
 	public LayoutCategoryRectangle(){
 		this.setWidth(150);
 		this.setHeight(150);
@@ -1680,7 +1687,7 @@ public class LayoutHelp extends BorderPane {
 			+ "search [<taskName>; <date>] \n"
 			+ "mark <ID>");
 
-	/** Constructor for LayoutHelp */
+	/** Constructor for LayoutHelp object*/
 	public LayoutHelp() {
 		setBottomRegion();
 		setTopRegion();
@@ -1907,7 +1914,16 @@ public class LayoutTemplate extends BorderPane {
 	private GridPane innerTableBox = new GridPane();
 	private HBox outerTableBox = new HBox();
 
-	/** Constructor for LayoutTemplate */
+	/**
+	 * Constructor for LayoutTemplate
+	 * 
+	 * @param title					the title for the template when used in the scene
+	 * @param list					the ArrayList list to display tasks
+	 * @param feedbackList			the ArrayList feedback list to show feedback to user
+	 * @param displayDate			the boolean condition to decide if date column should be shown
+	 * @param enableExit			the boolean condition to enable escape to go to the
+	 * 								previous page
+	 */
 	public LayoutTemplate(String title, ArrayList<String[]> list, ArrayList<String> feedbackList, boolean displayDate,
 			boolean enableExit) {
 		if (feedbackList == null) {
@@ -2244,12 +2260,12 @@ public class Main extends Application {
 	}
 	
 	/** Minimises the window */
-	public static void minimise(){
+	protected static void minimise(){
 		stage.setIconified(true);
 	}
 	
 	/** Displays the help scene */
-	public static void displayHelpScene(){
+	protected static void displayHelpScene(){
 		helpLayout = new LayoutHelp();
 		scene = new Scene(helpLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
@@ -2258,7 +2274,7 @@ public class Main extends Application {
 	}
 	
 	/** Displays the calendar scene */
-	public static void displayCalendarScene(){
+	protected static void displayCalendarScene(){
 		calendarLayout = new LayoutCalendar();
 		scene = new Scene(calendarLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
@@ -2267,7 +2283,7 @@ public class Main extends Application {
 	}
 	
 	/** Displays the overall category scene */
-	public static void displayCategoryScene(){
+	protected static void displayCategoryScene(){
 		categoryLayout = new LayoutCategory(_numToday, _numTomorrow, _numUpcoming, _numSomeday);
 		scene = new Scene(categoryLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
@@ -2276,7 +2292,7 @@ public class Main extends Application {
 	}
 	
 	/** Displays the category scene for today */
-	public static void displayTodayScene(){
+	protected static void displayTodayScene(){
 		_feedback = Controller.getFeedback();
 		todayLayout = new LayoutTemplate("Today", _todayList, _feedback, false, true);
 		scene = new Scene(todayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
@@ -2286,7 +2302,7 @@ public class Main extends Application {
 	}
 	
 	/** Displays the category scene for tomorrow */
-	public static void displayTomorrowScene(){
+	protected static void displayTomorrowScene(){
 		_feedback = Controller.getFeedback();
 		tomorrowLayout = new LayoutTemplate("Tomorrow", _tomorrowList, _feedback, false, true);
 		scene = new Scene(tomorrowLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
@@ -2298,7 +2314,7 @@ public class Main extends Application {
 	/** Displays the category scene for upcoming tasks not scheduled today or tomorrow but 
 	 * with a specified date
 	 */
-	public static void displayUpcomingScene(){
+	protected static void displayUpcomingScene(){
 		_feedback = Controller.getFeedback();
 		upcomingLayout = new LayoutTemplate("Upcoming", _upcomingList,  _feedback, true, true);
 		scene = new Scene(upcomingLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
@@ -2308,7 +2324,7 @@ public class Main extends Application {
 	}
 	
 	/** Displays the category scene for floating tasks */
-	public static void displaySomedayScene(){
+	protected static void displaySomedayScene(){
 		_feedback = Controller.getFeedback();
 		somedayLayout = new LayoutTemplate("Someday", _somedayList,  _feedback, false, true);
 		scene = new Scene(somedayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
@@ -2318,7 +2334,7 @@ public class Main extends Application {
 	}
 	
 	/** Displays the search scene */
-	public static void displaySearchScene(){
+	protected static void displaySearchScene(){
 		_feedback = Controller.getFeedback();
 		searchLayout = new LayoutTemplate("Search", _searchList,  _feedback, true, true);
 		scene = new Scene(searchLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
@@ -2328,7 +2344,7 @@ public class Main extends Application {
 	}
 	
 	/** Displays the all tasks scene */
-	public static void displayAllScene(){
+	protected static void displayAllScene(){
 		_feedback = Controller.getFeedback();
 		allLayout = new LayoutTemplate("All Tasks", _powerList,  _feedback, true, false);
 		scene = new Scene(allLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
@@ -2337,44 +2353,102 @@ public class Main extends Application {
 		setStage();
 	}
 	
-	public static void setFeedbackList(ArrayList<String> feedback){
+	/**
+	 * Sets list to show feedback to the user based on the input.
+	 * 
+	 * @param feedback
+	 */
+	protected static void setFeedbackList(ArrayList<String> feedback){
 		_feedback = feedback;
 	}
 	
-	public static void setTodayList(ArrayList<String[]> todayList){
+	/**
+	 * Sets list to show tasks for today. 
+	 * 
+	 * @param todayList
+	 */
+	protected static void setTodayList(ArrayList<String[]> todayList){
 		_todayList = todayList;
 	}
 	
-	public static void setTomorrowList(ArrayList<String[]> tomorrowList){
+	/**
+	 * Sets list to show tasks for tomorrow.
+	 * 
+	 * @param tomorrowList
+	 */
+	protected static void setTomorrowList(ArrayList<String[]> tomorrowList){
 		_tomorrowList = tomorrowList;
 	}
 	
-	public static void setUpcomingList(ArrayList<String[]> upcomingList){
+	/**
+	 * Sets list to show tasks not due today or tomorrow, but has a date specified by user.
+	 * 
+	 * @param upcomingList
+	 */
+	protected static void setUpcomingList(ArrayList<String[]> upcomingList){
 		_upcomingList = upcomingList;
 	}
 	
-	public static void setSomedayList(ArrayList<String[]> somedayList){
+	/**
+	 * Sets list to show floating tasks that does not have a date specified by user.
+	 * 
+	 * @param somedayList
+	 */
+	protected static void setSomedayList(ArrayList<String[]> somedayList){
 		_somedayList = somedayList;
 	}
-	public static void setPowerList(ArrayList<String[]> powerList){
+	
+	/**
+	 * Sets list to show all tasks with the date specified.
+	 * 
+	 * @param powerList
+	 */
+	protected static void setPowerList(ArrayList<String[]> powerList){
 		_powerList = powerList;
 	}
-	public static void setSearchList(ArrayList<String[]> searchList) {
+	
+	/**
+	 * Sets list to show tasks the user is searching for.
+	 * 
+	 * @param searchList
+	 */
+	protected static void setSearchList(ArrayList<String[]> searchList) {
 		_searchList = searchList;
 	}
-	public static void setNumToday(int numToday){
+	
+	/**
+	 * Sets the number of items to display for the list for today.
+	 * 
+	 * @param numToday
+	 */
+	protected static void setNumToday(int numToday){
 		_numToday = numToday;
 	}
 	
-	public static void setNumTomorrow(int numTomorrow){
+	/**
+	 * Sets the number of items to display for the list for tomorrow.
+	 * 
+	 * @param numTomorrow
+	 */
+	protected static void setNumTomorrow(int numTomorrow){
 		_numTomorrow = numTomorrow;
 	}
 	
-	public static void setNumUpcoming(int numUpcoming){
+	/**
+	 * Sets the number of items to display for the list for upcoming tasks.
+	 * 
+	 * @param numUpcoming
+	 */
+	protected static void setNumUpcoming(int numUpcoming){
 		_numUpcoming = numUpcoming;
 	}
 	
-	public static void setNumSomeday(int numSomeday){
+	/**
+	 * Sets the number of items to display for the list for floating tasks.
+	 * 
+	 * @param numSomeday
+	 */
+	protected static void setNumSomeday(int numSomeday){
 		_numSomeday = numSomeday;
 	}
 }

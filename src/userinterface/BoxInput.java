@@ -8,7 +8,7 @@ import javafx.scene.control.TextField;
 * to the Controller class to handle user input and key events.
 */
 public class BoxInput extends TextField {
-	/** Constructor for BoxInput */
+	/** Constructor for BoxInput object*/
 	public BoxInput() {
 		Controller.implementKeystrokeEvents(this);
 		this.setStyle("-fx-background-color: #272b39; -fx-text-inner-color: white;");

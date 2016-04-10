@@ -9,7 +9,7 @@ import javafx.scene.layout.BorderPane;
  * user tasks to the user.
  */
 public class BoxTask extends BorderPane{
-	/** Constructor for BoxTask */
+	/** Constructor for BoxTask object*/
 	public BoxTask() {
 		this.setStyle("-fx-background-color: #182733;");
 		this.setPadding(new Insets(10,10,10,10));

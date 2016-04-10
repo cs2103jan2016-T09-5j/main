@@ -47,7 +47,7 @@ public class BoxHeader extends BorderPane {
 	/** Background colour for nodes */
 	private static final String STYLE_BOX_HEADER = "-fx-background-color: #272b39;";
 	
-	/** Constructor for BoxHeader */
+	/** Constructor for BoxHeader object*/
 	public BoxHeader() {
 		implementHeaderNodes();
 		this.setLeft(createDateBox());
@@ -65,8 +65,8 @@ public class BoxHeader extends BorderPane {
 	}
 	
 	/** Create date box to contain date for left side of HeaderBox */
-	private BoxHeaderContent createDateBox(){
-		BoxHeaderContent dateBox = new BoxHeaderContent();
+	private BoxHeaderInnerBox createDateBox(){
+		BoxHeaderInnerBox dateBox = new BoxHeaderInnerBox();
 		Node dateNode = Borders.wrap(LABEL_DATE).lineBorder().color(Color.WHITE).build().build();
 		dateBox.setLeft(dateNode);
 		
@@ -75,11 +75,11 @@ public class BoxHeader extends BorderPane {
 	
 	/** Create shortcut box to contain nodes for right side of HeaderBox */
 	private Node createShortcutBox(){
-		BoxHeaderContent shortcutsBox = new BoxHeaderContent();
+		BoxHeaderInnerBox shortcutsBox = new BoxHeaderInnerBox();
 		
-		BoxHeaderContent helpCalBox = createLeftShortcutBox();
-		BoxHeaderContent minSumBox = createCenterShortcutBox();
-		BoxHeaderContent escBox = createRightShortcutBox();
+		BoxHeaderInnerBox helpCalBox = createLeftShortcutBox();
+		BoxHeaderInnerBox minSumBox = createCenterShortcutBox();
+		BoxHeaderInnerBox escBox = createRightShortcutBox();
 		
 		shortcutsBox.setLeft(helpCalBox);
 		shortcutsBox.setCenter(minSumBox);
@@ -89,31 +89,31 @@ public class BoxHeader extends BorderPane {
 	}
 	
 	/** Create left section of shortcut box */
-	private BoxHeaderContent createLeftShortcutBox() {
-		BoxHeaderContent helpCalBox = new BoxHeaderContent();
+	private BoxHeaderInnerBox createLeftShortcutBox() {
+		BoxHeaderInnerBox helpCalBox = new BoxHeaderInnerBox();
 		helpCalBox.setLeft(helpNode);
 		helpCalBox.setRight(calendarNode);
 		return helpCalBox;
 	}
 	
 	/** Create center section of shortcut box */
-	private BoxHeaderContent createCenterShortcutBox() {
-		BoxHeaderContent minSumBox = new BoxHeaderContent();
+	private BoxHeaderInnerBox createCenterShortcutBox() {
+		BoxHeaderInnerBox minSumBox = new BoxHeaderInnerBox();
 		minSumBox.setLeft(summaryNode);
 		minSumBox.setRight(minimiseNode);
 		return minSumBox;
 	}
 	
 	/** Create right section of shortcut box */
-	private BoxHeaderContent createRightShortcutBox() {
-		BoxHeaderContent escBox = new BoxHeaderContent();
+	private BoxHeaderInnerBox createRightShortcutBox() {
+		BoxHeaderInnerBox escBox = new BoxHeaderInnerBox();
 		escBox.setCenter(escapeNode);
 		return escBox;
 	}
 
 	/** Create all nodes to be used for shortcut box */
 	private Node createNode(NODETYPE type) {
-		BoxHeaderContent nodeBox = new BoxHeaderContent();
+		BoxHeaderInnerBox nodeBox = new BoxHeaderInnerBox();
 		switch (type){
 		case HELP:
 			nodeBox.setTop(LABEL_HELP);

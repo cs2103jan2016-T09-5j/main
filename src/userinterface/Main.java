@@ -110,12 +110,12 @@ public class Main extends Application {
 	}
 	
 	/** Minimises the window */
-	public static void minimise(){
+	protected static void minimise(){
 		stage.setIconified(true);
 	}
 	
 	/** Displays the help scene */
-	public static void displayHelpScene(){
+	protected static void displayHelpScene(){
 		helpLayout = new LayoutHelp();
 		scene = new Scene(helpLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
@@ -124,7 +124,7 @@ public class Main extends Application {
 	}
 	
 	/** Displays the calendar scene */
-	public static void displayCalendarScene(){
+	protected static void displayCalendarScene(){
 		calendarLayout = new LayoutCalendar();
 		scene = new Scene(calendarLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
@@ -133,7 +133,7 @@ public class Main extends Application {
 	}
 	
 	/** Displays the overall category scene */
-	public static void displayCategoryScene(){
+	protected static void displayCategoryScene(){
 		categoryLayout = new LayoutCategory(_numToday, _numTomorrow, _numUpcoming, _numSomeday);
 		scene = new Scene(categoryLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
 		scene.getStylesheets().clear();
@@ -142,7 +142,7 @@ public class Main extends Application {
 	}
 	
 	/** Displays the category scene for today */
-	public static void displayTodayScene(){
+	protected static void displayTodayScene(){
 		_feedback = Controller.getFeedback();
 		todayLayout = new LayoutTemplate("Today", _todayList, _feedback, false, true);
 		scene = new Scene(todayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
@@ -152,7 +152,7 @@ public class Main extends Application {
 	}
 	
 	/** Displays the category scene for tomorrow */
-	public static void displayTomorrowScene(){
+	protected static void displayTomorrowScene(){
 		_feedback = Controller.getFeedback();
 		tomorrowLayout = new LayoutTemplate("Tomorrow", _tomorrowList, _feedback, false, true);
 		scene = new Scene(tomorrowLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
@@ -164,7 +164,7 @@ public class Main extends Application {
 	/** Displays the category scene for upcoming tasks not scheduled today or tomorrow but 
 	 * with a specified date
 	 */
-	public static void displayUpcomingScene(){
+	protected static void displayUpcomingScene(){
 		_feedback = Controller.getFeedback();
 		upcomingLayout = new LayoutTemplate("Upcoming", _upcomingList,  _feedback, true, true);
 		scene = new Scene(upcomingLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
@@ -174,7 +174,7 @@ public class Main extends Application {
 	}
 	
 	/** Displays the category scene for floating tasks */
-	public static void displaySomedayScene(){
+	protected static void displaySomedayScene(){
 		_feedback = Controller.getFeedback();
 		somedayLayout = new LayoutTemplate("Someday", _somedayList,  _feedback, false, true);
 		scene = new Scene(somedayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
@@ -184,7 +184,7 @@ public class Main extends Application {
 	}
 	
 	/** Displays the search scene */
-	public static void displaySearchScene(){
+	protected static void displaySearchScene(){
 		_feedback = Controller.getFeedback();
 		searchLayout = new LayoutTemplate("Search", _searchList,  _feedback, true, true);
 		scene = new Scene(searchLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
@@ -194,7 +194,7 @@ public class Main extends Application {
 	}
 	
 	/** Displays the all tasks scene */
-	public static void displayAllScene(){
+	protected static void displayAllScene(){
 		_feedback = Controller.getFeedback();
 		allLayout = new LayoutTemplate("All Tasks", _powerList,  _feedback, true, false);
 		scene = new Scene(allLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
@@ -203,44 +203,102 @@ public class Main extends Application {
 		setStage();
 	}
 	
-	public static void setFeedbackList(ArrayList<String> feedback){
+	/**
+	 * Sets list to show feedback to the user based on the input.
+	 * 
+	 * @param feedback
+	 */
+	protected static void setFeedbackList(ArrayList<String> feedback){
 		_feedback = feedback;
 	}
 	
-	public static void setTodayList(ArrayList<String[]> todayList){
+	/**
+	 * Sets list to show tasks for today. 
+	 * 
+	 * @param todayList
+	 */
+	protected static void setTodayList(ArrayList<String[]> todayList){
 		_todayList = todayList;
 	}
 	
-	public static void setTomorrowList(ArrayList<String[]> tomorrowList){
+	/**
+	 * Sets list to show tasks for tomorrow.
+	 * 
+	 * @param tomorrowList
+	 */
+	protected static void setTomorrowList(ArrayList<String[]> tomorrowList){
 		_tomorrowList = tomorrowList;
 	}
 	
-	public static void setUpcomingList(ArrayList<String[]> upcomingList){
+	/**
+	 * Sets list to show tasks not due today or tomorrow, but has a date specified by user.
+	 * 
+	 * @param upcomingList
+	 */
+	protected static void setUpcomingList(ArrayList<String[]> upcomingList){
 		_upcomingList = upcomingList;
 	}
 	
-	public static void setSomedayList(ArrayList<String[]> somedayList){
+	/**
+	 * Sets list to show floating tasks that does not have a date specified by user.
+	 * 
+	 * @param somedayList
+	 */
+	protected static void setSomedayList(ArrayList<String[]> somedayList){
 		_somedayList = somedayList;
 	}
-	public static void setPowerList(ArrayList<String[]> powerList){
+	
+	/**
+	 * Sets list to show all tasks with the date specified.
+	 * 
+	 * @param powerList
+	 */
+	protected static void setPowerList(ArrayList<String[]> powerList){
 		_powerList = powerList;
 	}
-	public static void setSearchList(ArrayList<String[]> searchList) {
+	
+	/**
+	 * Sets list to show tasks the user is searching for.
+	 * 
+	 * @param searchList
+	 */
+	protected static void setSearchList(ArrayList<String[]> searchList) {
 		_searchList = searchList;
 	}
-	public static void setNumToday(int numToday){
+	
+	/**
+	 * Sets the number of items to display for the list for today.
+	 * 
+	 * @param numToday
+	 */
+	protected static void setNumToday(int numToday){
 		_numToday = numToday;
 	}
 	
-	public static void setNumTomorrow(int numTomorrow){
+	/**
+	 * Sets the number of items to display for the list for tomorrow.
+	 * 
+	 * @param numTomorrow
+	 */
+	protected static void setNumTomorrow(int numTomorrow){
 		_numTomorrow = numTomorrow;
 	}
 	
-	public static void setNumUpcoming(int numUpcoming){
+	/**
+	 * Sets the number of items to display for the list for upcoming tasks.
+	 * 
+	 * @param numUpcoming
+	 */
+	protected static void setNumUpcoming(int numUpcoming){
 		_numUpcoming = numUpcoming;
 	}
 	
-	public static void setNumSomeday(int numSomeday){
+	/**
+	 * Sets the number of items to display for the list for floating tasks.
+	 * 
+	 * @param numSomeday
+	 */
+	protected static void setNumSomeday(int numSomeday){
 		_numSomeday = numSomeday;
 	}
 }

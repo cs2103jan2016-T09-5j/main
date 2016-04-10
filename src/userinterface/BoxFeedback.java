@@ -9,7 +9,7 @@ import javafx.scene.layout.StackPane;
  * on the user input to the user.
  */
 public class BoxFeedback extends StackPane {
-	/** Constructor for BoxFeedback */
+	/** Constructor for BoxFeedback object */
 	public BoxFeedback() {
 		this.setPadding(new Insets(10,10,10,10));
 		this.setStyle("-fx-background-color: #182733;");
