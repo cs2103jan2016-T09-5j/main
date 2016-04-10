@@ -2,6 +2,7 @@ package parser;
 import java.util.HashMap;
 import java.util.Map;
 
+//@@author Morgan
 public class InputStringKeyword {
 	
 	private static final String KEY_ADD = "add";
@@ -28,7 +29,6 @@ public class InputStringKeyword {
 	private static final String KEY_MONTH_ABV = "-m";
 	private static final String KEY_YEAR_ABV = "-y";
 
-	
     private static Map<String, Keywords> keywords;
     private static Map<String, Keywords> commands;
     private static Map<String, Keywords> flags;
@@ -65,8 +65,7 @@ public class InputStringKeyword {
         keywords.put(KEY_UNTIL, Keywords.UNTIL);
         
     }
-
-    //@@author Morgan
+    
     /**
      * Checks if the String encodes a keyword
      * 

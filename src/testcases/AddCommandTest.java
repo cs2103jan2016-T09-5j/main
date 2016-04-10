@@ -22,14 +22,13 @@ import storage.Memory;
 import logic.ClockWork;
 import logic.Signal;
 
-
+//@@author Prem
 public class AddCommandTest {
 	Memory memory;
 	ParsedInput input;
 	Keywords addCommand = Keywords.ADD;
 	ClockWork logic;
 
-	//@@author Prem
 	public enum TYPE {
 		ADD, MARK, DELETE, SEARCH, EDIT, DISPLAY, UNDO, ERROR;
 	}

@@ -12,13 +12,13 @@ import org.junit.Test;
 
 import logic.Todo;
 
+//@@author Morgan
 public class TodoTest {
 	
 	String name;
 	DateTime deadlineTime, startDate, endDate;
 	ArrayList<DateTime> deadlineDateTimes, eventDateTimes;
 	
-	//@@author Morgan
 	@Before
 	public void setup() {
 		name = "Todo One";

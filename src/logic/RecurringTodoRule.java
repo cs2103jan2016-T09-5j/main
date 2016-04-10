@@ -13,6 +13,7 @@ import org.joda.time.format.PeriodFormatterBuilder;
 import exceptions.InvalidParamException;
 import storage.Memory;
 
+//@@author Rebekah
 /**
  * The RecurringTodoRule class contains the rules and methods for creating and
  * storing individual Todos
@@ -50,8 +51,7 @@ public class RecurringTodoRule implements UndoableRedoable<RecurringTodoRule> {
     			.printZeroNever().appendDays().appendSuffix(" day(s)")
     			.toFormatter();
     }
-    
-    //@@author Rebekah
+       
     /**
      * Constructor for the RecurringTodoRule without specifying limit
      * 

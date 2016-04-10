@@ -5,7 +5,9 @@ import java.util.Collection;
 import parser.Keywords;
 import parser.ParsedInput;
 import storage.Memory;
+import org.joda.time.DateTime;
 
+//@@author Regine
 /**
  * The AddCommand class handles all user commands with "add" as the first
  * keyword and processes ParsedInput to generate Todo objects and adds them into
@@ -14,7 +16,6 @@ import storage.Memory;
 
 public class AddCommand extends Command {
 
-	//@@author Regine
 	/**
 	 * Creates an AddCommand object.
 	 * 
@@ -102,7 +103,10 @@ public class AddCommand extends Command {
 			case 1:
 				Todo timedTodo = new Todo(memory.obtainFreshId(), todoName,
 						dateTimes);
-				
+				DateTime selectedDate = DateTime.now();
+				if(timedTodo.endTime.isBefore(selectedDate)){
+					return new Signal(Signal.ADD_PASTDATE_ERROR, true);
+				}
 				//ClashDetector object warns user of an impending time overlap
 				listOnSameDay = SearchCommand.getTodosOfSameDay(Keywords.DAY, 
 						timedTodo.endTime, memory);
@@ -119,7 +123,10 @@ public class AddCommand extends Command {
 			case 2:
 				timedTodo = new Todo(memory.obtainFreshId(), todoName,
 						dateTimes);
-				
+				DateTime selectedDate1 = DateTime.now();
+				if(timedTodo.endTime.isBefore(selectedDate1)){
+					return new Signal(Signal.ADD_PASTDATE_ERROR, true);
+				}
 				//ClashDetector object warns user of an impending time overlap
 				listOnSameDay = SearchCommand.getTodosOfSameDay(Keywords.DAY, 
 						timedTodo.endTime, memory);

@@ -19,16 +19,16 @@ import parser.Keywords;
 import parser.ParsedInput;
 import storage.Memory;
 
+//@@author Regine
 /**
  * The SearchCommand class handles user input with search commands.
  * 
  */
 public class SearchCommand extends Command {
 
-	private static  ArrayList<String> ArrListForGUI = new ArrayList<String> ();
+	private static  ArrayList<String> arrListForGUI = new ArrayList<String> ();
 	private static final String REGEX_SPACE = "\\s";
-	
-	//@@author Regine
+		
 	/**
 	 * Creates a SearchCommand object.
 	 * 
@@ -41,12 +41,15 @@ public class SearchCommand extends Command {
 	public SearchCommand(ParsedInput input, Memory memory) {
 		super(input, memory);
 	}
+	
 	protected static ArrayList<String> getArrListForGUI(){
-    	return ArrListForGUI;
+    	return arrListForGUI;
     }
+	
 	public static void clearArrListForGUI(){
-    	ArrListForGUI.clear();
+    	arrListForGUI.clear();
     }
+	
 	/**
 	 * Searches keywords given in parsedInput in the memory. 
 	 */
@@ -91,7 +94,7 @@ public class SearchCommand extends Command {
 
 		// displays the list of todos that were found
 		String displayString = DisplayCommand.getDisplayChrono(todos, 2);
-		ArrListForGUI.add(displayString);
+		arrListForGUI.add(displayString);
 
 		return new Signal(Signal.SEARCH_SUCCESS_SIGNAL, true);
 	}
@@ -312,8 +315,7 @@ public class SearchCommand extends Command {
 						&& item.endTime.dayOfYear().equals(searchDate.dayOfYear())) {
 					item = alignRecurringTask(item, searchDate);
 					queriedTodos.add(item);
-				}
-				
+				}	
 			}
 		}
 		return queriedTodos;	

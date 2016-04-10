@@ -12,6 +12,7 @@ import org.joda.time.format.DateTimeFormatter;
 import exceptions.ExceptionMessages;
 import exceptions.NotRecurringException;
 
+//@@author Prem
 /**
  * Stores parameters of a Todo using org.joda.time.DateTime objects. A Todo can
  * be subdivided into 3 different subtypes namely Task, Deadline, or Event,
@@ -47,7 +48,6 @@ public class Todo implements UndoableRedoable<Todo> {
 
 	protected static final String FloatingTaskStringFormat = "Floating task \"%1$s\"";
 
-	//@@author Prem
 	/**
 	 * Constructs a Todo of type: TASK.
 	 * 

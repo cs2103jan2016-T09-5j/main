@@ -1,14 +1,11 @@
 package userinterface;
 
-import org.controlsfx.control.HiddenSidesPane;
-import org.controlsfx.control.InfoOverlay;
 import org.controlsfx.tools.Borders;
 
 import de.jensd.fx.glyphs.GlyphsDude;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -23,40 +20,83 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+//@@author Rebekah
+/**
+* The LayoutHelp class creates the layout to display help to the user. The available command 
+* types the user can use, as well as the input format to call the commands are shown in this 
+* class to visually aid the user in using Clockwork.
+*/
 public class LayoutHelp extends BorderPane {
+	/** Enumerator for nodes used in BoxHeader */
+	private enum NODETYPE { ADD, DELETE, EDIT, SEARCH, MARK, UNDO, REDO, EXIT, FORMAT };
 	
-	private Label dummyLbl = new Label(" ");
-
-	private GridPane helpContentBox = new GridPane();
-	private HBox helpContentBar = new HBox();
-
-	private Node wrappedAdd;
-	private Node wrappedDelete;
-	private Node wrappedEdit;
-	private Node wrappedSearch;
-	private Node wrappedMark;
-	private Node wrappedUndo;
-	private Node wrappedRedo;
-	private Node wrappedExit;
-	private Node wrappedFormat;
+	/** Strings to display in the help bar */
+	private static final String TEXT_NODE_ADD = "Add";
+	private static final String TEXT_NODE_DELETE = "Delete";
+	private static final String TEXT_NODE_EDIT = "Edit";
+	private static final String TEXT_NODE_SEARCH = "Search";
+	private static final String TEXT_NODE_MARK = "Mark";
+	private static final String TEXT_NODE_UNDO = "Undo";
+	private static final String TEXT_NODE_REDO = "Redo";
+	private static final String TEXT_NODE_EXIT = "Exit";
+	private static final String TEXT_NODE_FORMAT = "<Tab>";
 	
-	private String formatString = new String("add [task name] from [starting period] to [ending period]\n"
+	/** Icons to display in the help bar */
+	private final Node ICON_ADD = GlyphsDude.createIcon(FontAwesomeIcon.PLUS);
+	private final Node ICON_DELETE = GlyphsDude.createIcon(FontAwesomeIcon.MINUS);
+	private final Node ICON_EDIT = GlyphsDude.createIcon(FontAwesomeIcon.PENCIL);
+	private final Node ICON_SEARCH = GlyphsDude.createIcon(FontAwesomeIcon.SEARCH);
+	private final Node ICON_MARK = GlyphsDude.createIcon(FontAwesomeIcon.CHECK);
+	private final Node ICON_UNDO = GlyphsDude.createIcon(FontAwesomeIcon.UNDO);
+	private final Node ICON_REDO = GlyphsDude.createIcon(FontAwesomeIcon.REPEAT);
+	private final Node ICON_EXIT = GlyphsDude.createIcon(FontAwesomeIcon.CLOSE);
+	private final Node ICON_FORMAT = GlyphsDude.createIcon(FontAwesomeIcon.INFO);
+	
+	/** Background colour for nodes */
+	private final String STYLE_MAIN_BORDERPANE = "-fx-background-color: #182733";
+	private final String STYLE_MAIN_STACKPANE = "-fx-background-color: #182733";
+	private final String STYLE_HELPBOX = "-fx-background-color: #182733";
+	private final String STYLE_CONTENT_BAR = "-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;";
+	
+	/** Dimensions of items used in the class */
+	private static final int HEIGHT_CONTENT_BOX = 300;
+	private static final int HEIGHT_MAIN_STACKPANE = 150;
+	private static final int WIDTH_MAIN_STACKPANE = 900;
+	
+	/** Dummy label used to set a placeholder for nodes */
+	private static final Label LABEL_DUMMY = new Label(" ");
+	
+	/** Nodes containing both label and icon to display in BoxHeader */
+	private Node addNode;
+	private Node deleteNode;
+	private Node editNode;
+	private Node searchNode;
+	private Node markNode;
+	private Node undoNode;
+	private Node redoNode;
+	private Node exitNode;
+	private Node formatNode;
+	
+	/** Layouts used to contain the help nodes */
+	private StackPane formatBox = new StackPane();
+	private GridPane barBox = new GridPane();
+	private HBox helpBar = new HBox();
+	private BorderPane helpBox = new BorderPane();
+	
+	/** Text used to show available command formats */
+	private Text formatText = new Text();
+	
+	/** String used to show available command formats */
+	private static final String formatString = new String(
+			"add [task name] from [starting period] to [ending period]\n"
 			+ "delete [task IDs] \n"
-			+ "edit <ID> [<newName>] [from <newStartTime>] [ to <newEndTime>] [by;on;at <newDeadline>] [every  <interval> ] [until <limit>] \n"
+			+ "edit <ID> [<newName>] [from <newStartTime>] [ to <newEndTime>] "
+			+ "[by;on;at <newDeadline>] [every  <interval> ] [until <limit>] \n"
 			+ "search [<taskName>; <date>] \n"
 			+ "mark <ID>");
 
-	private Text formatText = new Text(formatString);
-	
-
-	//@@author Rebekah
+	/** Constructor for LayoutHelp */
 	public LayoutHelp() {
-		setDisplayRegions();
-	}
-
-	/** POPULATING LAYOUT */
-
-	private void setDisplayRegions() {
 		setBottomRegion();
 		setTopRegion();
 		setCenterRegion();
@@ -67,63 +107,43 @@ public class LayoutHelp extends BorderPane {
 		BoxHeader headerBox = new BoxHeader();
 		this.setTop(headerBox);
 	}
-
+	
+	/** Set center region to display available help commands and input format */
 	private void setCenterRegion() {
-		wrappedAdd = createAddNode();
-		wrappedDelete = createDeleteNode();
-		wrappedEdit = createEditNode();
-		wrappedSearch = createSearchNode();
-		wrappedMark = createMarkNode();
-		wrappedUndo = createUndoNode();
-		wrappedRedo = createRedoNode();
-		wrappedFormat = createFormatNode();
-		wrappedExit = createExitNode();
-		
-		implementHelpContentBar();
-		implementHelpContentBox();
-		
-		BorderPane borderPane = new BorderPane();
-		borderPane.setStyle("-fx-background-color: #182733");
-		
-		formatText.setFill(Color.WHITE);
-		
-		StackPane sp = new StackPane();
-		sp.setStyle("-fx-background-color: #182733");
-		sp.setPrefSize(900, 150);
-		sp.getChildren().add(formatText);
-				
-		borderPane.setTop(helpContentBox);
-		borderPane.setBottom(sp);
-		
-		this.setCenter(borderPane);
+		implementHelpNodes();
+		implementHelpBar();
+		createFormatText();
+		this.setCenter(createHelpBox());
 	}
 
+	/** Set bottom region for user input */
 	private void setBottomRegion() {
-		TextField textField = implementTextField();
-		this.setBottom(textField);
+		this.setBottom(implementTextField());
 	}
-
-	/** IMPLEMENTING REGION OBJECTS */
-
-	private void implementHelpContentBox() {	
-		helpContentBox.getChildren().add(helpContentBar);
-		helpContentBox.setAlignment(Pos.BOTTOM_CENTER);
-		helpContentBox.setStyle("-fx-background-color: #182733");
-		helpContentBox.setPrefHeight(300);
-		
-		ColumnConstraints columnConstraints = new ColumnConstraints();
-		columnConstraints.setFillWidth(true);
-		columnConstraints.setHgrow(Priority.ALWAYS);
-		helpContentBox.getColumnConstraints().add(columnConstraints);
+	
+	/** Implement all nodes to be used for help bar */
+	private void implementHelpNodes() {
+		addNode = createNode(NODETYPE.ADD);
+		deleteNode = createNode(NODETYPE.DELETE);
+		editNode = createNode(NODETYPE.EDIT);
+		searchNode = createNode(NODETYPE.SEARCH);
+		markNode = createNode(NODETYPE.MARK);
+		undoNode = createNode(NODETYPE.UNDO);
+		redoNode = createNode(NODETYPE.REDO);
+		formatNode = createNode(NODETYPE.FORMAT);
+		exitNode = createNode(NODETYPE.EXIT);
 	}
-
-	private void implementHelpContentBar() {
-		helpContentBar.getChildren().addAll(wrappedAdd, wrappedDelete, wrappedEdit,
-				wrappedSearch, wrappedMark, wrappedUndo, wrappedRedo, wrappedExit, wrappedFormat);
-		helpContentBar.setAlignment(Pos.CENTER);
-		helpContentBar.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;");
+	
+	/** Implement the help bar that holds the help nodes */
+	private void implementHelpBar() {
+		helpBar.getChildren().addAll(
+				addNode, deleteNode, editNode, searchNode, markNode, 
+				undoNode, redoNode, exitNode, formatNode);
+		helpBar.setAlignment(Pos.CENTER);
+		helpBar.setStyle(STYLE_CONTENT_BAR);
 	}
-
+	
+	/** Implement the textfield for user to enter input */
 	private TextField implementTextField() {
 		BoxInput textField = new BoxInput();
 		textField.setEditable(false);
@@ -138,131 +158,92 @@ public class LayoutHelp extends BorderPane {
 		});
 		return textField;
 	}
-
-	/** CREATING LAYOUT OBJECTS */
 	
-	private Node createExitNode() {
-		BorderPane exitBox = new BorderPane();
-
-		Label exitLbl = new Label("Exit");
-
-		exitBox.setTop(exitLbl);
-		exitBox.setCenter(dummyLbl);
-		exitBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.CLOSE));
-
-		Node wrappedExit = Borders.wrap(exitBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedExit;
+	/** Creates the help box containing the help bar and the input format help box */
+	private BorderPane createHelpBox(){
+		helpBox.setStyle(STYLE_MAIN_BORDERPANE);
+		helpBox.setTop(createBarBox());
+		helpBox.setBottom(createFormatBox());
+		return helpBox;
 	}
 	
-	private Node createFormatNode() {
-		BorderPane formatBox = new BorderPane();
-
-		Label formatLbl = new Label("<Tab>");
-
-		formatBox.setTop(formatLbl);
-		formatBox.setCenter(dummyLbl);
-		formatBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.INFO));
-
-		Node wrappedFormat = Borders.wrap(formatBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedFormat;
+	/** Creates the box that holds the help bar */
+	private GridPane createBarBox() {	
+		barBox.getChildren().add(helpBar);
+		barBox.setAlignment(Pos.BOTTOM_CENTER);
+		barBox.setStyle(STYLE_HELPBOX);
+		barBox.setPrefHeight(HEIGHT_CONTENT_BOX);
+		
+		ColumnConstraints barColumnConstraints = new ColumnConstraints();
+		barColumnConstraints.setFillWidth(true);
+		barColumnConstraints.setHgrow(Priority.ALWAYS);
+		barBox.getColumnConstraints().add(barColumnConstraints);
+		
+		return barBox;
 	}
 	
-	private Node createMarkNode() {
-		BorderPane markBox = new BorderPane();
-
-		Label markLbl = new Label("Mark");
-
-		markBox.setTop(markLbl);
-		markBox.setCenter(dummyLbl);
-		markBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.CHECK));
-
-		Node wrappedMark = Borders.wrap(markBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedMark;
+	/** Creates the box that holds the input format help */
+	private StackPane createFormatBox(){
+		formatBox.setStyle(STYLE_MAIN_STACKPANE);
+		formatBox.setPrefSize(WIDTH_MAIN_STACKPANE, HEIGHT_MAIN_STACKPANE);
+		formatBox.getChildren().add(formatText);
+		return formatBox;
 	}
 
-	private Node createSearchNode() {
-		BorderPane searchBox = new BorderPane();
-
-		Label searchLbl = new Label("Search");
-
-		searchBox.setTop(searchLbl);
-		searchBox.setCenter(dummyLbl);
-		searchBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.SEARCH));
-
-		Node wrappedSearch = Borders.wrap(searchBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedSearch;
+	/** Creates a Node of the specified NODETYPE */
+	private Node createNode(NODETYPE type){
+		BorderPane nodeBox = new BorderPane();
+		Label label = null;
+		Node icon = null;
+		switch (type){
+		case ADD:
+			label = new Label(TEXT_NODE_ADD);
+			icon = ICON_ADD;
+			break;
+		case DELETE:
+			label = new Label(TEXT_NODE_DELETE);
+			icon = ICON_DELETE;
+			break;
+		case EDIT:
+			label = new Label(TEXT_NODE_EDIT);
+			icon = ICON_EDIT;
+			break;
+		case SEARCH:
+			label = new Label(TEXT_NODE_SEARCH);
+			icon = ICON_SEARCH;
+			break;
+		case MARK:
+			label = new Label(TEXT_NODE_MARK);
+			icon = ICON_MARK;
+			break;
+		case UNDO:
+			label = new Label(TEXT_NODE_UNDO);
+			icon = ICON_UNDO;
+			break;
+		case REDO:
+			label = new Label(TEXT_NODE_REDO);
+			icon = ICON_REDO;
+			break;
+		case EXIT:
+			label = new Label(TEXT_NODE_EXIT);
+			icon = ICON_EXIT;
+			break;
+		default:
+			label = new Label(TEXT_NODE_FORMAT);
+			icon = ICON_FORMAT;
+			break;
+		}
+		
+		nodeBox.setTop(label);
+		nodeBox.setCenter(LABEL_DUMMY);
+		nodeBox.setBottom(icon);
+		Node node = Borders.wrap(nodeBox).lineBorder().color(Color.WHITE).build().build();
+		return node;
 	}
-
-	private Node createRedoNode() {
-		BorderPane redoBox = new BorderPane();
-
-		Label redoLbl = new Label("Redo");
-
-		redoBox.setTop(redoLbl);
-		redoBox.setCenter(dummyLbl);
-		redoBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.REPEAT));
-
-		Node wrappedRedo = Borders.wrap(redoBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedRedo;
-	}
-
-	private Node createUndoNode() {
-		BorderPane undoBox = new BorderPane();
-
-		Label undoLbl = new Label("Undo");
-
-		undoBox.setTop(undoLbl);
-		undoBox.setCenter(dummyLbl);
-		undoBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.UNDO));
-
-		Node wrappedUndo = Borders.wrap(undoBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedUndo;
-	}
-
-	private Node createEditNode() {
-		BorderPane editBox = new BorderPane();
-
-		Label editLbl = new Label("Edit");
-
-		editBox.setTop(editLbl);
-		editBox.setCenter(dummyLbl);
-		editBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.PENCIL));
-
-		Node wrappedEdit = Borders.wrap(editBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedEdit;
-	}
-
-	private Node createAddNode() {
-		BorderPane addBox = new BorderPane();
-
-		Label addLbl = new Label("Add");
-
-		addBox.setTop(addLbl);
-		addBox.setCenter(dummyLbl);
-		addBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.PLUS));
-
-		Node wrappedAdd = Borders.wrap(addBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedAdd;
-	}
-
-	private Node createDeleteNode() {
-		BorderPane deleteBox = new BorderPane();
-
-		Label deleteLbl = new Label("Delete");
-
-		deleteBox.setTop(deleteLbl);
-		deleteBox.setCenter(dummyLbl);
-		deleteBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.MINUS));
-
-		Node wrappedDelete = Borders.wrap(deleteBox).lineBorder().color(Color.WHITE).build().build();
-		return wrappedDelete;
+	
+	/** Create input format help to show available command formats */
+	private void createFormatText(){
+		formatText = new Text(formatString);
+		formatText.setFill(Color.WHITE);
 	}
 }

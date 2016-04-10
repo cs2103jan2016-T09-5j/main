@@ -7,6 +7,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
+//@@author Morgan
 public class ParsedInput {
 
 	private Keywords type;
@@ -18,7 +19,6 @@ public class ParsedInput {
 	private boolean hasLimit;
 	private DateTime limit;
 	
-	//@@author Morgan
 	/**
 	 * Creates a ParsedInput object with the type of command, a list of
 	 * KeyParamPair objects and a list of DateTime objects derived from the user

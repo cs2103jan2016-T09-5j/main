@@ -1,5 +1,6 @@
 package parser;
 
+//@@author Prem
 /**
  * This class stores a Keyword, its string and its parameter. 
  */
@@ -7,8 +8,7 @@ public class KeyParamPair {
 	private Keywords keyword;
 	private String keyString;
 	private String param;
-
-	//@@author Prem
+	
 	/**
 	 * Constructs a KeyParamPair object with fields equal to the respective parameters.
 	 * @param inputKeyword

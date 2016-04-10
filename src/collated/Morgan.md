@@ -1,11 +1,17 @@
 # Morgan
 ###### \logic\ClashDetector.java
 ``` java
+public class ClashDetector {
+	private Collection<Todo> onDateTodos;
+	private Todo attemptedTodo;
+	public static Scanner scn = new Scanner(System.in);
+	private static  ArrayList<String> arrListForGUI = new ArrayList<String> ();
+	
 	public static ArrayList<String> getArrListForGUI(){
-	    	return ArrListForGUI;
+	    	return arrListForGUI;
 	}
 	public static void clearArrListForGUI(){
-		ArrListForGUI.clear();
+		arrListForGUI.clear();
 	}
 	ClashDetector(Collection<Todo> onDateTodos, Todo attemptedTodo){
 		this.onDateTodos = onDateTodos;
@@ -18,15 +24,15 @@
 			case DEADLINE:
 				todoClashExists = isDeadlineClash();
 				if(todoClashExists) {
-					ArrListForGUI.add("WARNING : "+String.format(Signal.CLASH_DEADLINE_DOES_EXIST, 
-							attemptedTodo.endTime));
+					arrListForGUI.add("Clash WARNING : "+String.format(Signal.CLASH_DEADLINE_DOES_EXIST, 
+							attemptedTodo.name, attemptedTodo.endTime ));
 				}
 				break;
 			case EVENT:
 				todoClashExists = isEventClash();
 				if(todoClashExists) {
-					ArrListForGUI.add("WARNING : "+String.format(Signal.CLASH_EVENT_DOES_EXIST,
-							 attemptedTodo.endTime));
+					arrListForGUI.add("Clash WARNING : "+String.format(Signal.CLASH_EVENT_DOES_EXIST,
+							 attemptedTodo.name, attemptedTodo.endTime));
 				}
 				break;
 			default:
@@ -44,11 +50,11 @@
 	private boolean isUserVoidingTodo() {
 		String userResponse = "yes";
 		if(userResponse.equals("yes") || userResponse.equals("y")) {
-			ArrListForGUI.add(String.format(Signal.CLASH_USER_OVERRIDE));
+			arrListForGUI.add(String.format(Signal.CLASH_USER_OVERRIDE));
 			return false;
 		}
 		else {
-			ArrListForGUI.add(String.format(Signal.CLASH_USER_VOID_TASK));
+			arrListForGUI.add(String.format(Signal.CLASH_USER_VOID_TASK));
 			return true;
 		}
 	}
@@ -113,7 +119,12 @@
 ```
 ###### \logic\EditCommand.java
 ``` java
-	/**
+/**
+ * Houses a method which processes the edit request from the user.
+ */
+public class EditCommand extends Command {
+	
+		/**
 	 * Creates an EditCommand object.
 	 * 
 	 * @param input the ParsedInput object containing the parameters.
@@ -351,6 +362,15 @@
 ```
 ###### \logic\EmailCommand.java
 ``` java
+/**
+ * The EmailCommand class handles all user commands with "email" as the first
+ * keyword and processes parsed input to detect when users want to be notified
+ * of relevant tasks that are impending. User just have to give their email,
+ * which adjusts the internal settings file, and they may choose to unsubscribe at anytime.
+ */
+
+public class EmailCommand extends Command {	
+	
 	/**
 	 * Creates an EmailCommand object.
 	 * 
@@ -379,6 +399,108 @@
 	//EMAIL REQUESTS AND SEND PERIODIC REMINDERS
 	public void mailDaemonProgram() {
 		
+	}
+
+}
+```
+###### \logic\SearchCommand.java
+``` java
+	/**
+	 * Operation queries all of memory and returns events that occur on a specific day of the year. Useful for
+	 * operations including time collisions and time comparators.
+	 * 
+	 * @param typeKey (null typeKey signifies AgendaHelper is accessing search for recurrence alignment)
+	 * @param searchDate
+	 * @param memory
+	 * @return Collection of Todo
+	 * @throws InvalidParamException
+	 */
+	public static Collection<Todo> getTodosOfSameDay(Keywords typeKey, 
+			DateTime searchDate, Memory memory) {
+		
+		Collection<Todo> todos = memory.getAllTodos();
+		Collection<Todo> queriedTodos = new ArrayList<Todo>();
+		
+		for(Todo item : todos) {
+			//track items that are within the same day queried for
+			if(item != null && item.endTime != null && !item.isRecurring()) {
+				
+				//verify the end date is within the same day
+				if(item.getType() == TYPE.DEADLINE && 
+						searchDate.getDayOfYear() == item.endTime.getDayOfYear()) {
+					queriedTodos.add(item);
+				}
+				//verify the start date or end date is within same day
+				if(item.getType() == TYPE.EVENT) {
+					if(searchDate.getDayOfYear() == item.endTime.getDayOfYear() ||
+							searchDate.getDayOfYear() == item.startTime.getDayOfYear()){
+						queriedTodos.add(item);
+					}	
+				}
+			}
+			//track items that recur on same queried day
+			else if(item != null && item.isRecurring()) {
+				//Grab associated recurrence rule from item set as recurring
+				RecurringTodoRule itemRule = null;
+				try {
+					itemRule = memory.getRule(item.getRecurringId());
+				} catch (NullRuleException | NotRecurringException e) {
+					continue;
+				}
+			
+				//grab recurrence rule for the item
+				Period recurPeriod = itemRule.getRecurringInterval();
+			
+				//automatically add items recurring daily
+				if(recurPeriod.getDays() == 1){
+					item = alignRecurringTask(item, searchDate);
+					queriedTodos.add(item);
+				}
+				//ensure weekly recurring items share same day
+				else if(recurPeriod.getWeeks() == 1 
+						&& item.endTime.dayOfWeek().equals(searchDate.dayOfWeek())) {
+					item = alignRecurringTask(item, searchDate);
+					queriedTodos.add(item);
+				}
+				//ensure monthly recurring items share same month
+				else if(recurPeriod.getMonths() == 1 &&
+						item.endTime.dayOfMonth().equals(searchDate.dayOfMonth())) {
+					item = alignRecurringTask(item, searchDate);
+					queriedTodos.add(item);
+				}
+				//ensure yearly recurring items share same date
+				else if(recurPeriod.getYears() == 1
+						&& item.endTime.dayOfYear().equals(searchDate.dayOfYear())) {
+					item = alignRecurringTask(item, searchDate);
+					queriedTodos.add(item);
+				}	
+			}
+		}
+		return queriedTodos;	
+	}
+	
+	/**
+	 * Aligns recurring tasks that originate in the past to the correct time frame of a query
+	 * 
+	 * @param item
+	 * @param searchDate
+	 * @return modified item with same day as query
+	 */
+	private static Todo alignRecurringTask(Todo item, DateTime searchDate) {
+		//change original task to occur on selected date by calculating delta of original and selected
+		if (item.getType() == Todo.TYPE.DEADLINE) {
+			DateTime originalEnd = item.getEndTime();
+			originalEnd = originalEnd.plusDays(searchDate.getDayOfYear() - originalEnd.getDayOfYear());
+			item.setEndTime(originalEnd);
+		} else if (item.getType() == Todo.TYPE.EVENT) {
+			DateTime originalStart = item.getStartTime();
+			DateTime originalEnd = item.getEndTime();
+			originalStart = originalStart.plusDays(searchDate.getDayOfYear() - originalEnd.getDayOfYear());
+			originalEnd = originalEnd.plusDays(searchDate.getDayOfYear() - originalEnd.getDayOfYear());
+			item.setStartTime(originalStart);
+			item.setEndTime(originalEnd);
+		}
+		return item;
 	}
 
 }
@@ -611,6 +733,69 @@
 ```
 ###### \parser\InputStringKeyword.java
 ``` java
+public class InputStringKeyword {
+	
+	private static final String KEY_ADD = "add";
+	private static final String KEY_MARK = "mark";
+	private static final String KEY_DELETE = "delete";
+	private static final String KEY_SEARCH = "search";
+	private static final String KEY_EDIT = "edit";
+	private static final String KEY_DISPLAY = "display";
+	private static final String KEY_UNDO = "undo";
+	private static final String KEY_REDO = "redo";
+	private static final String KEY_BY = "by";
+	private static final String KEY_FROM = "from";
+	private static final String KEY_ON = "on";
+	private static final String KEY_AT = "at";
+	private static final String KEY_IN = "in";
+	private static final String KEY_EVERY = "every";
+	private static final String KEY_UNTIL = "until";
+	private static final String KEY_EXIT = "exit";
+	private static final String KEY_RULE_ABV = "-r";
+	private static final String KEY_NAME_ABV = "-n";
+	private static final String KEY_DATE_ABV = "-dt";
+	private static final String KEY_TIME_ABV = "-t";
+	private static final String KEY_DAY_ABV = "-d";
+	private static final String KEY_MONTH_ABV = "-m";
+	private static final String KEY_YEAR_ABV = "-y";
+
+    private static Map<String, Keywords> keywords;
+    private static Map<String, Keywords> commands;
+    private static Map<String, Keywords> flags;
+
+    static {
+    	commands = new HashMap<String, Keywords>();
+    	commands.put(KEY_ADD, Keywords.ADD);
+        commands.put(KEY_MARK, Keywords.MARK);
+        commands.put(KEY_DELETE, Keywords.DELETE);
+        commands.put(KEY_SEARCH, Keywords.SEARCH);
+        commands.put(KEY_EDIT, Keywords.EDIT);
+        commands.put(KEY_DISPLAY, Keywords.DISPLAY);
+        commands.put(KEY_UNDO, Keywords.UNDO);
+        commands.put(KEY_REDO, Keywords.REDO);
+        commands.put(KEY_EXIT, Keywords.EXIT);
+        
+        flags = new HashMap<String, Keywords>();
+        flags.put(KEY_NAME_ABV, Keywords.NAME);
+        flags.put(KEY_DATE_ABV, Keywords.DATE);
+        flags.put(KEY_TIME_ABV, Keywords.TIME);
+        flags.put(KEY_DAY_ABV, Keywords.DAY);
+        flags.put(KEY_MONTH_ABV, Keywords.MONTH);
+        flags.put(KEY_YEAR_ABV,  Keywords.YEAR);
+        flags.put(KEY_RULE_ABV,  Keywords.RULE);
+        
+        keywords = new HashMap<String, Keywords>(commands);
+        keywords.putAll(flags);
+        keywords.put(KEY_BY, Keywords.BY);
+        keywords.put(KEY_FROM, Keywords.FROM);
+        keywords.put(KEY_ON, Keywords.ON);
+        keywords.put(KEY_AT, Keywords.AT);
+        keywords.put(KEY_IN, Keywords.IN);
+        keywords.put(KEY_EVERY, Keywords.EVERY);
+        keywords.put(KEY_UNTIL, Keywords.UNTIL);
+        
+    }
+    
     /**
      * Checks if the String encodes a keyword
      * 
@@ -698,6 +883,17 @@
 ```
 ###### \parser\ParsedInput.java
 ``` java
+public class ParsedInput {
+
+	private Keywords type;
+	private ArrayList<KeyParamPair> keyParamPairs;
+	private List<DateTime> dateTimes;
+	private boolean isRecurring;
+	private Period period;
+	private boolean hasPeriod;
+	private boolean hasLimit;
+	private DateTime limit;
+	
 	/**
 	 * Creates a ParsedInput object with the type of command, a list of
 	 * KeyParamPair objects and a list of DateTime objects derived from the user
@@ -1290,6 +1486,34 @@
 ```
 ###### \storage\StorageUtils.java
 ``` java
+/**
+ * Processes the custom file directory path specified by user.
+ * 
+ * Since the storage file at the default location can also be corrupt or invalid,
+ * it is also checked in the StorageHandler class.
+ */
+public class StorageUtils {
+
+		private static final String SETTINGS_FILE_NAME = "settings.txt";
+		private static final String STORAGE_FILE_NAME = "storageFile.json";
+		
+		private static final String MESSAGE_INCORRECT_COMMAND = "Incorrect command is given.";
+		private static final String MESSAGE_INVALID_DIRECTORY = "User-specified directory for storage is invalid. Storage file location is reverted to the default : %1$s";
+		private static final String MESSAGE_COPIED_TO_LOCATION = "Storage file copied to specified location: %1$s";
+		private static final String MESSAGE_DIRECTORY_DEFAULT = "Storage file location is reverted to the default: %1$s";
+		private static final String MESSAGE_DIRECTORY_UPDATED = "Directory of the storage file is updated to: %1$s";
+		private static final String MESSAGE_CORRUPT_FILE = "An unreadable storage file exists at the user-specified location. \n"
+				+ "Do you wish to : \n"
+				+ "\t 1. Copy over an existing version from the default location (C) \n"
+				+ "\t 2. Overwrite the file with a blank file (O) \n"
+				+ "\t 3. Revert to the default location (R)\n"
+				+ "\t 4. Exit the program (E)";
+		
+		private static String defaultFileDirectory;
+		private static String fileDirectory;
+		private static String settingsFilePath;
+		private static File settingsFile;
+		
 		/**
 		 * Processes the user-specified path.
 		 * 
@@ -1571,8 +1795,22 @@
 
 }
 ```
+###### \testcases\ClashDetectorTest.java
+``` java
+public class ClashDetectorTest {
+
+}
+```
 ###### \testcases\SystemsTestZ.java
 ``` java
+// We decided to do system testing with a text file containing commands 
+// and compare output with expected output.
+// For example: java -jar 048.jar < test_commands.txt > output.txt
+public class SystemsTestZ {
+
+    Collection<Todo> todos;
+    ClockWork logic;
+
     @Before
     public void setUp() {
     	String fileDirectory = ClockWork.getStorageFileDirFromSettings();
@@ -1661,6 +1899,12 @@
 ```
 ###### \testcases\TodoTest.java
 ``` java
+public class TodoTest {
+	
+	String name;
+	DateTime deadlineTime, startDate, endDate;
+	ArrayList<DateTime> deadlineDateTimes, eventDateTimes;
+	
 	@Before
 	public void setup() {
 		name = "Todo One";
@@ -1699,8 +1943,168 @@
 	}
 }
 ```
+###### \userinterface\AgendaHelper.java
+``` java
+/**
+ * Creates an agenda, similar to Google cal's, which can be affixed to arbitrary locations.
+ * Using a selected date from the calendar view, the agenda will automatically
+ * fetch all todos that are listed under that particular day.
+ */
+
+public class AgendaHelper {
+	
+	private Agenda agenda = new Agenda();
+	private LocalDate selectedDate;
+	
+	private AgendaHelper(LocalDate selectedDate) {
+		this.selectedDate = selectedDate;
+	}
+	
+	//Load all of the events into the agenda view that correlate to the week of the selected date
+	public void loadEvents() {
+		//Configure an alternate Agenda skin to confine table to selected date
+		agenda.setSkin(new AgendaDaySkin(agenda));
+	    LocalDateTime localDateTime = LocalDateTime.of(selectedDate, LocalTime.now());
+		agenda.setDisplayedLocalDateTime(localDateTime);
+		
+		// setup appointment groups
+        final Map<String, Agenda.AppointmentGroup> lAppointmentGroupMap = new TreeMap<String, Agenda.AppointmentGroup>();
+        for (Agenda.AppointmentGroup lAppointmentGroup : agenda.appointmentGroups()) {
+        	lAppointmentGroupMap.put(lAppointmentGroup.getDescription(), lAppointmentGroup);
+        }
+        
+        //Fetch events and deadlines of selected date
+        Date jodaCompatDate = Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        DateTime dateTime = new DateTime(jodaCompatDate);
+        
+       //reference memory to search according to selected date
+        Memory memory = Controller.getLogic().getMemory();
+        Collection<Todo> selectedTasksOfDate = SearchCommand.getTodosOfSameDay(null, dateTime, memory);
+        
+        //format the tasks into appointments for the agenda display
+        ArrayList<Appointment> todoSpans = formatTasksIntoAgenda(selectedTasksOfDate, lAppointmentGroupMap);
+
+        // accept new appointments
+		agenda.newAppointmentCallbackProperty().set(new Callback<Agenda.LocalDateTimeRange, Agenda.Appointment>()
+		{
+			@Override
+			public Appointment call(LocalDateTimeRange dateTimeRange)
+			{
+				return new Agenda.AppointmentImplLocal()
+				.withStartLocalDateTime( dateTimeRange.getStartLocalDateTime() )
+				.withEndLocalDateTime( dateTimeRange.getEndLocalDateTime() )
+				.withSummary("new")
+				.withDescription("new")
+				.withAppointmentGroup(lAppointmentGroupMap.get("group01"));
+			}
+		});
+		
+		//add spans constructed from live memory into agenda view
+		Appointment[] agendaSpans = convertAppointmentListToArray(todoSpans);
+		if(!todoSpans.isEmpty()){
+			agenda.appointments().addAll(agendaSpans);
+		}
+			
+		// action
+		agenda.setActionCallback( (appointment) -> {
+			System.out.println("Testing user interaction with agenda");
+			return null;
+		});
+
+	}
+	
+	/**
+	   * Formats a list of tasks into spans that the Agenda can understand as events that span over a space
+	   * @param Tasks that have been queried from memory to match the calendar's selected date
+	   * @return A list of appointments that the agenda can understand
+	*/
+	private ArrayList<Appointment> formatTasksIntoAgenda(Collection<Todo> selectedTasksOfDate, 
+			Map<String, Agenda.AppointmentGroup> lAppointmentGroupMap) {
+		
+		ArrayList<Appointment> agendaSpans = new ArrayList<Appointment>();
+		
+		for(Todo item : selectedTasksOfDate) {
+			LocalDateTime startTime = null;
+			LocalDateTime endTime = null;
+			
+			//format the start and end times based of the type of Todo item
+			switch(item.getType()){
+		
+				case DEADLINE:
+					LocalDateTime javaUtilCompatDeadline = item.getEndTime().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+					endTime = javaUtilCompatDeadline;
+					startTime = javaUtilCompatDeadline.minusHours(2);
+					break;
+					
+				case EVENT:
+					LocalDateTime javaUtilCompatEventStart = item.getStartTime().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+					LocalDateTime javaUtilCompatEventEnd = item.getEndTime().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();;
+					startTime = javaUtilCompatEventStart;
+					endTime = javaUtilCompatEventEnd;
+					break;
+					
+				default:
+					//if the item is not a deadline or event, it should not span space within the agenda
+					continue;
+					
+			}
+			
+			Appointment span = new Agenda.AppointmentImplLocal()
+					.withStartLocalDateTime(startTime)
+					.withEndLocalDateTime(endTime)
+					.withSummary(item.getName())
+					.withDescription(item.getName())
+					.withAppointmentGroup(lAppointmentGroupMap.get("group20"));
+			
+			agendaSpans.add(span);
+		}
+	
+		return agendaSpans;
+	}
+	
+   /**
+   * Converts ArrayList of appointments into an array of appointments.
+   * Conversion in this format is necessary to construct the agenda view.
+   * @param list of appointments in a collection or array list
+   * @return a statically sized array of the same appointments
+   */
+	private Appointment[] convertAppointmentListToArray(ArrayList<Appointment> apts) {
+		Appointment[] agendaSpans = new Appointment[apts.size()];
+		for(int i=0; i<apts.size(); i++) {
+			agendaSpans[i] = apts.get(i);
+		}
+		return agendaSpans;
+	}
+	
+	public Agenda getAgenda() {
+		return agenda;
+	}
+	
+   /**
+   * Creates a new agenda view showing task of selected calendar date
+   * @param date selected from UI within the calendar layout
+   * @return a new Agenda node that can be affixed to any Pane location
+   */
+	public static Agenda generateAgendaHelperView(LocalDate selectedDate) {
+		AgendaHelper agendaHelper = new AgendaHelper(selectedDate);
+		agendaHelper.loadEvents();
+		return agendaHelper.getAgenda();
+	}	
+}
+```
 ###### \userinterface\DigitalClock.java
 ``` java
+/**
+ * Creates a digital clock display as a simple label.
+ * Format of the clock display is hh:mm:ss aa, where:
+ * hh Hour in am/pm (1-12)
+ * mm Minute in hour
+ * ss Second in minute
+ * aa Am/pm marker
+ * Time is the system time for the local timezone.
+ */
+class DigitalClock extends Label {
+	
 	public DigitalClock() {
     bindToTime();
   }
@@ -1749,6 +2153,17 @@ class StringUtilities {
 ```
 ###### \userinterface\LayoutCalendar.java
 ``` java
+public class LayoutCalendar extends BorderPane {
+	
+	private Label currentTime = new DigitalClock();
+	private LocalDate selectedDate = LocalDate.now();
+	private LocalDateTime agendaScrollLocation = LocalDateTime.now();
+	private DatePicker datePicker = new DatePicker();
+	private BorderPane centralPane = new BorderPane();
+	private TextField cliTextField;
+	private Node calendarControl;
+	private Agenda agendaControl;
+	
 	public LayoutCalendar() {
 		setDisplayRegions();
 	}
@@ -1769,30 +2184,30 @@ class StringUtilities {
 
    /****************CALENDAR IMPLEMENTATION **********/
 	private void setCenterRegion() {
-		//Creating pane for calendar and current time
-		BorderPane centralPane = new BorderPane();
-		
-		// Create the non-interactive DatePicker object with today in focus.
-		DatePicker dp = new DatePicker();
-		dp.setValue(LocalDate.now());
-		// Add some action (in Java 8 lambda syntax style).
-		dp.setOnAction(event -> {
-		    LocalDate date = dp.getValue();
-		    System.out.println("Selected date: " + date);
-		});		
-		
+		//Utilize DatePicker JavaFX component to extract internal calendar component
+		datePicker.setValue(LocalDate.now());
+
 		//Isolate internal component, which was previously the component that "popped up"
-		DatePickerSkin skin = new DatePickerSkin(new DatePicker());
-		Node calendarControl = skin.getPopupContent();
+		DatePickerSkin skin = new DatePickerSkin(datePicker);
+		calendarControl = skin.getPopupContent();
 		calendarControl.setId("calendar-control");
 		calendarControl.setStyle("-fx-padding: 1;  -fx-background-insets: 0, 100;  "
 				+ "-fx-background-radius: 0, 0; -fx-background-color: rgba(0, 100, 100, 0.1);");
+		
+		//Set node in focus so that attached listeners are able to be utilized
+		Platform.runLater(new Runnable() {
+		     @Override
+		     public void run() {
+		         calendarControl.requestFocus();
+		     }
+		});
+		
+		installEventHandler(calendarControl);
 		
 		//Preparation of current time  
 		this.currentTime.setFont(Font.font("Cambria", 50));
 		this.currentTime.setTextFill(Color.WHITE);
 		this.currentTime.setTextAlignment(TextAlignment.CENTER);
-		
 		
 		//Affix isolated node along with the current time
 		centralPane.setCenter(calendarControl);
@@ -1803,26 +2218,183 @@ class StringUtilities {
 		//Exploit this component as our stand-alone calendar widget
 		this.setCenter(centralPane);
 	}
+	
 	/************* END IMPLEMENTATION ***************/
 	
 	private void setBottomRegion() {
-		TextField textField = implementTextField();
-		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent ke) {
-				if (ke.getCode().equals(KeyCode.ESCAPE)) {
-					Controller.processEnter("DISPLAY");
-				}
-				Controller.executeKeyPress(textField, ke);
-			}
-		});
-		this.setBottom(textField);
+		cliTextField = implementTextField();
+		this.setBottom(cliTextField);
 	}
 
 	private TextField implementTextField() {
 		BoxInput textField = new BoxInput();
 		textField.setEditable(false);
 		return textField;
+	}
+	
+	private void clearChildren() {
+		//refresh internal components
+		datePicker = new DatePicker();
+		centralPane = new BorderPane();
+		selectedDate = LocalDate.now();
+		agendaScrollLocation = LocalDateTime.now();
+		
+		//clear all children from top-level
+		this.getChildren().removeAll();
+		this.getChildren().clear();
+	}
+	
+	/***********************AGENDA VIEW***********************/
+	private void paintAgendaView() {
+		
+		//Utilize AgendaHelper factory method for necessary setup
+		agendaControl = AgendaHelper.generateAgendaHelperView(selectedDate);
+		
+		//Set node in focus so that attached listeners are able to be utilized
+		Platform.runLater(new Runnable() {
+		     @Override
+		     public void run() {
+		    	 agendaControl.setOnMouseClicked(null);
+		    	 agendaControl.setOnMousePressed(null);
+		         agendaControl.requestFocus();
+		     }
+		});
+		
+		//Override default mouse scroll with keypress scroll for the agenda
+		installEventAgendarHandler(agendaControl);
+		this.setCenter(agendaControl);
+	}
+	
+	/**
+	  * Helper function for converting LocalDate objects to LocalDateTime objects that are compatible with the Agenda view
+	  * @param LocalDate objects intended to be casted
+	  * @return LocalDateTime object fully-compatible with the Agenda View, specifically for scroll location
+	*/
+	private LocalDateTime convertToLocalDateTime(LocalDate date) {
+	    Date javaCompatDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+	    LocalDateTime agendaScrollCompatible = javaCompatDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+	    return agendaScrollCompatible;
+	}
+		
+	/**************DECLARING NODE EVENT HANDLERS**************/
+	
+	private void installEventHandler(final Node calendar) {
+	    // handler for enter key press / release events, other keys are
+	    // handled by the parent (keyboard) node handler
+	    final EventHandler<KeyEvent> keyEventHandler =
+	        new EventHandler<KeyEvent>() {
+	    		@Override
+	            public void handle(final KeyEvent keyEvent) throws NullPointerException {
+	            	
+	            	//select date above
+	                if (keyEvent.getCode() == KeyCode.UP) {
+	                    setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
+	                    selectedDate = selectedDate.minusDays(7);
+	                    datePicker.setValue(selectedDate);
+	                    keyEvent.consume();
+	                }
+	                
+	                //select date below
+	                if (keyEvent.getCode() == KeyCode.DOWN) {
+	                    setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
+	                    selectedDate = selectedDate.plusDays(7);
+	                    datePicker.setValue(selectedDate);
+	                    keyEvent.consume();
+	                }
+	                
+	                //select date to right
+	                if (keyEvent.getCode() == KeyCode.RIGHT) {
+	                    setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
+	                    selectedDate = selectedDate.plusDays(1);
+	                    datePicker.setValue(selectedDate);
+	                    keyEvent.consume();
+	                }
+	                
+	                //select date to left
+	                if (keyEvent.getCode() == KeyCode.LEFT) {
+	                    setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
+	                    selectedDate = selectedDate.minusDays(1);
+	                    datePicker.setValue(selectedDate);
+	                    keyEvent.consume();
+	                }
+	                
+	                //trigger agenda view with events contained in currently selected day
+	                if (keyEvent.getCode() == KeyCode.ENTER) {
+	                    setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);              
+	                    //remove handlers when clearing component
+	                    calendar.setOnKeyPressed(null);
+	                    //we need to delay removing the component until we are outside of the component's
+	                    // handler, otherwise we would run into a null pointer exception
+                		Platform.runLater(new Runnable() {
+               		     @Override
+               		     public void run() {
+               		    	centralPane.getChildren().remove(calendarControl);
+    	                    agendaScrollLocation = convertToLocalDateTime(selectedDate);
+               		    	paintAgendaView();
+               		     }
+	               		});
+	                }
+	                
+	                //Rewind to previous view upon pressing escape
+	                if (keyEvent.getCode().equals(KeyCode.ESCAPE)) {
+	                    setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
+						Controller.processEnter("DISPLAY");
+	                    keyEvent.consume();
+					}
+					Controller.executeKeyPress(cliTextField, keyEvent);
+	            }
+	        };
+	 
+	    calendar.setOnKeyPressed(keyEventHandler);
+	}
+	
+	private void installEventAgendarHandler(final Node agendaListener) {
+	    // handler for enter key press / release events, other keys are
+	    // handled by the parent (keyboard) node handler
+	    final EventHandler<KeyEvent> keyEventHandler =
+	        new EventHandler<KeyEvent>() {
+	    		@Override
+	            public void handle(final KeyEvent keyEvent){
+	    			//Scrolls the agenda view up
+	    			if(keyEvent.getCode() == KeyCode.UP) {
+		    			setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
+		    			//limit scrolling to the single day selected
+		    			if(agendaScrollLocation.getHour() > 0){
+			    			agendaScrollLocation = agendaScrollLocation.minusHours(1);
+			    			agendaControl.setDisplayedLocalDateTime(agendaScrollLocation);
+		    			}
+		    			keyEvent.consume();
+	    			} 
+	    			
+	    			//Scrolls the agenda view down
+	    			if(keyEvent.getCode() == KeyCode.DOWN) {
+		    			setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);
+		    			//limit scrolling to the single day selected
+		    			if(agendaScrollLocation.getHour() < 23) {
+		    				agendaScrollLocation = agendaScrollLocation.plusHours(1);
+		    				agendaControl.setDisplayedLocalDateTime(agendaScrollLocation);
+		    			}
+		    			keyEvent.consume();
+	    			}   
+	    			
+	                //Rewind to previous view upon pressing escape
+	                if (keyEvent.getCode().equals(KeyCode.ESCAPE)) {
+	                    setPressed(keyEvent.getEventType() == KeyEvent.KEY_PRESSED);	                    
+	                    //we need to delay removing the component until we are outside of the component's
+	                    // handler, otherwise we would run into a null pointer exception
+                		Platform.runLater(new Runnable() {
+               		     @Override
+               		     public void run() {
+     	                    clearChildren();
+    	                    setDisplayRegions();
+               		     }
+	               		});
+	                    keyEvent.consume();
+					}
+	            }
+	        };
+	 
+	    agendaListener.setOnKeyPressed(keyEventHandler);
 	}
 }
 ```

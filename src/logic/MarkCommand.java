@@ -3,7 +3,7 @@ import exceptions.NullTodoException;
 import parser.ParsedInput;
 import storage.Memory;
 
-
+//@@author Rebekah
 /**
  * This class handles all user input with "mark" as the first keyword with the
  * format of mark <index>. It retrieves a Todo object from memory at the given
@@ -12,7 +12,6 @@ import storage.Memory;
 
 public class MarkCommand extends Command {
 	
-	//@@author Rebekah
 	/**
 	 * Creates a MarkCommand object.
 	 * 

@@ -10,6 +10,7 @@ import exceptions.StateUndefinedException;
 import logic.Todo;
 import storage.Memory;
 
+//@@author Regine
 public class MemoryTest {
 
 	private static final String TASK_1 = "Read book";
@@ -18,7 +19,6 @@ public class MemoryTest {
 	Memory memory;
 	Todo todo1, todo2, todo3;
 
-	//@@author Regine
 	@Before
 	public void setUp() throws InvalidDateException {
 		memory = new Memory();

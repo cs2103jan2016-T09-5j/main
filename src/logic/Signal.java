@@ -1,5 +1,6 @@
 package logic;
 
+//@@author Prem
 /**
  * The Signal Class is used as a container for the messages displayed to the
  * user at the end of an operation.
@@ -8,8 +9,9 @@ package logic;
  * 
  *
  */
+
 public class Signal {
-	
+
 	/**
 	 * Welcome Signal
 	 */
@@ -20,42 +22,34 @@ public class Signal {
 	 */
 	public static final String ADD_SUCCESS_SIGNAL_FORMAT = "Added %1$s";
 	public static final String ADD_UNKNOWN_ERROR = "Unknown add error";
+	public static final String ADD_PASTDATE_ERROR = "The date specified has already passed";
 	public static final String ADD_END_BEFORE_START_ERROR = "Start and end time error";
 	public static final String ADD_INVALID_RECURRING_ERROR = "Recurring todo error";
-	public static final String ADD_INVALID_TODO_NAME_ERROR = "todo names error"
-			+ System.lineSeparator() + "Flags: -d, -dt, -m, -r, -t, -y";
-	public static final String ADD_INVALID_PARAMS = "Invalid parameters."
-			+ System.lineSeparator()
-			+ "\t Supported formats:"
-			+ System.lineSeparator()
-			+ "\t Floating tasks: add <name>"
-			+ System.lineSeparator()
-			+ "\t Deadlines: add <name> by/on/at <date>"
-			+ System.lineSeparator()
-			+ "\t Events: add <name> from <time> on <date> to <time> on <date>"
-			+ System.lineSeparator() + "\t\t add <name> from <date> to <date>";
+	public static final String ADD_INVALID_TODO_NAME_ERROR = "todo names error" + System.lineSeparator()
+			+ "Flags: -d, -dt, -m, -r, -t, -y";
+	public static final String ADD_INVALID_PARAMS = "Invalid parameters." + System.lineSeparator()
+			+ "\t Supported formats:" + System.lineSeparator() + "\t Floating tasks: add <name>"
+			+ System.lineSeparator() + "\t Deadlines: add <name> by/on/at <date>" + System.lineSeparator()
+			+ "\t Events: add <name> from <time> on <date> to <time> on <date>" + System.lineSeparator()
+			+ "\t\t add <name> from <date> to <date>";
 
 	/**
 	 * Delete Command Signals
 	 */
 	public static final String DELETE_SUCCESS_FORMAT = "Deleted %1$s";
-	public static final String DELETE_INVALID_PARAMS = "Invalid parameters"
-			+ System.lineSeparator()
-			+ "\t Supported format:"
-			+ System.lineSeparator() + "\t delete <indexNumber>";
+	public static final String DELETE_INVALID_PARAMS = "Invalid parameters" + System.lineSeparator()
+			+ "\t Supported format:" + System.lineSeparator() + "\t delete <indexNumber>";
 
 	/**
 	 * Display Command Signals
 	 */
 	public static final String DISPLAY_SUCCESS_SIGNAL = "";
-    public static final String DISPLAY_EMPTY_TODO_SIGNAL = "";
-    public static final String DISPLAY_EMPTY_RULE_SIGNAL = "";
+	public static final String DISPLAY_EMPTY_TODO_SIGNAL = "";
+	public static final String DISPLAY_EMPTY_RULE_SIGNAL = "";
 	public static final String DISPLAY_ID_NOT_FOUND = "ID %1$s does not exist";
-	public static final String DISPLAY_INVALID_PARAM = "Parameter %1$s is not recognized."
-			+ System.lineSeparator()
-            + "The display command only supports only following additional parameters: "
-            + "c, completed, a, all, rule, [ID]. "
-			+ System.lineSeparator()
+	public static final String DISPLAY_INVALID_PARAM = "Parameter %1$s is not recognized." + System.lineSeparator()
+			+ "The display command only supports only following additional parameters: "
+			+ "c, completed, a, all, rule, [ID]. " + System.lineSeparator()
 			+ "Pending todos will be displayed by default, when no paramters are supplied. ";
 
 	/**
@@ -68,9 +62,7 @@ public class Signal {
 	public static final String EDIT_NO_LONGER_RECURS = "Recurring no longer exists.";
 	public static final String EDIT_LIMIT_BEFORE_NOW = "Limit before current time and date error";
 	public static final String EDIT_INVALID_PARAMS = "The number or format of parameters is invalid."
-			+ System.lineSeparator()
-			+ "\t Supported format:"
-			+ System.lineSeparator()
+			+ System.lineSeparator() + "\t Supported format:" + System.lineSeparator()
 			+ "\t edit <id> [<newName>] [from <newStartTime>] [to <newEndTime>] [by; on; at <newDeadline>] [every <interval>] [until <limit>]"
 			+ System.lineSeparator()
 			+ "\t modifications of the recurrence interval requires specification of event period or deadline.";
@@ -86,28 +78,22 @@ public class Signal {
 	 */
 	public static final String MARK_SUCCESS_SIGNAL_FORMAT = "Marked %1$s successfully";
 	public static final String MARK_UNKNOWN_ERROR = "Unknown mark error.";
-	public static final String MARK_INVALID_PARAMS = "Parameters is invalid."
-			+ System.lineSeparator()
-			+ "\t Supported format:"
-			+ System.lineSeparator() + "\t mark <indexNumber>";
+	public static final String MARK_INVALID_PARAMS = "Parameters is invalid." + System.lineSeparator()
+			+ "\t Supported format:" + System.lineSeparator() + "\t mark <indexNumber>";
 
 	/**
 	 * Undo Command Signals
 	 */
 	public static final String UNDO_SUCCESS = "Undo successful.";
-	public static final String UNDO_INVALID_PARAMS = "Parameters is invalid."
-			+ System.lineSeparator()
-			+ "\t Supported format:"
-			+ System.lineSeparator() + "\t undo";
+	public static final String UNDO_INVALID_PARAMS = "Parameters is invalid." + System.lineSeparator()
+			+ "\t Supported format:" + System.lineSeparator() + "\t undo";
 
 	/**
 	 * Redo Command Signals
 	 */
 	public static final String REDO_SUCCESS = "Redo successful.";
-	public static final String REDO_INVALID_PARAMS = "Parameters is invalid"
-			+ System.lineSeparator()
-			+ "\t Supported format:"
-			+ System.lineSeparator() + "\t redo";
+	public static final String REDO_INVALID_PARAMS = "Parameters is invalid" + System.lineSeparator()
+			+ "\t Supported format:" + System.lineSeparator() + "\t redo";
 
 	/**
 	 * Search Command Signals
@@ -115,12 +101,10 @@ public class Signal {
 
 	public static final String SEARCH_SUCCESS_SIGNAL = "Search found";
 	public static final String SEARCH_EMPTY_SIGNAL = "Search No result found.";
-	public static final String SEARCH_INVALID_PARAMS = "Parameters is invalid"
-			+ System.lineSeparator()
-			+ "\t Supported format:"
-			+ System.lineSeparator()
+	public static final String SEARCH_INVALID_PARAMS = "Parameters is invalid" + System.lineSeparator()
+			+ "\t Supported format:" + System.lineSeparator()
 			+ "\t search [<keyword>] [ -n <keyword> ] [ -dt <dateKeyword> ] [ -d <dayKeyword] [-t <timeKeyword>] [-m <monthKeyword>]";
-	
+
 	/**
 	 * Time Clash Signals
 	 */
@@ -135,8 +119,7 @@ public class Signal {
 	 * Generic Signals
 	 */
 	public static final String GENERIC_EMPTY_PARAM = "Parameter is unspecified.";
-	public static final String GENERIC_INVALID_COMMAND_FORMAT = "Invalid command %1$s"
-			+ System.lineSeparator()
+	public static final String GENERIC_INVALID_COMMAND_FORMAT = "Invalid command %1$s" + System.lineSeparator()
 			+ "Supported commands: add, mark, delete, edit, undo, etc...";
 	public static final String GENERIC_FATAL_ERROR = "Fatal error.";
 
@@ -146,7 +129,6 @@ public class Signal {
 
 	private String message;
 
-	//@@author Prem
 	/**
 	 * Constructor for Signal
 	 * 

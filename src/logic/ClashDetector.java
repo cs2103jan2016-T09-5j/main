@@ -4,18 +4,18 @@ import java.util.Collection;
 import java.util.Scanner;
 import org.joda.time.DateTime;
 
+//@@author Morgan
 public class ClashDetector {
 	private Collection<Todo> onDateTodos;
 	private Todo attemptedTodo;
 	public static Scanner scn = new Scanner(System.in);
-	private static  ArrayList<String> ArrListForGUI = new ArrayList<String> ();
+	private static  ArrayList<String> arrListForGUI = new ArrayList<String> ();
 	
-	//@@author Morgan
 	public static ArrayList<String> getArrListForGUI(){
-	    	return ArrListForGUI;
+	    	return arrListForGUI;
 	}
 	public static void clearArrListForGUI(){
-		ArrListForGUI.clear();
+		arrListForGUI.clear();
 	}
 	ClashDetector(Collection<Todo> onDateTodos, Todo attemptedTodo){
 		this.onDateTodos = onDateTodos;
@@ -28,14 +28,14 @@ public class ClashDetector {
 			case DEADLINE:
 				todoClashExists = isDeadlineClash();
 				if(todoClashExists) {
-					ArrListForGUI.add("Clash WARNING : "+String.format(Signal.CLASH_DEADLINE_DOES_EXIST, 
+					arrListForGUI.add("Clash WARNING : "+String.format(Signal.CLASH_DEADLINE_DOES_EXIST, 
 							attemptedTodo.name, attemptedTodo.endTime ));
 				}
 				break;
 			case EVENT:
 				todoClashExists = isEventClash();
 				if(todoClashExists) {
-					ArrListForGUI.add("Clash WARNING : "+String.format(Signal.CLASH_EVENT_DOES_EXIST,
+					arrListForGUI.add("Clash WARNING : "+String.format(Signal.CLASH_EVENT_DOES_EXIST,
 							 attemptedTodo.name, attemptedTodo.endTime));
 				}
 				break;
@@ -54,11 +54,11 @@ public class ClashDetector {
 	private boolean isUserVoidingTodo() {
 		String userResponse = "yes";
 		if(userResponse.equals("yes") || userResponse.equals("y")) {
-			ArrListForGUI.add(String.format(Signal.CLASH_USER_OVERRIDE));
+			arrListForGUI.add(String.format(Signal.CLASH_USER_OVERRIDE));
 			return false;
 		}
 		else {
-			ArrListForGUI.add(String.format(Signal.CLASH_USER_VOID_TASK));
+			arrListForGUI.add(String.format(Signal.CLASH_USER_VOID_TASK));
 			return true;
 		}
 	}

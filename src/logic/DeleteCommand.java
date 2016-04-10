@@ -7,12 +7,13 @@ import parser.Keywords;
 import parser.ParsedInput;
 import storage.Memory;
 
+//@@author Prem
 /**
  * Houses a method which processes the delete request from the user. 
  */
+
 public class DeleteCommand extends Command {
-	
-	//@@author Prem
+		
 	/**
 	 * Creates a DeleteCommand object.
 	 * 

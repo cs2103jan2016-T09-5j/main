@@ -12,6 +12,7 @@ import logic.Todo;
 import logic.UndoRedoStack;
 import parser.IDBuffer;
 
+//@@author Regine
 /**
  * Functions as an auxiliary memory that supports the main memory by providing
  * the functionality of remembering the states of Todos and RecurringTodoRules,
@@ -28,8 +29,7 @@ public class VolatileMemory {
 	private UndoRedoStack<Todo> todoStacks;
 	private UndoRedoStack<RecurringTodoRule> ruleStacks;
 	private static final int STATE_STACK_MAX_SIZE = 5;
-
-	//@@author Regine
+	
 	public VolatileMemory(HashMap<Integer, Todo> allTodos, IDBuffer<Todo> idBuffer, HashMap<Integer, RecurringTodoRule> recurringRules, IDBuffer<RecurringTodoRule> recurringIdBuffer) {
 		this.undoIsRule = new Stack<Boolean>();
 		this.redoIsRule = new Stack<Boolean>();

@@ -1,6 +1,24 @@
 # Prem
+###### \exceptions\ExceptionMessages.java
+``` java
+public final class ExceptionMessages {
+	/**
+	 * Exception messages. Used to construct new exceptions.
+	 */
+	public static final String NULL_TODO_EXCEPTION = "Specified Todo does not exist.";
+	public static final String NULL_RULE_EXCEPTION = "Specified Recurring Todo rule does not exist.";
+	public static final String NOT_RECURRING_EXCEPTION = "Todo specified is not a recurring Todo.";
+	public static final String NO_HISTORY_STATES = "No undoable states exist";
+	public static final String NO_FUTURE_STATES = "No redoable states exist";
+	public static final String DATE_UNDEFINED_EXCEPTION = "Date String is empty or does not contain dates.";
+	public static final String INVALID_SEARCH_TYPE = "Specified search type does not exist.";
+}
+```
 ###### \exceptions\InvalidDateException.java
 ``` java
+public class InvalidDateException extends Exception {
+	private static final long serialVersionUID = 1L;
+	
 	public InvalidDateException() {
 
 	}
@@ -12,6 +30,9 @@
 ```
 ###### \exceptions\InvalidParamException.java
 ``` java
+public class InvalidParamException extends Exception {
+	private static final long serialVersionUID = 1L;
+	
 	public InvalidParamException() {
 	}
 	
@@ -22,6 +43,9 @@
 ```
 ###### \exceptions\InvalidPeriodException.java
 ``` java
+public class InvalidPeriodException extends Exception {
+	private static final long serialVersionUID = 1L;	
+	
 	public InvalidPeriodException() {
 	}
 
@@ -32,6 +56,9 @@
 ```
 ###### \exceptions\InvalidRecurringException.java
 ``` java
+public class InvalidRecurringException extends Exception {
+	private static final long serialVersionUID = 1L;
+
 	public InvalidRecurringException() {
 
 	}
@@ -43,6 +70,9 @@
 ```
 ###### \exceptions\InvalidTodoNameException.java
 ``` java
+public class InvalidTodoNameException extends Exception {
+	private static final long serialVersionUID = 1L;
+	
 	public InvalidTodoNameException() {
 
 	}
@@ -54,6 +84,9 @@
 ```
 ###### \exceptions\NotRecurringException.java
 ``` java
+public class NotRecurringException extends Exception {
+	private static final long serialVersionUID = 1L;
+	
 	public NotRecurringException() {
 		
 	}
@@ -65,6 +98,9 @@
 ```
 ###### \exceptions\NullRuleException.java
 ``` java
+public class NullRuleException extends Exception {
+	private static final long serialVersionUID = 1L;
+	
 	public NullRuleException(String message) {
 		super(message);
 	}
@@ -73,6 +109,9 @@
 ```
 ###### \exceptions\NullTodoException.java
 ``` java
+public class NullTodoException extends Exception {
+	private static final long serialVersionUID = 1L;
+	
 	public NullTodoException () {
 		super();
 	}
@@ -85,6 +124,10 @@
 ```
 ###### \exceptions\ParsingFailureException.java
 ``` java
+public class ParsingFailureException extends Exception {
+
+	private static final long serialVersionUID = 1L;
+	
 	public ParsingFailureException() {
 	}
 
@@ -96,6 +139,10 @@
 ```
 ###### \exceptions\StateUndefinedException.java
 ``` java
+public class StateUndefinedException extends Exception {
+
+	private static final long serialVersionUID = 1L;
+	
 	public StateUndefinedException() {
 	}
 
@@ -106,6 +153,14 @@
 ```
 ###### \logic\ClockWork.java
 ``` java
+public class ClockWork {
+	private static ClockWork logic;
+	private static String fileDirectory;
+	
+	public static Scanner scn = new Scanner(System.in);
+	public static StorageHandler storage;
+	public static Memory memory;
+		
 	public ClockWork() {
 		storage = new StorageHandler.Builder().setDirectoryPath(fileDirectory)
 				.setFilePath().build();
@@ -277,6 +332,10 @@
 		memory.setStorageHandler(storage);
 	}
 	
+	public Memory getMemory() {
+		return memory;
+	}
+	
 	public static String getStorageFileDirFromSettings(){
 		return StorageUtils.readSettingsFile();
 	}
@@ -284,6 +343,13 @@
 ```
 ###### \logic\Command.java
 ``` java
+public abstract class Command {
+	
+	ParsedInput input;
+	Memory memory;
+	ArrayList<KeyParamPair> keyParamPairs;
+	List<DateTime> dateTimes;
+		
 	/**
 	 * Constructs a new Command object with the given parameters and reference
 	 * to the memory that stores the Todos.
@@ -305,6 +371,12 @@
 ```
 ###### \logic\DeleteCommand.java
 ``` java
+/**
+ * Houses a method which processes the delete request from the user. 
+ */
+
+public class DeleteCommand extends Command {
+		
 	/**
 	 * Creates a DeleteCommand object.
 	 * 
@@ -377,6 +449,13 @@
 ```
 ###### \logic\RedoCommand.java
 ``` java
+/**
+ * Houses a method which processes the redo request from the user. 
+ *
+ */
+
+public class RedoCommand extends Command {	
+	
 	/**
 	 * Creates a RedoCommand object.
 	 * 
@@ -413,6 +492,134 @@
 ```
 ###### \logic\Signal.java
 ``` java
+/**
+ * The Signal Class is used as a container for the messages displayed to the
+ * user at the end of an operation.
+ * 
+ * It also contains the formats for different signals.
+ * 
+ *
+ */
+
+public class Signal {
+
+	/**
+	 * Welcome Signal
+	 */
+	public static final String WELCOME_SIGNAL = "Welcome to ClockWork!";
+
+	/**
+	 * Add Command Signals
+	 */
+	public static final String ADD_SUCCESS_SIGNAL_FORMAT = "Added %1$s";
+	public static final String ADD_UNKNOWN_ERROR = "Unknown add error";
+	public static final String ADD_PASTDATE_ERROR = "The date specified has already passed";
+	public static final String ADD_END_BEFORE_START_ERROR = "Start and end time error";
+	public static final String ADD_INVALID_RECURRING_ERROR = "Recurring todo error";
+	public static final String ADD_INVALID_TODO_NAME_ERROR = "todo names error" + System.lineSeparator()
+			+ "Flags: -d, -dt, -m, -r, -t, -y";
+	public static final String ADD_INVALID_PARAMS = "Invalid parameters." + System.lineSeparator()
+			+ "\t Supported formats:" + System.lineSeparator() + "\t Floating tasks: add <name>"
+			+ System.lineSeparator() + "\t Deadlines: add <name> by/on/at <date>" + System.lineSeparator()
+			+ "\t Events: add <name> from <time> on <date> to <time> on <date>" + System.lineSeparator()
+			+ "\t\t add <name> from <date> to <date>";
+
+	/**
+	 * Delete Command Signals
+	 */
+	public static final String DELETE_SUCCESS_FORMAT = "Deleted %1$s";
+	public static final String DELETE_INVALID_PARAMS = "Invalid parameters" + System.lineSeparator()
+			+ "\t Supported format:" + System.lineSeparator() + "\t delete <indexNumber>";
+
+	/**
+	 * Display Command Signals
+	 */
+	public static final String DISPLAY_SUCCESS_SIGNAL = "";
+	public static final String DISPLAY_EMPTY_TODO_SIGNAL = "";
+	public static final String DISPLAY_EMPTY_RULE_SIGNAL = "";
+	public static final String DISPLAY_ID_NOT_FOUND = "ID %1$s does not exist";
+	public static final String DISPLAY_INVALID_PARAM = "Parameter %1$s is not recognized." + System.lineSeparator()
+			+ "The display command only supports only following additional parameters: "
+			+ "c, completed, a, all, rule, [ID]. " + System.lineSeparator()
+			+ "Pending todos will be displayed by default, when no paramters are supplied. ";
+
+	/**
+	 * Edit Command Signals
+	 */
+	public static final String EDIT_SUCCESS_FORMAT = "Edited %1$s to %2$s";
+	public static final String EDIT_RULE_SUCCESS_FORMAT = "Edited %1$s to %2$s";
+	public static final String EDIT_END_BEFORE_START = "Start and end time error";
+	public static final String EDIT_INVALID_DATE = "Date(s) specified is/are invalid";
+	public static final String EDIT_NO_LONGER_RECURS = "Recurring no longer exists.";
+	public static final String EDIT_LIMIT_BEFORE_NOW = "Limit before current time and date error";
+	public static final String EDIT_INVALID_PARAMS = "The number or format of parameters is invalid."
+			+ System.lineSeparator() + "\t Supported format:" + System.lineSeparator()
+			+ "\t edit <id> [<newName>] [from <newStartTime>] [to <newEndTime>] [by; on; at <newDeadline>] [every <interval>] [until <limit>]"
+			+ System.lineSeparator()
+			+ "\t modifications of the recurrence interval requires specification of event period or deadline.";
+
+	/**
+	 * Exit Command Signals
+	 */
+	public static final String EXIT_SUCCESS = "Exit successfully.";
+	public static final String EXIT_INVALLID_PARAMS = "Exit command should not be accompanied by additional paramters.";
+
+	/**
+	 * Mark Command Signals
+	 */
+	public static final String MARK_SUCCESS_SIGNAL_FORMAT = "Marked %1$s successfully";
+	public static final String MARK_UNKNOWN_ERROR = "Unknown mark error.";
+	public static final String MARK_INVALID_PARAMS = "Parameters is invalid." + System.lineSeparator()
+			+ "\t Supported format:" + System.lineSeparator() + "\t mark <indexNumber>";
+
+	/**
+	 * Undo Command Signals
+	 */
+	public static final String UNDO_SUCCESS = "Undo successful.";
+	public static final String UNDO_INVALID_PARAMS = "Parameters is invalid." + System.lineSeparator()
+			+ "\t Supported format:" + System.lineSeparator() + "\t undo";
+
+	/**
+	 * Redo Command Signals
+	 */
+	public static final String REDO_SUCCESS = "Redo successful.";
+	public static final String REDO_INVALID_PARAMS = "Parameters is invalid" + System.lineSeparator()
+			+ "\t Supported format:" + System.lineSeparator() + "\t redo";
+
+	/**
+	 * Search Command Signals
+	 */
+
+	public static final String SEARCH_SUCCESS_SIGNAL = "Search found";
+	public static final String SEARCH_EMPTY_SIGNAL = "Search No result found.";
+	public static final String SEARCH_INVALID_PARAMS = "Parameters is invalid" + System.lineSeparator()
+			+ "\t Supported format:" + System.lineSeparator()
+			+ "\t search [<keyword>] [ -n <keyword> ] [ -dt <dateKeyword> ] [ -d <dayKeyword] [-t <timeKeyword>] [-m <monthKeyword>]";
+
+	/**
+	 * Time Clash Signals
+	 */
+	public static final String CLASH_DOES_NOT_EXIST = "";
+	public static final String CLASH_DEADLINE_DOES_EXIST = "Clash tasks detected \"%1$s\" \"%2$s\" ";
+	public static final String CLASH_EVENT_DOES_EXIST = "Clash tasks detected \"%1$s\" \"%2$s\" ";
+	public static final String CLASH_CONTINUE_PROPOSITION = "";
+	public static final String CLASH_USER_OVERRIDE = "";
+	public static final String CLASH_USER_VOID_TASK = "The entry has not been added, remove using 'delete' conflict to continue,";
+
+	/**
+	 * Generic Signals
+	 */
+	public static final String GENERIC_EMPTY_PARAM = "Parameter is unspecified.";
+	public static final String GENERIC_INVALID_COMMAND_FORMAT = "Invalid command %1$s" + System.lineSeparator()
+			+ "Supported commands: add, mark, delete, edit, undo, etc...";
+	public static final String GENERIC_FATAL_ERROR = "Fatal error.";
+
+	public static final String ERROR_PREFIX = "Error: ";
+
+	public static final String DATE_PARSING_ERROR = "Unable to parse dates: Try rephrasing your dates ";
+
+	private String message;
+
 	/**
 	 * Constructor for Signal
 	 * 
@@ -480,6 +687,41 @@
 ```
 ###### \logic\Todo.java
 ``` java
+/**
+ * Stores parameters of a Todo using org.joda.time.DateTime objects. A Todo can
+ * be subdivided into 3 different subtypes namely Task, Deadline, or Event,
+ * which is uniquely determined at construction by the availability of
+ * parameters. Todos are uniquely specified identifier known as ID until their
+ * deletion, upon which the ID may be recycled.
+ *
+ */
+
+public class Todo implements UndoableRedoable<Todo> {
+
+	public enum TYPE {
+		TASK, DEADLINE, EVENT;
+	}
+
+	protected int id;
+	protected String name;
+	protected DateTime createdOn;
+	protected DateTime modifiedOn, startTime, endTime;
+	protected boolean isDone;
+	protected TYPE type;
+	protected Integer recurringId;
+
+	protected static final DateTimeFormatter DateFormatter = DateTimeFormat
+			.forPattern("EEE dd MMM yyyy");
+	protected static final DateTimeFormatter TimeFormatter = DateTimeFormat
+			.forPattern("HH:mm");
+	protected static final String DateTimeStringFormat = "%1$s at %2$s";
+
+	protected static final String EventStringFormat = "Event \"%1$s\" from %2$s to %3$s";
+
+	protected static final String DeadlineStringFormat = "Deadline \"%1$s\" by %2$s";
+
+	protected static final String FloatingTaskStringFormat = "Floating task \"%1$s\"";
+
 	/**
 	 * Constructs a Todo of type: TASK.
 	 * 
@@ -731,8 +973,28 @@
 	}
 	
 ```
+###### \logic\UndoableRedoable.java
+``` java
+/**
+ * Allows the object to be used in UndoRedoStacks.
+ *
+ * @param <T> the object type that can be saved into Undo and Redo stacks
+ */
+public interface UndoableRedoable<T extends UndoableRedoable<T>> {
+	
+	public int getId();
+	public T getPlaceholder();
+	public boolean isPlaceholder();
+	public T copy();
+}
+```
 ###### \logic\UndoCommand.java
 ``` java
+/**
+ * Restores the last stored state in memory.
+ */
+public class UndoCommand extends Command{
+	
 	/**
 	 * Creates an UndoCommand object.
 	 * 
@@ -770,6 +1032,18 @@
 ```
 ###### \logic\UndoRedoStack.java
 ``` java
+/**
+ * Provides the functionality of remembering past states of objects that implement the UndoableRedoable interface. 
+ *
+ * @param <T>
+ */
+public class UndoRedoStack<T extends UndoableRedoable<T>> {
+	private LinkedList<T> undoStack;
+	private LinkedList<T> redoStack;
+	private HashMap<Integer, T> memory;
+	private IDBuffer<T> idBuffer;
+	private int maxStates;
+	
 	public UndoRedoStack(HashMap<Integer, T> memory, IDBuffer<T> idBuffer, int maxStates) {
 		this.undoStack = new LinkedList<T>();
 		this.redoStack = new LinkedList<T>();
@@ -929,6 +1203,21 @@
 ```
 ###### \parser\IDBuffer.java
 ``` java
+/**
+ * Serves as a buffer of fixed size for new Todos to draw their ID from.
+ * 
+ * @param <E>
+ */
+public class IDBuffer<E> {
+	// Constants
+	private static final int ID_INITIAL = 0;
+	private static final int ID_BUFFER_INITIAL_SIZE = 5;
+	private static final int ID_BUFFER_MAX_SIZE = 2 * ID_BUFFER_INITIAL_SIZE;
+
+	private TreeSet<Integer> buffer;
+	private int minFreeId;
+	private HashMap<Integer, E> memory;
+	
 	public IDBuffer(HashMap<Integer, E> memory) {
 		this.buffer = new TreeSet<Integer>();
 		this.minFreeId = ID_INITIAL;
@@ -984,6 +1273,14 @@
 ```
 ###### \parser\KeyParamPair.java
 ``` java
+/**
+ * This class stores a Keyword, its string and its parameter. 
+ */
+public class KeyParamPair {
+	private Keywords keyword;
+	private String keyString;
+	private String param;
+	
 	/**
 	 * Constructs a KeyParamPair object with fields equal to the respective parameters.
 	 * @param inputKeyword
@@ -1045,8 +1342,75 @@
 	}
 }
 ```
+###### \parser\Keywords.java
+``` java
+public enum Keywords {
+	// Commands
+	ADD,
+	MARK,
+	DELETE,
+	SEARCH,
+	EDIT,
+	DISPLAY, 
+	UNDO,
+	REDO,
+	EXIT,
+	
+	// Keywords for parameters in ADD command
+	BY,
+	FROM,
+	ON,
+	AT,
+	EVERY,
+	UNTIL,
+	IN,
+	
+	// Keywords for parameters in EDIT command, not in InputStringKeyword maps
+	TO,
+	
+	// Keywords for DELETE command for RecurringTodoRules
+	RULE,
+	
+	//Keywords for parameters in SEARCH command
+	NAME,
+	DATE,
+	TIME,
+	DAY,
+	MONTH,
+	YEAR,
+	
+	// Keyword for error
+	ERROR;
+}
+```
 ###### \parser\Parser.java
 ``` java
+public class Parser {
+	private static final String STRING_MARCH = "march ";
+	private static final String STRING_TO = "to";
+	private static final String INIT_STRING = "today";
+	private static final String STRING_DAY = "day";
+	private static final String STRING_WEEK = "week";
+	private static final String STRING_MONTH = "month";
+	private static final String STRING_YEAR = "year";
+	private static final char CHAR_SPACE = ' ';
+	private static final String REGEX_SPACE = "\\s";
+	private static final String STRING_MON = "mon";
+	private static final String STRING_TUE = "tue";
+	private static final String STRING_WED = "wed";
+	private static final String STRING_THU = "thu";
+	private static final String STRING_FRI = "fri";
+	private static final String STRING_SAT = "sat";
+	private static final String STRING_SUN = "sun";
+	private static final String STRING_MONDAY = "monday";
+	private static final String STRING_TUESDAY = "tuesday";
+	private static final String STRING_WEDNESDAY = "wednesday";
+	private static final String STRING_THURSDAY = "thursday";
+	private static final String STRING_FRIDAY = "friday";
+	private static final String STRING_SATURDAY = "saturday";
+	private static final String STRING_SUNDAY = "sunday";
+	private static final String EMPTY_STRING = "";
+
 	/**
 	 * Tries to parse the specified String into ParsedInput object for various
 	 * commands to work on. If the recurring todo which user is trying to add
@@ -1324,6 +1688,33 @@
 ```
 ###### \storage\Memory.java
 ``` java
+/**
+ * Stores all Todos and keeps state information allowing Undo and Redo
+ * operations. Maximum number of states that can be stored by Memory is
+ * {@value #STATE_STACK_MAX_SIZE}.
+ */
+
+public class Memory {
+	// Constants
+	private static final String REGEX_SPACE = "\\s";
+
+	// Primary memory
+	private HashMap<Integer, Todo> allTodos;
+	private HashMap<Integer, RecurringTodoRule> recurringRules;
+
+	// Auxiliary memory for ID maintenance
+	private final IDBuffer<Todo> idBuffer;
+	private final IDBuffer<RecurringTodoRule> recurringIdBuffer;
+
+	// Volatile memory for undo/redo
+	private VolatileMemory vMem;
+	
+	// Indexes for search
+	private SearchMap searchMap;
+
+	// Handler for writing to file
+	private StorageHandler storage;
+	
 	/**
 	 * Constructs an empty Memory object.
 	 */
@@ -1977,6 +2368,24 @@
 ```
 ###### \storage\StorageHandler.java
 ``` java
+/**
+ * Handles the storing of an instance of Memory into a file in JSON formatting,
+ * as well as the retrieving of an instance of Memory from a file in JSON
+ * formatting.
+ */
+
+public class StorageHandler {
+	private static final String MESSAGE_CORRUPT_FILE = "Storage file is unreadable or corrupt. Do you wish to : \n"
+			+ "\t1. Replace it with a blank file (R)\n"
+			+ "\t2. Exit (E)";
+	private static final String FILE_NAME = "storageFile.json";
+	
+	private static PrintWriter writer;
+	private static Scanner reader;
+	private static String filePath;
+	
+    private File storageFile;
+	
 	/**
 	 * Builder inner class for creating instances of StorageHandler with
 	 * the option of setting the filePath variable.
@@ -2360,6 +2769,12 @@
 ```
 ###### \testcases\AddCommandTest.java
 ``` java
+public class AddCommandTest {
+	Memory memory;
+	ParsedInput input;
+	Keywords addCommand = Keywords.ADD;
+	ClockWork logic;
+
 	public enum TYPE {
 		ADD, MARK, DELETE, SEARCH, EDIT, DISPLAY, UNDO, ERROR;
 	}
@@ -2940,6 +3355,8 @@
 ```
 ###### \testcases\InputStringKeywordTest.java
 ``` java
+public class InputStringKeywordTest {
+
 	@Test
 	public void testIsFlag() {
 		String s = "-y";
@@ -2991,6 +3408,12 @@
 ```
 ###### \testcases\MarkCommandTest.java
 ``` java
+public class MarkCommandTest {
+	private ClockWork logic;
+	private static final String COMMAND_1 = "add floatingTask";
+	private static final String COMMAND_2 = "add deadline by 3pm on 5 jun";
+	private static final String COMMAND_3 = "add event from 4pm to 5pm on 7 jul";
+	
 	@Before
 	public void setUp(){
 		String fileDirectory = ClockWork.getStorageFileDirFromSettings();
@@ -3052,6 +3475,8 @@
 ```
 ###### \testcases\ParserTest.java
 ``` java
+public class ParserTest {
+
 	@Test
 	public void testAddFloating() throws InvalidTodoNameException,
 			InvalidRecurringException, ParsingFailureException {
@@ -3566,6 +3991,8 @@
 ```
 ###### \testcases\RecurringTodoRuleTest.java
 ``` java
+public class RecurringTodoRuleTest {
+
 	@Test
     public void testUpdateTodoList() throws InvalidDateException {
         Period periodWeek = new Period().withWeeks(1);

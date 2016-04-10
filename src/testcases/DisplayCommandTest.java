@@ -12,14 +12,13 @@ import logic.ClockWork;
 import logic.DisplayCommand;
 import logic.Todo;
 
-
+ //@@author Regine
 public class DisplayCommandTest {
 
     Collection<Todo> todos;
 
     ClockWork logic;
     
-    //@@author Regine
     @After
     public void tearDown() {
         logic.deleteStorageFile();

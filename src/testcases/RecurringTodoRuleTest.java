@@ -14,10 +14,9 @@ import logic.RecurringTodoRule;
 import parser.Parser;
 import storage.Memory;
 
-
+//@@author Prem
 public class RecurringTodoRuleTest {
 
-	//@@author Prem
 	@Test
     public void testUpdateTodoList() throws InvalidDateException {
         Period periodWeek = new Period().withWeeks(1);

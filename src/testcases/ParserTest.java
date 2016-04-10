@@ -20,9 +20,9 @@ import parser.Keywords;
 import parser.ParsedInput;
 import parser.Parser;
 
+//@@author Prem
 public class ParserTest {
 
-	//@@author Prem
 	@Test
 	public void testAddFloating() throws InvalidTodoNameException,
 			InvalidRecurringException, ParsingFailureException {

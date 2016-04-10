@@ -19,7 +19,7 @@ import exceptions.NullTodoException;
 import parser.ParsedInput;
 import storage.Memory;
 
-
+//@@author Regine
 public class DisplayCommand extends Command {
 
     private static Logger logger = LoggerFactory
@@ -66,15 +66,15 @@ public class DisplayCommand extends Command {
 
     private static final String RELATIVE_PERIOD_PREFIX = " in ";
     private static final String FLOATING_TASK_HEADING = "Anytime";
+    
     // Relative timing format
     private static PeriodFormatter formatter = new PeriodFormatterBuilder()
             .appendHours().appendSuffix("h ")
             .printZeroNever().appendMinutes().appendSuffix("min ")
             .printZeroNever().toFormatter();
     //For GUI display
-    private static  ArrayList<String> ArrListForGUI = new ArrayList<String> ();
-	
-    //@@author Regine
+    private static  ArrayList<String> arrListForGUI = new ArrayList<String> ();
+    
     /**
      * Creates a DisplayCommand object.
      * 
@@ -86,10 +86,10 @@ public class DisplayCommand extends Command {
     	super(input, memory);
     }
     protected static ArrayList<String> getArrListForGUI(){
-    	return ArrListForGUI;
+    	return arrListForGUI;
     }
     public static void clearArrListForGUI(){
-    	ArrListForGUI.clear();
+    	arrListForGUI.clear();
     }
 
     @Override
@@ -114,12 +114,10 @@ public class DisplayCommand extends Command {
         } else if (param.equals(PARAM_COMPLETE_1) || param.equals(PARAM_COMPLETE_2)
 				|| param.equals(PARAM_COMPLETE_3)) {
             displayString = getDisplayChrono(showCompleted);
-            ArrListForGUI.add(displayString);
-           // System.out.println(displayString);
+            arrListForGUI.add(displayString);
 		} else if (param.equals(PARAM_ALL_1) || param.equals(PARAM_ALL_2)) {
             displayString = getDisplayChrono(showAll);
-            ArrListForGUI.add(displayString);
-			//System.out.println(displayString);
+            arrListForGUI.add(displayString);
         } else if (param.equals(PARAM_RULE)) {
             Collection<RecurringTodoRule> rules = memory.getAllRules();
             // Display message if there are no rules
@@ -127,7 +125,6 @@ public class DisplayCommand extends Command {
                 return new Signal(Signal.DISPLAY_EMPTY_RULE_SIGNAL, true);
             }
             displayString = getDisplayForRules(rules);
-          //  System.out.println(displayString);
         } else {
             // Try to parse the param as the id of a specific todo to show
             // the detail of the todo
@@ -136,7 +133,7 @@ public class DisplayCommand extends Command {
                 int id = Integer.parseInt(param);
                 Todo todo = memory.getTodo(id);
                 displayString = todo.toString();
-                ArrListForGUI.add(displayString);
+                arrListForGUI.add(displayString);
                 System.out.println(displayString);
             } catch (NullTodoException e) {
                 return new Signal(String.format(Signal.DISPLAY_ID_NOT_FOUND,
@@ -172,7 +169,7 @@ public class DisplayCommand extends Command {
     public static void displayDefault(Memory memory) {
         String displayString;
         displayString = getDisplayChrono(memory, showPending);
-        ArrListForGUI.add(displayString);
+        arrListForGUI.add(displayString);
         //System.out.println(displayString);
     }
 
@@ -430,7 +427,6 @@ public class DisplayCommand extends Command {
         String dateString = DateFormatter.print(time);
         return dateString;
     }
-
 
     static class StringUtils {
 

@@ -20,6 +20,7 @@ import logic.RecurringTodoRule;
 import logic.Signal;
 import logic.Todo;
 
+//@@author Rebekah
 public class EditCommandTest {
 
 	ClockWork logic;
@@ -86,7 +87,6 @@ public class EditCommandTest {
 	Todo event;
 	RecurringTodoRule rule;
 	
-	//@@author Rebekah
 	@Before
 	public void setUp() throws InvalidRecurringException, InvalidTodoNameException, ParsingFailureException {
 		String fileDirectory = ClockWork.getStorageFileDirFromSettings();

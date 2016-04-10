@@ -19,11 +19,14 @@ import logic.Todo;
 import parser.IDBuffer;
 import parser.Keywords;
 import storage.VolatileMemory;
+
+//@@author Prem
 /**
  * Stores all Todos and keeps state information allowing Undo and Redo
  * operations. Maximum number of states that can be stored by Memory is
  * {@value #STATE_STACK_MAX_SIZE}.
  */
+
 public class Memory {
 	// Constants
 	private static final String REGEX_SPACE = "\\s";
@@ -45,7 +48,6 @@ public class Memory {
 	// Handler for writing to file
 	private StorageHandler storage;
 	
-	//@@author Prem
 	/**
 	 * Constructs an empty Memory object.
 	 */

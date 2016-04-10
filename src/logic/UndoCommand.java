@@ -4,12 +4,12 @@ import exceptions.StateUndefinedException;
 import parser.ParsedInput;
 import storage.Memory;
 
+//@@author Prem
 /**
  * Restores the last stored state in memory.
  */
 public class UndoCommand extends Command{
 	
-	//@@author Prem
 	/**
 	 * Creates an UndoCommand object.
 	 * 

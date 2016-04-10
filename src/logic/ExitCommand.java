@@ -3,9 +3,9 @@ package logic;
 import parser.ParsedInput;
 import storage.Memory;
 
+//@@author Regine
 public class ExitCommand extends Command {
-
-	//@@author Regine
+	
 	/**
 	 * Creates an ExitCommand object.
 	 * 

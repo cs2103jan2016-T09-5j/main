@@ -3,6 +3,7 @@ package parser;
 import java.util.HashMap;
 import java.util.TreeSet;
 
+//@@author Prem
 /**
  * Serves as a buffer of fixed size for new Todos to draw their ID from.
  * 
@@ -18,7 +19,6 @@ public class IDBuffer<E> {
 	private int minFreeId;
 	private HashMap<Integer, E> memory;
 	
-	//@@author Prem
 	public IDBuffer(HashMap<Integer, E> memory) {
 		this.buffer = new TreeSet<Integer>();
 		this.minFreeId = ID_INITIAL;

@@ -28,8 +28,7 @@ import com.google.gson.JsonSyntaxException;
 
 import logic.ClockWork;
 
-
-
+//@@author Prem
 /**
  * Handles the storing of an instance of Memory into a file in JSON formatting,
  * as well as the retrieving of an instance of Memory from a file in JSON
@@ -48,7 +47,6 @@ public class StorageHandler {
 	
     private File storageFile;
 	
-    //@@author Prem
 	/**
 	 * Builder inner class for creating instances of StorageHandler with
 	 * the option of setting the filePath variable.

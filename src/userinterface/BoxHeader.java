@@ -10,45 +10,76 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import logic.DisplayCategory;
 
+//@@author Rebekah
+/**
+ * The BoxHeader class creates the layout to display the date, and available shortcuts
+ * the user may use by using FontAwesome icons.
+ */
 public class BoxHeader extends BorderPane {
-
+	/** Enumerator for nodes used in BoxHeader */
+	private enum NODETYPE { 
+		HELP, CALENDAR, SUMMARY, MINIMIZE, ESCAPE 
+	};
+	
+	/** Nodes containing both label and icon to display in BoxHeader */
 	private Node helpNode;
-	private Node calNode;
-	private Node minNode;
-	private Node escNode;
+	private Node calendarNode;
+	private Node minimiseNode;
+	private Node escapeNode;
 	private Node summaryNode;
 	
-	private Label taskLbl1 = new Label("     Today's date:     ");
-	private Label taskLbl2 = new Label("     "+ DisplayCategory.getTodayDate()+"     ");
-	private Label helpLbl = new Label("F1");
-	private Label calLbl = new Label("F2");
-	private Label summaryLbl = new Label("F3");
-	private Label minLbl = new Label("Del");
-	private Label escLbl = new Label("Esc");
-	private Label dummyLbl = new Label(" ");
+	/** Label for the boxes used to set the nodes */
+	private static final Label LABEL_DATE = new Label("     "+ DisplayCategory.getTodayDate()+"     ");
+	private static final Label LABEL_HELP = new Label("F1");
+	private static final Label LABEL_CALENDAR = new Label("F2");
+	private static final Label LABEL_SUMMARY = new Label("F3");
+	private static final Label LABEL_MINIMIZE = new Label("Del");
+	private static final Label LABEL_ESCAPE = new Label("Esc");
+	private static final Label LABEL_DUMMY = new Label(" ");
+
+	/** Icons for the boxes used to set the nodes */
+	private final Node ICON_HELP = GlyphsDude.createIcon(FontAwesomeIcon.QUESTION);
+	private final Node ICON_CALENDAR = GlyphsDude.createIcon(FontAwesomeIcon.CALENDAR);
+	private final Node ICON_SUMMARY = GlyphsDude.createIcon(FontAwesomeIcon.TH_LARGE);
+	private final Node ICON_MINIMIZE = GlyphsDude.createIcon(FontAwesomeIcon.MINUS);
+	private final Node ICON_ESCAPE = GlyphsDude.createIcon(FontAwesomeIcon.REPLY);
 	
-	//@@author Rebekah
+	/** Background colour for nodes */
+	private static final String STYLE_BOX_HEADER = "-fx-background-color: #272b39;";
+	
+	/** Constructor for BoxHeader */
 	public BoxHeader() {
 		implementHeaderNodes();
-		this.setLeft(createTaskBox());
+		this.setLeft(createDateBox());
 		this.setRight(createShortcutBox());
-		this.setStyle("-fx-background-color: #272b39;");
-	}
-
-	private void implementHeaderNodes() {
-		helpNode = createHelpNode();
-		calNode = createCalNode();
-		minNode = createMinNode();
-		escNode = createEscNode();
-		summaryNode = createSummaryNode();
+		this.setStyle(STYLE_BOX_HEADER);
 	}
 	
-	private Node createShortcutBox(){
-		ComponentContentBoxHeader shortcutsBox = new ComponentContentBoxHeader();
+	/** Implement all nodes to be used for shortcut box */
+	private void implementHeaderNodes() {
+		helpNode = createNode(NODETYPE.HELP);
+		calendarNode = createNode(NODETYPE.CALENDAR);
+		minimiseNode = createNode(NODETYPE.MINIMIZE);
+		escapeNode = createNode(NODETYPE.ESCAPE);
+		summaryNode = createNode(NODETYPE.SUMMARY);
+	}
+	
+	/** Create date box to contain date for left side of HeaderBox */
+	private BoxHeaderContent createDateBox(){
+		BoxHeaderContent dateBox = new BoxHeaderContent();
+		Node dateNode = Borders.wrap(LABEL_DATE).lineBorder().color(Color.WHITE).build().build();
+		dateBox.setLeft(dateNode);
 		
-		ComponentContentBoxHeader helpCalBox = createLeftShortcutBox();
-		ComponentContentBoxHeader minSumBox = createCenterShortcutBox();
-		ComponentContentBoxHeader escBox = createRightShortcutBox();
+		return dateBox;
+	}
+	
+	/** Create shortcut box to contain nodes for right side of HeaderBox */
+	private Node createShortcutBox(){
+		BoxHeaderContent shortcutsBox = new BoxHeaderContent();
+		
+		BoxHeaderContent helpCalBox = createLeftShortcutBox();
+		BoxHeaderContent minSumBox = createCenterShortcutBox();
+		BoxHeaderContent escBox = createRightShortcutBox();
 		
 		shortcutsBox.setLeft(helpCalBox);
 		shortcutsBox.setCenter(minSumBox);
@@ -57,98 +88,58 @@ public class BoxHeader extends BorderPane {
 		return shortcutsBox;
 	}
 	
-	private ComponentContentBoxHeader createLeftShortcutBox() {
-		ComponentContentBoxHeader helpCalBox = new ComponentContentBoxHeader();
+	/** Create left section of shortcut box */
+	private BoxHeaderContent createLeftShortcutBox() {
+		BoxHeaderContent helpCalBox = new BoxHeaderContent();
 		helpCalBox.setLeft(helpNode);
-		helpCalBox.setRight(calNode);
+		helpCalBox.setRight(calendarNode);
 		return helpCalBox;
 	}
-
-	private ComponentContentBoxHeader createCenterShortcutBox() {
-		ComponentContentBoxHeader minSumBox = new ComponentContentBoxHeader();
+	
+	/** Create center section of shortcut box */
+	private BoxHeaderContent createCenterShortcutBox() {
+		BoxHeaderContent minSumBox = new BoxHeaderContent();
 		minSumBox.setLeft(summaryNode);
-		minSumBox.setRight(minNode);
+		minSumBox.setRight(minimiseNode);
 		return minSumBox;
 	}
 	
-	private ComponentContentBoxHeader createRightShortcutBox() {
-		ComponentContentBoxHeader escBox = new ComponentContentBoxHeader();
-		escBox.setCenter(escNode);
+	/** Create right section of shortcut box */
+	private BoxHeaderContent createRightShortcutBox() {
+		BoxHeaderContent escBox = new BoxHeaderContent();
+		escBox.setCenter(escapeNode);
 		return escBox;
 	}
 
-	private ComponentContentBoxHeader createTaskBox(){
-		ComponentContentBoxHeader taskBox = new ComponentContentBoxHeader();
-		Node wrappedTaskLabel = Borders.wrap(taskLbl2).lineBorder().color(Color.WHITE).build().build();
-		taskBox.setLeft(wrappedTaskLabel);
+	/** Create all nodes to be used for shortcut box */
+	private Node createNode(NODETYPE type) {
+		BoxHeaderContent nodeBox = new BoxHeaderContent();
+		switch (type){
+		case HELP:
+			nodeBox.setTop(LABEL_HELP);
+			nodeBox.setBottom(ICON_HELP);
+			break;
+		case CALENDAR:
+			nodeBox.setTop(LABEL_CALENDAR);
+			nodeBox.setBottom(ICON_CALENDAR);
+			break;
+		case SUMMARY:
+			nodeBox.setTop(LABEL_SUMMARY);
+			nodeBox.setBottom(ICON_SUMMARY);
+			break;
+		case MINIMIZE:
+			nodeBox.setTop(LABEL_MINIMIZE);
+			nodeBox.setBottom(ICON_MINIMIZE);
+			break;
+		default:
+			nodeBox.setTop(LABEL_ESCAPE);
+			nodeBox.setBottom(ICON_ESCAPE);
 		
-		return taskBox;
-	}
-	
-	private Node createHelpNode() {
-		ComponentContentBoxHeader helpShortcutBox = new ComponentContentBoxHeader();
-
-		helpShortcutBox.setTop(helpLbl);
-		helpShortcutBox.setCenter(dummyLbl);
-		helpShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.QUESTION));
-
-		Node wrappedHelpLabel = Borders.wrap(helpShortcutBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedHelpLabel;
-	}
-
-	private Node createCalNode() {
-		ComponentContentBoxHeader calShortcutBox = new ComponentContentBoxHeader();
-
-		calShortcutBox.setTop(calLbl);
-		calShortcutBox.setCenter(dummyLbl);
-		calShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.CALENDAR));
-		Node wrappedCalLabel = Borders.wrap(calShortcutBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedCalLabel;
-	}
-	
-	private Node createMinNode() {
-		ComponentContentBoxHeader minShortcutBox = new ComponentContentBoxHeader();
-
-		Label dummyLbl = new Label(" ");
+		}
+		nodeBox.setCenter(LABEL_DUMMY);
 		
-		minShortcutBox.setTop(minLbl);
-		minShortcutBox.setCenter(dummyLbl);
-		minShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.MINUS));
-		
-		Node wrappedMinLabel = Borders.wrap(minShortcutBox).lineBorder()
-								.color(Color.WHITE).build().build();
+		Node node = Borders.wrap(nodeBox).lineBorder().color(Color.WHITE).build().build();
 
-		return wrappedMinLabel;
-	}
-	
-	private Node createEscNode(){
-		ComponentContentBoxHeader escShortcutBox = new ComponentContentBoxHeader();
-		
-		escShortcutBox.setTop(escLbl);
-		escShortcutBox.setCenter(dummyLbl);
-		escShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.REPLY));
-		Node wrappedEscLabel = Borders.wrap(escShortcutBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedEscLabel;
-	}
-	
-	private Node createSummaryNode(){
-		ComponentContentBoxHeader summaryShortcutBox = new ComponentContentBoxHeader();
-		
-		summaryShortcutBox.setTop(summaryLbl);
-		summaryShortcutBox.setCenter(dummyLbl);
-		summaryShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.FOLDER));
-		Node wrappedSummaryLabel = Borders.wrap(summaryShortcutBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedSummaryLabel;
-	}
-	
-	public void removeEscNode(){
-		escNode = null;
-		this.setLeft(createTaskBox());
-		this.setRight(createShortcutBox());
-		this.setStyle("-fx-background-color: #272b39;");
+		return node;
 	}
 }

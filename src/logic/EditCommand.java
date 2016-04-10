@@ -11,13 +11,13 @@ import parser.Keywords;
 import parser.ParsedInput;
 import storage.Memory;
 
+//@@author Morgan
 /**
  * Houses a method which processes the edit request from the user.
  */
 public class EditCommand extends Command {
 	
-	//@@author Morgan
-	/**
+		/**
 	 * Creates an EditCommand object.
 	 * 
 	 * @param input the ParsedInput object containing the parameters.

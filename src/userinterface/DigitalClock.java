@@ -13,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 
+//@@author Morgan
 /**
  * Creates a digital clock display as a simple label.
  * Format of the clock display is hh:mm:ss aa, where:
@@ -24,7 +25,6 @@ import javafx.util.Duration;
  */
 class DigitalClock extends Label {
 	
-	//@@author Morgan
 	public DigitalClock() {
     bindToTime();
   }

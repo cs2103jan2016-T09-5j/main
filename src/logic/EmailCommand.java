@@ -3,6 +3,7 @@ package logic;
 import parser.ParsedInput;
 import storage.Memory;
 
+//@@author Morgan
 /**
  * The EmailCommand class handles all user commands with "email" as the first
  * keyword and processes parsed input to detect when users want to be notified
@@ -10,9 +11,8 @@ import storage.Memory;
  * which adjusts the internal settings file, and they may choose to unsubscribe at anytime.
  */
 
-public class EmailCommand extends Command {
+public class EmailCommand extends Command {	
 	
-	//@@author Morgan
 	/**
 	 * Creates an EmailCommand object.
 	 * 

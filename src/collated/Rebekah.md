@@ -1,6 +1,14 @@
 # Rebekah
 ###### \logic\MarkCommand.java
 ``` java
+/**
+ * This class handles all user input with "mark" as the first keyword with the
+ * format of mark <index>. It retrieves a Todo object from memory at the given
+ * index, marks the Todo as done and replaces the existing copy in memory.
+ */
+
+public class MarkCommand extends Command {
+	
 	/**
 	 * Creates a MarkCommand object.
 	 * 
@@ -48,6 +56,44 @@
 ```
 ###### \logic\RecurringTodoRule.java
 ``` java
+/**
+ * The RecurringTodoRule class contains the rules and methods for creating and
+ * storing individual Todos
+ *
+ */
+public class RecurringTodoRule implements UndoableRedoable<RecurringTodoRule> {
+
+    private Period DEFAULT_RECURRENCE_LIMIT_PERIOD = new Period(0).withYears(1);
+
+    protected Period recurringInterval;
+    protected int recurringId;
+    private DateTime recurrenceLimit;
+
+    private String name;
+    private String originalName;
+
+    private List<DateTime> dateTimes;
+
+    private ArrayList<Todo> recurringTodos = new ArrayList<Todo>();
+
+    private String RECURRING_TODO_PREIX = "(Recurring) ";
+
+    protected static final String recurringFormat = "Recurrence Rule: \"%1$s\" every %2$s until %3$s";
+    protected static final String recurringDisplayFormat = "Recurrence Rule: "
+            + "%1$s" + System.lineSeparator() + "Every %2$s until %3$s"
+            + System.lineSeparator();
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("EEE dd MMM yyyy");
+    private static final PeriodFormatter PERIOD_FORMATTER;
+    static {
+    	PeriodFormatterBuilder pfb = new PeriodFormatterBuilder();
+    	PERIOD_FORMATTER = pfb
+    			.printZeroNever().appendYears().appendSuffix(" year(s)")
+    			.printZeroNever().appendMonths().appendSuffix(" month(s)")
+    			.printZeroNever().appendWeeks().appendSuffix(" week(s)")
+    			.printZeroNever().appendDays().appendSuffix(" day(s)")
+    			.toFormatter();
+    }
+       
     /**
      * Constructor for the RecurringTodoRule without specifying limit
      * 
@@ -284,6 +330,72 @@
 ```
 ###### \testcases\EditCommandTest.java
 ``` java
+public class EditCommandTest {
+
+	ClockWork logic;
+	String nameFloating1 = " Arrange meetup";
+	String nameFloating2 = " Meetup with friends";
+	String nameDeadline1 = " Report submission";
+	String nameDeadline2 = " Reflection submission";
+	String nameEvent1 = " Dinner with Family";
+	String nameEvent2 = " Dinner with extended family";
+	String nameRecurring1 = " Read news";
+	String nameRecurring2 = " Go to church";
+	
+	String date1 = " 18 May";
+	int date1Day = 18;
+	int date1Month = 5;
+	
+	String date2 = " 20 August";
+	int date2Day = 20;
+	int date2Month = 8;
+	
+	String time1 = " 2.30pm";
+	int time1Hour = 14;
+	int time1Min = 30;
+	
+	String time2 = " 4pm";
+	int time2Hour = 16;
+	int time2Min = 0;
+	
+	int year = new DateTime().getYear();
+	
+	String period1 = " day";
+	Period period1P = new Period().withDays(1);
+	String period2 = " week";
+	Period period2P = new Period().withWeeks(1);
+	
+	String limit = " 30 December";
+	int limitDay = 30;
+	int limitMonth = 12;
+	
+	String add = "add";
+	String edit = "edit";
+	
+	String by = " by";
+	String from = " from";
+	String to = " to";
+	String on = " on";
+	String every = " every";
+	String until = " until";
+	String rFlag = " -r";
+	
+	String idStringFloat = " 0";
+	int idFloat = 0;
+	String idStringDeadline = " 1";
+	int idDeadline = 1;
+	String idStringEvent = " 2";
+	int idEvent = 2;
+	String idStringRecurringTodo = " 3";
+	int idRecurringTodo = 3;
+	
+	int idRecurring = 0;
+	
+	Todo floating;
+	Todo deadline;
+	Todo event;
+	RecurringTodoRule rule;
+	
 	@Before
 	public void setUp() throws InvalidRecurringException, InvalidTodoNameException, ParsingFailureException {
 		String fileDirectory = ClockWork.getStorageFileDirFromSettings();
@@ -1050,6 +1162,12 @@
 ```
 ###### \userinterface\BoxFeedback.java
 ``` java
+/**
+ * The BoxFeedback class creates the layout to display feedback based
+ * on the user input to the user.
+ */
+public class BoxFeedback extends StackPane {
+	/** Constructor for BoxFeedback */
 	public BoxFeedback() {
 		this.setPadding(new Insets(10,10,10,10));
 		this.setStyle("-fx-background-color: #182733;");
@@ -1058,27 +1176,75 @@
 ```
 ###### \userinterface\BoxHeader.java
 ``` java
+/**
+ * The BoxHeader class creates the layout to display the date, and available shortcuts
+ * the user may use by using FontAwesome icons.
+ */
+public class BoxHeader extends BorderPane {
+	/** Enumerator for nodes used in BoxHeader */
+	private enum NODETYPE { 
+		HELP, CALENDAR, SUMMARY, MINIMIZE, ESCAPE 
+	};
+	
+	/** Nodes containing both label and icon to display in BoxHeader */
+	private Node helpNode;
+	private Node calendarNode;
+	private Node minimiseNode;
+	private Node escapeNode;
+	private Node summaryNode;
+	
+	/** Label for the boxes used to set the nodes */
+	private static final Label LABEL_DATE = new Label("     "+ DisplayCategory.getTodayDate()+"     ");
+	private static final Label LABEL_HELP = new Label("F1");
+	private static final Label LABEL_CALENDAR = new Label("F2");
+	private static final Label LABEL_SUMMARY = new Label("F3");
+	private static final Label LABEL_MINIMIZE = new Label("Del");
+	private static final Label LABEL_ESCAPE = new Label("Esc");
+	private static final Label LABEL_DUMMY = new Label(" ");
+
+	/** Icons for the boxes used to set the nodes */
+	private final Node ICON_HELP = GlyphsDude.createIcon(FontAwesomeIcon.QUESTION);
+	private final Node ICON_CALENDAR = GlyphsDude.createIcon(FontAwesomeIcon.CALENDAR);
+	private final Node ICON_SUMMARY = GlyphsDude.createIcon(FontAwesomeIcon.TH_LARGE);
+	private final Node ICON_MINIMIZE = GlyphsDude.createIcon(FontAwesomeIcon.MINUS);
+	private final Node ICON_ESCAPE = GlyphsDude.createIcon(FontAwesomeIcon.REPLY);
+	
+	/** Background colour for nodes */
+	private static final String STYLE_BOX_HEADER = "-fx-background-color: #272b39;";
+	
+	/** Constructor for BoxHeader */
 	public BoxHeader() {
 		implementHeaderNodes();
-		this.setLeft(createTaskBox());
+		this.setLeft(createDateBox());
 		this.setRight(createShortcutBox());
-		this.setStyle("-fx-background-color: #272b39;");
-	}
-
-	private void implementHeaderNodes() {
-		helpNode = createHelpNode();
-		calNode = createCalNode();
-		minNode = createMinNode();
-		escNode = createEscNode();
-		summaryNode = createSummaryNode();
+		this.setStyle(STYLE_BOX_HEADER);
 	}
 	
-	private Node createShortcutBox(){
-		ComponentContentBoxHeader shortcutsBox = new ComponentContentBoxHeader();
+	/** Implement all nodes to be used for shortcut box */
+	private void implementHeaderNodes() {
+		helpNode = createNode(NODETYPE.HELP);
+		calendarNode = createNode(NODETYPE.CALENDAR);
+		minimiseNode = createNode(NODETYPE.MINIMIZE);
+		escapeNode = createNode(NODETYPE.ESCAPE);
+		summaryNode = createNode(NODETYPE.SUMMARY);
+	}
+	
+	/** Create date box to contain date for left side of HeaderBox */
+	private BoxHeaderContent createDateBox(){
+		BoxHeaderContent dateBox = new BoxHeaderContent();
+		Node dateNode = Borders.wrap(LABEL_DATE).lineBorder().color(Color.WHITE).build().build();
+		dateBox.setLeft(dateNode);
 		
-		ComponentContentBoxHeader helpCalBox = createLeftShortcutBox();
-		ComponentContentBoxHeader minSumBox = createCenterShortcutBox();
-		ComponentContentBoxHeader escBox = createRightShortcutBox();
+		return dateBox;
+	}
+	
+	/** Create shortcut box to contain nodes for right side of HeaderBox */
+	private Node createShortcutBox(){
+		BoxHeaderContent shortcutsBox = new BoxHeaderContent();
+		
+		BoxHeaderContent helpCalBox = createLeftShortcutBox();
+		BoxHeaderContent minSumBox = createCenterShortcutBox();
+		BoxHeaderContent escBox = createRightShortcutBox();
 		
 		shortcutsBox.setLeft(helpCalBox);
 		shortcutsBox.setCenter(minSumBox);
@@ -1087,104 +1253,82 @@
 		return shortcutsBox;
 	}
 	
-	private ComponentContentBoxHeader createLeftShortcutBox() {
-		ComponentContentBoxHeader helpCalBox = new ComponentContentBoxHeader();
+	/** Create left section of shortcut box */
+	private BoxHeaderContent createLeftShortcutBox() {
+		BoxHeaderContent helpCalBox = new BoxHeaderContent();
 		helpCalBox.setLeft(helpNode);
-		helpCalBox.setRight(calNode);
+		helpCalBox.setRight(calendarNode);
 		return helpCalBox;
 	}
-
-	private ComponentContentBoxHeader createCenterShortcutBox() {
-		ComponentContentBoxHeader minSumBox = new ComponentContentBoxHeader();
+	
+	/** Create center section of shortcut box */
+	private BoxHeaderContent createCenterShortcutBox() {
+		BoxHeaderContent minSumBox = new BoxHeaderContent();
 		minSumBox.setLeft(summaryNode);
-		minSumBox.setRight(minNode);
+		minSumBox.setRight(minimiseNode);
 		return minSumBox;
 	}
 	
-	private ComponentContentBoxHeader createRightShortcutBox() {
-		ComponentContentBoxHeader escBox = new ComponentContentBoxHeader();
-		escBox.setCenter(escNode);
+	/** Create right section of shortcut box */
+	private BoxHeaderContent createRightShortcutBox() {
+		BoxHeaderContent escBox = new BoxHeaderContent();
+		escBox.setCenter(escapeNode);
 		return escBox;
 	}
 
-	private ComponentContentBoxHeader createTaskBox(){
-		ComponentContentBoxHeader taskBox = new ComponentContentBoxHeader();
-		Node wrappedTaskLabel = Borders.wrap(taskLbl2).lineBorder().color(Color.WHITE).build().build();
-		taskBox.setLeft(wrappedTaskLabel);
+	/** Create all nodes to be used for shortcut box */
+	private Node createNode(NODETYPE type) {
+		BoxHeaderContent nodeBox = new BoxHeaderContent();
+		switch (type){
+		case HELP:
+			nodeBox.setTop(LABEL_HELP);
+			nodeBox.setBottom(ICON_HELP);
+			break;
+		case CALENDAR:
+			nodeBox.setTop(LABEL_CALENDAR);
+			nodeBox.setBottom(ICON_CALENDAR);
+			break;
+		case SUMMARY:
+			nodeBox.setTop(LABEL_SUMMARY);
+			nodeBox.setBottom(ICON_SUMMARY);
+			break;
+		case MINIMIZE:
+			nodeBox.setTop(LABEL_MINIMIZE);
+			nodeBox.setBottom(ICON_MINIMIZE);
+			break;
+		default:
+			nodeBox.setTop(LABEL_ESCAPE);
+			nodeBox.setBottom(ICON_ESCAPE);
 		
-		return taskBox;
-	}
-	
-	private Node createHelpNode() {
-		ComponentContentBoxHeader helpShortcutBox = new ComponentContentBoxHeader();
-
-		helpShortcutBox.setTop(helpLbl);
-		helpShortcutBox.setCenter(dummyLbl);
-		helpShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.QUESTION));
-
-		Node wrappedHelpLabel = Borders.wrap(helpShortcutBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedHelpLabel;
-	}
-
-	private Node createCalNode() {
-		ComponentContentBoxHeader calShortcutBox = new ComponentContentBoxHeader();
-
-		calShortcutBox.setTop(calLbl);
-		calShortcutBox.setCenter(dummyLbl);
-		calShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.CALENDAR));
-		Node wrappedCalLabel = Borders.wrap(calShortcutBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedCalLabel;
-	}
-	
-	private Node createMinNode() {
-		ComponentContentBoxHeader minShortcutBox = new ComponentContentBoxHeader();
-
-		Label dummyLbl = new Label(" ");
+		}
+		nodeBox.setCenter(LABEL_DUMMY);
 		
-		minShortcutBox.setTop(minLbl);
-		minShortcutBox.setCenter(dummyLbl);
-		minShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.MINUS));
-		
-		Node wrappedMinLabel = Borders.wrap(minShortcutBox).lineBorder()
-								.color(Color.WHITE).build().build();
+		Node node = Borders.wrap(nodeBox).lineBorder().color(Color.WHITE).build().build();
 
-		return wrappedMinLabel;
+		return node;
 	}
-	
-	private Node createEscNode(){
-		ComponentContentBoxHeader escShortcutBox = new ComponentContentBoxHeader();
-		
-		escShortcutBox.setTop(escLbl);
-		escShortcutBox.setCenter(dummyLbl);
-		escShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.REPLY));
-		Node wrappedEscLabel = Borders.wrap(escShortcutBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedEscLabel;
-	}
-	
-	private Node createSummaryNode(){
-		ComponentContentBoxHeader summaryShortcutBox = new ComponentContentBoxHeader();
-		
-		summaryShortcutBox.setTop(summaryLbl);
-		summaryShortcutBox.setCenter(dummyLbl);
-		summaryShortcutBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.FOLDER));
-		Node wrappedSummaryLabel = Borders.wrap(summaryShortcutBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedSummaryLabel;
-	}
-	
-	public void removeEscNode(){
-		escNode = null;
-		this.setLeft(createTaskBox());
-		this.setRight(createShortcutBox());
+}
+```
+###### \userinterface\BoxHeaderContent.java
+``` java
+/**
+* The BoxHeaderContent class creates the layout to place nodes from the BoxHeader class.
+*/
+public class BoxHeaderContent extends BorderPane {
+	/** Constructor for BoxHeaderContent */
+	public BoxHeaderContent() {
 		this.setStyle("-fx-background-color: #272b39;");
 	}
 }
 ```
 ###### \userinterface\BoxInput.java
 ``` java
+/**
+* The BoxInput class creates the textfield for user input and links the textfield 
+* to the Controller class to handle user input and key events.
+*/
+public class BoxInput extends TextField {
+	/** Constructor for BoxInput */
 	public BoxInput() {
 		Controller.implementKeystrokeEvents(this);
 		this.setStyle("-fx-background-color: #272b39; -fx-text-inner-color: white;");
@@ -1193,6 +1337,12 @@
 ```
 ###### \userinterface\BoxTask.java
 ``` java
+/**
+ * The BoxTask class creates the layout used to contain the nodes used to display
+ * user tasks to the user.
+ */
+public class BoxTask extends BorderPane{
+	/** Constructor for BoxTask */
 	public BoxTask() {
 		this.setStyle("-fx-background-color: #182733;");
 		this.setPadding(new Insets(10,10,10,10));
@@ -1281,16 +1431,173 @@
 	-fx-background-color: rgba(0, 100, 100, 0.1);
 }
 ```
-###### \userinterface\ComponentContentBoxHeader.java
+###### \userinterface\LayoutCategory.java
 ``` java
-	public ComponentContentBoxHeader() {
-		this.setStyle("-fx-background-color: #272b39;");
+/**
+* The LayoutCategory class creates the layout to display the category buttons to the user. The 
+* category button comprising of Today, Tomorrow, Upcoming and Someday can be clicked by pressing
+* Tab+Enter to navigate to the corresponding folders containing tasks of the four types. 
+*/
+public class LayoutCategory extends BorderPane {
+	/** Buttons for navigation for each category */
+	private Button todayButton = new Button();
+	private Button tomorrowButton = new Button();
+	private Button upcomingButton = new Button();
+	private Button somedayButton = new Button();
+	
+	/** Rectangles to display for each category */
+	private LayoutCategoryRectangle rectToday = new LayoutCategoryRectangle();
+	private LayoutCategoryRectangle rectTomorrow = new LayoutCategoryRectangle();
+	private LayoutCategoryRectangle rectUpcoming = new LayoutCategoryRectangle();
+	private LayoutCategoryRectangle rectSomeday = new LayoutCategoryRectangle();
+	
+	/** Stackpanes to contain the rectangles and buttons for each category  */
+	private StackPane spToday = new StackPane();
+	private StackPane spTomorrow = new StackPane();
+	private StackPane spUpcoming = new StackPane();
+	private StackPane spSomeday = new StackPane();
+	
+	/** Strings to display on each category  */
+	private static final String todayString = "Today";
+	private static final String tomorrowString = "Tomorrow";
+	private static final String upcomingString = "Upcoming";
+	private static final String somedayString = "Someday";
+	
+	/** Integers to denote the number to display for each category */
+	private int _numToday;
+	private int _numTomorrow;
+	private int _numUpcoming;
+	private int _numSomeday;
+	
+	/** Integers to denote the size of the buttons */
+	private final int WIDTH_BUTTON_SIZE = 150;
+	private final int HEIGHT_BUTTON_SIZE = 150;
+	
+	/** Layouts used to contain the categories */
+	private GridPane categoryButtons = new GridPane();
+	private HBox categoryRow = new HBox();
+	private GridPane categoryGrid = new GridPane();
+	
+	/** Constructor for LayoutCategory */
+	public LayoutCategory(int numToday, int numTomorrow, int numUpcoming, int numSomeday) {
+		_numToday = numToday;
+		_numTomorrow = numTomorrow;
+		_numUpcoming = numUpcoming;
+		_numSomeday = numSomeday;
+		
+		setBottomRegion();
+		setTopRegion();
+		setCenterRegion();
+	}
+
+	/** Set top region to display available shortcuts */
+	private void setTopRegion() {
+		BoxHeader headerBox = new BoxHeader();
+		this.setTop(headerBox);
+	}
+	
+	/** Set center region to display the four categories */
+	private void setCenterRegion() {		
+		implementCategoryBoxes();
+		implementCategoryButtons();
+		implementCategoryRow();
+		this.setCenter(createCategoryGrid());
+	}
+	
+	/** Set bottom region for user input */
+	private void setBottomRegion() {
+		TextField textField = implementTextField();
+		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent ke) {
+				if (ke.getCode().equals(KeyCode.ESCAPE)) {
+					Controller.processEnter("DISPLAY");
+				}
+				Controller.executeKeyPress(textField, ke);
+			}
+		});
+		this.setBottom(textField);
+	}
+	
+	/** Implement category boxes for each category */
+	private void implementCategoryBoxes(){
+		spToday.getChildren().addAll(rectToday, 
+				createCategoryButton(todayButton, todayString, 
+						createCategoryButtonString(todayString, _numToday)));
+		spTomorrow.getChildren().addAll(rectTomorrow, 
+				createCategoryButton(tomorrowButton, tomorrowString, 
+						createCategoryButtonString(tomorrowString, _numTomorrow)));
+		spUpcoming.getChildren().addAll(rectUpcoming,
+				createCategoryButton(upcomingButton, upcomingString, 
+						createCategoryButtonString(upcomingString, _numUpcoming)));
+		spSomeday.getChildren().addAll(rectSomeday, 
+				createCategoryButton(somedayButton, somedayString, 
+						createCategoryButtonString(somedayString, _numSomeday)));
+	}
+	
+	/** Implement category buttons for each category */
+	private void implementCategoryButtons(){
+		categoryButtons.add(spToday, 0, 0);
+		categoryButtons.add(spTomorrow, 1, 0);
+		categoryButtons.add(spUpcoming, 0, 1);
+		categoryButtons.add(spSomeday, 1, 1);
+	}
+	
+	/** Implement category row to centralize all category buttons */
+	private void implementCategoryRow(){
+		categoryRow.getChildren().add(categoryButtons);
+		categoryRow.setAlignment(Pos.CENTER);
+	}
+	
+	/** Implement the textfield for user to enter input */
+	private TextField implementTextField() {
+		BoxInput textField = new BoxInput();
+		textField.setEditable(false);
+
+		return textField;
+	}
+	
+	/** Create category grid for all category boxes */
+	private GridPane createCategoryGrid(){
+		categoryGrid.getChildren().add(categoryRow);
+		categoryGrid.setAlignment(Pos.CENTER);
+		categoryGrid.setStyle("-fx-background-color: #182733");
+
+		ColumnConstraints categoryColumnConstraints = new ColumnConstraints();
+		categoryColumnConstraints.setFillWidth(true);
+		categoryColumnConstraints.setHgrow(Priority.ALWAYS);
+		categoryGrid.getColumnConstraints().add(categoryColumnConstraints);
+		
+		return categoryGrid;
+	}
+	
+	/** Create category button string to add on each button */
+	private String createCategoryButtonString(String categoryType, int numItems){
+		String categoryString = categoryType + "\n" + Integer.toString(numItems) + " Item(s)";
+		return categoryString;
+	}
+	
+	/** Create category button for each category */
+	private Node createCategoryButton(Button button, String categoryType, String categoryString){
+		button.setText(categoryString);
+		button.setWrapText(true);
+		button.setPrefSize(WIDTH_BUTTON_SIZE, HEIGHT_BUTTON_SIZE);
+		button.setTextFill(Color.WHITE);
+		Controller.redirectScene(button, categoryType);
+		Node buttonNode = Borders.wrap(button).lineBorder().color(Color.AQUAMARINE).build().build();
+		return buttonNode;
 	}
 }
 ```
-###### \userinterface\ComponentRectSummary.java
+###### \userinterface\LayoutCategoryRectangle.java
 ``` java
-	public ComponentRectSummary(){
+/**
+* The LayoutSummaryRectangle class creates the rectangles used in the four boxes of
+* the LayoutSummary class.
+*/
+public class LayoutCategoryRectangle extends Rectangle {
+	/** Constructor for LayoutSummaryRectangle */
+	public LayoutCategoryRectangle(){
 		this.setWidth(150);
 		this.setHeight(150);
 		this.setFill(Color.TRANSPARENT);
@@ -1299,13 +1606,82 @@
 ```
 ###### \userinterface\LayoutHelp.java
 ``` java
+/**
+* The LayoutHelp class creates the layout to display help to the user. The available command 
+* types the user can use, as well as the input format to call the commands are shown in this 
+* class to visually aid the user in using Clockwork.
+*/
+public class LayoutHelp extends BorderPane {
+	/** Enumerator for nodes used in BoxHeader */
+	private enum NODETYPE { ADD, DELETE, EDIT, SEARCH, MARK, UNDO, REDO, EXIT, FORMAT };
+	
+	/** Strings to display in the help bar */
+	private static final String TEXT_NODE_ADD = "Add";
+	private static final String TEXT_NODE_DELETE = "Delete";
+	private static final String TEXT_NODE_EDIT = "Edit";
+	private static final String TEXT_NODE_SEARCH = "Search";
+	private static final String TEXT_NODE_MARK = "Mark";
+	private static final String TEXT_NODE_UNDO = "Undo";
+	private static final String TEXT_NODE_REDO = "Redo";
+	private static final String TEXT_NODE_EXIT = "Exit";
+	private static final String TEXT_NODE_FORMAT = "<Tab>";
+	
+	/** Icons to display in the help bar */
+	private final Node ICON_ADD = GlyphsDude.createIcon(FontAwesomeIcon.PLUS);
+	private final Node ICON_DELETE = GlyphsDude.createIcon(FontAwesomeIcon.MINUS);
+	private final Node ICON_EDIT = GlyphsDude.createIcon(FontAwesomeIcon.PENCIL);
+	private final Node ICON_SEARCH = GlyphsDude.createIcon(FontAwesomeIcon.SEARCH);
+	private final Node ICON_MARK = GlyphsDude.createIcon(FontAwesomeIcon.CHECK);
+	private final Node ICON_UNDO = GlyphsDude.createIcon(FontAwesomeIcon.UNDO);
+	private final Node ICON_REDO = GlyphsDude.createIcon(FontAwesomeIcon.REPEAT);
+	private final Node ICON_EXIT = GlyphsDude.createIcon(FontAwesomeIcon.CLOSE);
+	private final Node ICON_FORMAT = GlyphsDude.createIcon(FontAwesomeIcon.INFO);
+	
+	/** Background colour for nodes */
+	private final String STYLE_MAIN_BORDERPANE = "-fx-background-color: #182733";
+	private final String STYLE_MAIN_STACKPANE = "-fx-background-color: #182733";
+	private final String STYLE_HELPBOX = "-fx-background-color: #182733";
+	private final String STYLE_CONTENT_BAR = "-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;";
+	
+	/** Dimensions of items used in the class */
+	private static final int HEIGHT_CONTENT_BOX = 300;
+	private static final int HEIGHT_MAIN_STACKPANE = 150;
+	private static final int WIDTH_MAIN_STACKPANE = 900;
+	
+	/** Dummy label used to set a placeholder for nodes */
+	private static final Label LABEL_DUMMY = new Label(" ");
+	
+	/** Nodes containing both label and icon to display in BoxHeader */
+	private Node addNode;
+	private Node deleteNode;
+	private Node editNode;
+	private Node searchNode;
+	private Node markNode;
+	private Node undoNode;
+	private Node redoNode;
+	private Node exitNode;
+	private Node formatNode;
+	
+	/** Layouts used to contain the help nodes */
+	private StackPane formatBox = new StackPane();
+	private GridPane barBox = new GridPane();
+	private HBox helpBar = new HBox();
+	private BorderPane helpBox = new BorderPane();
+	
+	/** Text used to show available command formats */
+	private Text formatText = new Text();
+	
+	/** String used to show available command formats */
+	private static final String formatString = new String(
+			"add [task name] from [starting period] to [ending period]\n"
+			+ "delete [task IDs] \n"
+			+ "edit <ID> [<newName>] [from <newStartTime>] [ to <newEndTime>] "
+			+ "[by;on;at <newDeadline>] [every  <interval> ] [until <limit>] \n"
+			+ "search [<taskName>; <date>] \n"
+			+ "mark <ID>");
+
+	/** Constructor for LayoutHelp */
 	public LayoutHelp() {
-		setDisplayRegions();
-	}
-
-	/** POPULATING LAYOUT */
-
-	private void setDisplayRegions() {
 		setBottomRegion();
 		setTopRegion();
 		setCenterRegion();
@@ -1316,47 +1692,43 @@
 		BoxHeader headerBox = new BoxHeader();
 		this.setTop(headerBox);
 	}
-
+	
+	/** Set center region to display available help commands and input format */
 	private void setCenterRegion() {
-		wrappedAdd = createAddNode();
-		wrappedDelete = createDeleteNode();
-		wrappedEdit = createEditNode();
-		wrappedUndo = createUndoNode();
-		wrappedRedo = createRedoNode();
-		wrappedSearch = createSearchNode();
-		wrappedMark = createMarkNode();
-
-		implementHelpContentBar();
-		implementHelpContentBox();
-
-		this.setCenter(helpContentBox);
+		implementHelpNodes();
+		implementHelpBar();
+		createFormatText();
+		this.setCenter(createHelpBox());
 	}
 
+	/** Set bottom region for user input */
 	private void setBottomRegion() {
-		TextField textField = implementTextField();
-		this.setBottom(textField);
+		this.setBottom(implementTextField());
 	}
-
-	/** IMPLEMENTING REGION OBJECTS */
-
-	private void implementHelpContentBox() {	
-		helpContentBox.getChildren().add(helpContentBar);
-		helpContentBox.setAlignment(Pos.CENTER);
-		helpContentBox.setStyle("-fx-background-color: #182733");
-		
-		ColumnConstraints columnConstraints = new ColumnConstraints();
-		columnConstraints.setFillWidth(true);
-		columnConstraints.setHgrow(Priority.ALWAYS);
-		helpContentBox.getColumnConstraints().add(columnConstraints);
+	
+	/** Implement all nodes to be used for help bar */
+	private void implementHelpNodes() {
+		addNode = createNode(NODETYPE.ADD);
+		deleteNode = createNode(NODETYPE.DELETE);
+		editNode = createNode(NODETYPE.EDIT);
+		searchNode = createNode(NODETYPE.SEARCH);
+		markNode = createNode(NODETYPE.MARK);
+		undoNode = createNode(NODETYPE.UNDO);
+		redoNode = createNode(NODETYPE.REDO);
+		formatNode = createNode(NODETYPE.FORMAT);
+		exitNode = createNode(NODETYPE.EXIT);
 	}
-
-	private void implementHelpContentBar() {
-		helpContentBar.getChildren().addAll(wrappedAdd, wrappedDelete, wrappedEdit, wrappedUndo, wrappedRedo,
-				wrappedSearch, wrappedMark);
-		helpContentBar.setAlignment(Pos.CENTER);
-		helpContentBar.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;");
+	
+	/** Implement the help bar that holds the help nodes */
+	private void implementHelpBar() {
+		helpBar.getChildren().addAll(
+				addNode, deleteNode, editNode, searchNode, markNode, 
+				undoNode, redoNode, exitNode, formatNode);
+		helpBar.setAlignment(Pos.CENTER);
+		helpBar.setStyle(STYLE_CONTENT_BAR);
 	}
-
+	
+	/** Implement the textfield for user to enter input */
 	private TextField implementTextField() {
 		BoxInput textField = new BoxInput();
 		textField.setEditable(false);
@@ -1371,224 +1743,183 @@
 		});
 		return textField;
 	}
-
-	/** CREATING LAYOUT OBJECTS */
 	
-	private Node createMarkNode() {
-		BorderPane markBox = new BorderPane();
-
-		Label markLbl = new Label("Mark");
-
-		markBox.setTop(markLbl);
-		markBox.setCenter(dummyLbl);
-		markBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.CHECK));
-
-		Node wrappedMark = Borders.wrap(markBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedMark;
+	/** Creates the help box containing the help bar and the input format help box */
+	private BorderPane createHelpBox(){
+		helpBox.setStyle(STYLE_MAIN_BORDERPANE);
+		helpBox.setTop(createBarBox());
+		helpBox.setBottom(createFormatBox());
+		return helpBox;
 	}
-
-	private Node createSearchNode() {
-		BorderPane searchBox = new BorderPane();
-
-		Label searchLbl = new Label("Search");
-
-		searchBox.setTop(searchLbl);
-		searchBox.setCenter(dummyLbl);
-		searchBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.SEARCH));
-
-		Node wrappedSearch = Borders.wrap(searchBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedSearch;
-	}
-
-	private Node createRedoNode() {
-		BorderPane redoBox = new BorderPane();
-
-		Label redoLbl = new Label("Redo");
-
-		redoBox.setTop(redoLbl);
-		redoBox.setCenter(dummyLbl);
-		redoBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.REPEAT));
-
-		Node wrappedRedo = Borders.wrap(redoBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedRedo;
-	}
-
-	private Node createUndoNode() {
-		BorderPane undoBox = new BorderPane();
-
-		Label undoLbl = new Label("Undo");
-
-		undoBox.setTop(undoLbl);
-		undoBox.setCenter(dummyLbl);
-		undoBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.UNDO));
-
-		Node wrappedUndo = Borders.wrap(undoBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedUndo;
-	}
-
-	private Node createEditNode() {
-		BorderPane editBox = new BorderPane();
-
-		Label editLbl = new Label("Edit");
-
-		editBox.setTop(editLbl);
-		editBox.setCenter(dummyLbl);
-		editBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.PENCIL));
-
-		Node wrappedEdit = Borders.wrap(editBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedEdit;
-	}
-
-	private Node createAddNode() {
-		BorderPane addBox = new BorderPane();
-
-		Label addLbl = new Label("Add");
-
-		addBox.setTop(addLbl);
-		addBox.setCenter(dummyLbl);
-		addBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.PLUS));
-
-		Node wrappedAdd = Borders.wrap(addBox).lineBorder().color(Color.WHITE).build().build();
-
-		return wrappedAdd;
-	}
-
-	private Node createDeleteNode() {
-		BorderPane deleteBox = new BorderPane();
-
-		Label deleteLbl = new Label("Delete");
-
-		deleteBox.setTop(deleteLbl);
-		deleteBox.setCenter(dummyLbl);
-		deleteBox.setBottom(GlyphsDude.createIcon(FontAwesomeIcon.MINUS));
-
-		Node wrappedDelete = Borders.wrap(deleteBox).lineBorder().color(Color.WHITE).build().build();
-		return wrappedDelete;
-	}
-}
-```
-###### \userinterface\LayoutSummary.java
-``` java
-	public LayoutSummary(int numToday, int numTomorrow, int numUpcoming, int numSomeday) {
-		_numToday = numToday;
-		_numTomorrow = numTomorrow;
-		_numUpcoming = numUpcoming;
-		_numSomeday = numSomeday;
-		setDisplayRegions();
-	}
-
-	/** POPULATING LAYOUT */
-
-	private void setDisplayRegions() {
-		setBottomRegion();
-		setTopRegion();
-		setCenterRegion();
-	}
-
-	/** Set top region to display available shortcuts */
-	private void setTopRegion() {
-		BoxHeader headerBox = new BoxHeader();
-		this.setTop(headerBox);
-	}
-
-	private void setCenterRegion() {		
-		ComponentRectSummary rectToday = new ComponentRectSummary();
-		ComponentRectSummary rectTomorrow = new ComponentRectSummary();
-		ComponentRectSummary rectUpcoming = new ComponentRectSummary();
-		ComponentRectSummary rectSomeday = new ComponentRectSummary();
+	
+	/** Creates the box that holds the help bar */
+	private GridPane createBarBox() {	
+		barBox.getChildren().add(helpBar);
+		barBox.setAlignment(Pos.BOTTOM_CENTER);
+		barBox.setStyle(STYLE_HELPBOX);
+		barBox.setPrefHeight(HEIGHT_CONTENT_BOX);
 		
-		StackPane spToday = new StackPane();
-		StackPane spTomorrow = new StackPane();
-		StackPane spUpcoming = new StackPane();
-		StackPane spSomeday = new StackPane();
+		ColumnConstraints barColumnConstraints = new ColumnConstraints();
+		barColumnConstraints.setFillWidth(true);
+		barColumnConstraints.setHgrow(Priority.ALWAYS);
+		barBox.getColumnConstraints().add(barColumnConstraints);
 		
-		spToday.getChildren().addAll(rectToday, createSummaryButton(todayButton, todayString, createSummaryButtonString(todayString, _numToday)));
-		spTomorrow.getChildren().addAll(rectTomorrow, createSummaryButton(tomorrowButton, tomorrowString, createSummaryButtonString(tomorrowString, _numTomorrow)));
-		spUpcoming.getChildren().addAll(rectUpcoming, createSummaryButton(upcomingButton, upcomingString, createSummaryButtonString(upcomingString, _numUpcoming)));
-		spSomeday.getChildren().addAll(rectSomeday, createSummaryButton(somedayButton, somedayString, createSummaryButtonString(somedayString, _numSomeday)));
+		return barBox;
+	}
+	
+	/** Creates the box that holds the input format help */
+	private StackPane createFormatBox(){
+		formatBox.setStyle(STYLE_MAIN_STACKPANE);
+		formatBox.setPrefSize(WIDTH_MAIN_STACKPANE, HEIGHT_MAIN_STACKPANE);
+		formatBox.getChildren().add(formatText);
+		return formatBox;
+	}
 
-		GridPane gridSummaryButtons = new GridPane();
+	/** Creates a Node of the specified NODETYPE */
+	private Node createNode(NODETYPE type){
+		BorderPane nodeBox = new BorderPane();
+		Label label = null;
+		Node icon = null;
+		switch (type){
+		case ADD:
+			label = new Label(TEXT_NODE_ADD);
+			icon = ICON_ADD;
+			break;
+		case DELETE:
+			label = new Label(TEXT_NODE_DELETE);
+			icon = ICON_DELETE;
+			break;
+		case EDIT:
+			label = new Label(TEXT_NODE_EDIT);
+			icon = ICON_EDIT;
+			break;
+		case SEARCH:
+			label = new Label(TEXT_NODE_SEARCH);
+			icon = ICON_SEARCH;
+			break;
+		case MARK:
+			label = new Label(TEXT_NODE_MARK);
+			icon = ICON_MARK;
+			break;
+		case UNDO:
+			label = new Label(TEXT_NODE_UNDO);
+			icon = ICON_UNDO;
+			break;
+		case REDO:
+			label = new Label(TEXT_NODE_REDO);
+			icon = ICON_REDO;
+			break;
+		case EXIT:
+			label = new Label(TEXT_NODE_EXIT);
+			icon = ICON_EXIT;
+			break;
+		default:
+			label = new Label(TEXT_NODE_FORMAT);
+			icon = ICON_FORMAT;
+			break;
+		}
 		
-		gridSummaryButtons.add(spToday, 0, 0);
-		gridSummaryButtons.add(spTomorrow, 1, 0);
-		gridSummaryButtons.add(spUpcoming, 0, 1);
-		gridSummaryButtons.add(spSomeday, 1, 1);
-
-		HBox gridSummaryRowWrapper = new HBox();
-
-		gridSummaryRowWrapper.getChildren().add(gridSummaryButtons);
-		gridSummaryRowWrapper.setAlignment(Pos.CENTER);
-
-		GridPane centralizedGridSummary = new GridPane();
-
-		centralizedGridSummary.getChildren().add(gridSummaryRowWrapper);
-		centralizedGridSummary.setAlignment(Pos.CENTER);
-		centralizedGridSummary.setStyle("-fx-background-color: #182733");
-
-		ColumnConstraints columnConstraints = new ColumnConstraints();
-		columnConstraints.setFillWidth(true);
-		columnConstraints.setHgrow(Priority.ALWAYS);
-		centralizedGridSummary.getColumnConstraints().add(columnConstraints);
-
-		this.setCenter(centralizedGridSummary);
-	}
-
-	private void setBottomRegion() {
-		TextField textField = implementTextField();
-		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent ke) {
-				if (ke.getCode().equals(KeyCode.ESCAPE)) {
-					Controller.processEnter("DISPLAY");
-				}
-				Controller.executeKeyPress(textField, ke);
-			}
-		});
-		this.setBottom(textField);
+		nodeBox.setTop(label);
+		nodeBox.setCenter(LABEL_DUMMY);
+		nodeBox.setBottom(icon);
+		Node node = Borders.wrap(nodeBox).lineBorder().color(Color.WHITE).build().build();
+		return node;
 	}
 	
-	private TextField implementTextField() {
-		BoxInput textField = new BoxInput();
-		textField.setEditable(false);
-
-		return textField;
-	}
-	
-	private String createSummaryButtonString(String summaryType, int numItems){
-		String summaryString = summaryType + "\n" + Integer.toString(numItems) + " Item(s)";
-		return summaryString;
-	}
-	
-	private Node createSummaryButton(Button button, String summaryType, String summaryString){
-		button.setText(summaryString);
-		button.setWrapText(true);
-		button.setPrefSize(150, 150);
-		button.setTextFill(Color.WHITE);
-		Controller.redirectScene(button, summaryType);
-		Node wrappedButton = Borders.wrap(button).lineBorder().color(Color.AQUAMARINE).build().build();
-		return wrappedButton;
+	/** Create input format help to show available command formats */
+	private void createFormatText(){
+		formatText = new Text(formatString);
+		formatText.setFill(Color.WHITE);
 	}
 }
 ```
 ###### \userinterface\LayoutTemplate.java
 ``` java
-	public LayoutTemplate(String title, ArrayList<String[]> list, ArrayList<String> feedbackList) {
-		if (feedbackList == null) System.out.println("Error: LayoutTemplate null");
+/**
+ * The LayoutTemplate class creates the layout to display the table containing
+ * all tasks to the user.
+ */
+public class LayoutTemplate extends BorderPane {
+
+	/** Lists to display in the table and feedback box */
+	private ArrayList<String[]> _list = new ArrayList<String[]>();
+	private ArrayList<String> _feedbackList;
+
+	/** Boolean to display date column and enable Esc key to change scene */
+	private boolean _shouldDisplayDate;
+	private boolean _shouldEnableEscape;
+
+	/** Integer to store size of task list */
+	private int _listSize;
+
+	/** Nodes to display layout title */
+	private Label _titleLabel;
+	private String _titleString;
+	private Node _titleNode;
+
+	/** Keys for the stored tasks in the HashMap */
+	public static final String KEY_COLUMN_INDEX = "Index";
+	public static final String KEY_COLUMN_NAME = "Name";
+	public static final String KEY_COLUMN_TIME = "Time";
+	public static final String KEY_COLUMN_DATE = "Date";
+
+	/** Settings for the scrollpane scrolling speed */
+	private static int currentScrollIndex = 0;
+	private static final int SPEED_SCROLL_DOWN = 3;
+	private static final int SPEED_SCROLL_UP = -3;
+
+	/** Indexes of the task variables in the string array */
+	private final int INDEX_TASK_INDEX = 0;
+	private final int INDEX_TASK_NAME = 1;
+	private final int INDEX_TASK_TIME = 2;
+	private final int INDEX_TASK_DATE = 3;
+
+	/** Styling for the objects in the scene */
+	public static final String STYLE_CENTRE_REGION = "-fx-background-color: #182733;";
+	public static final String STYLE_USER_BOX = "-fx-background-color: #182733;";
+	public static final String FONT_FEEDBACK = "Calibri";
+
+	/** Sizes for the elements in the scene */
+	private final int FONTSIZE_FEEDBACK = 12;
+
+	/** Display sizes if the scene has 3 columns */
+	private final int WIDTH_WRAPPING_FEEDBACK = 500;
+	private final int WIDTH_DISPLAY3_WRAPPING_DATACOLUMN_1 = 10;
+	private final int WIDTH_DISPLAY3_WRAPPING_DATACOLUMN_2 = 460;
+	private final int WIDTH_DISPLAY3_WRAPPING_DATACOLUMN_3 = 290;
+
+	/** Display sizes if the scene has 4 columns */
+	private final int WIDTH_DISPLAY4_WRAPPING_DATACOLUMN_1 = 20;
+	private final int WIDTH_DISPLAY4_WRAPPING_DATACOLUMN_2 = 320;
+	private final int WIDTH_DISPLAY4_WRAPPING_DATACOLUMN_3 = 250;
+	private final int WIDTH_DISPLAY4_WRAPPING_DATACOLUMN_4 = 150;
+
+	/** Table that holds all the task information */
+	private TableView tableView;
+
+	/** Table columns containing different types of task information */
+	private TableColumn<Map, String> indexColumn = new TableColumn<>("Index");
+	private TableColumn<Map, String> nameColumn = new TableColumn<>("Name");
+	private TableColumn<Map, String> timeColumn = new TableColumn<>("Time");
+	private TableColumn<Map, String> dateColumn = new TableColumn<>("Date");
+
+	/** Box that holds the table and title of layout */
+	private GridPane innerTableBox = new GridPane();
+	private HBox outerTableBox = new HBox();
+
+	/** Constructor for LayoutTemplate */
+	public LayoutTemplate(String title, ArrayList<String[]> list, ArrayList<String> feedbackList, boolean displayDate,
+			boolean enableExit) {
+		if (feedbackList == null) {
+			System.out.println("Error: LayoutTemplate null");
+		}
 		_titleString = title;
 		_list = list;
 		_listSize = list.size();
 		_feedbackList = feedbackList;
-		setDisplayRegions();
-	}
+		_shouldDisplayDate = displayDate;
+		_shouldEnableEscape = enableExit;
 
-	/** POPULATING LAYOUT */
-
-	private void setDisplayRegions() {
 		setBottomRegion();
 		setTopRegion();
 		setCenterRegion();
@@ -1600,29 +1931,54 @@
 		this.setTop(headerBox);
 	}
 
+	/** Set center region to display tasks in table */
 	private void setCenterRegion() {
 		implementTitle();
+		implementTable();
+		configureColumns();
+		implementInnerTableBox();
+		implementOuterTableBox();
+		this.setCenter(outerTableBox);
+	}
 
-		GridPane grid = new GridPane();
-		grid.setStyle("-fx-background-color: #182733;");
+	/** Set bottom region for user input and keypress */
+	private void setBottomRegion() {
+		Text feedbackText = createFeedbackLabel();
+		BoxFeedback feedbackBox = implementFeedbackBox(feedbackText);
+		BoxInput inputBox = implementInputBox();
+		BorderPane userBox = implementUserBox(feedbackBox, inputBox);
 
-		TableColumn<Map, String> firstDataColumn = new TableColumn<>("No");
-		TableColumn<Map, String> secondDataColumn = new TableColumn<>("Name");
-		TableColumn<Map, String> thirdDataColumn = new TableColumn<>("Time");
+		this.setBottom(userBox);
+	}
 
-		firstDataColumn.setCellValueFactory(new MapValueFactory(ColumnIndexMapKey));
-		firstDataColumn.setMinWidth(10);
-		secondDataColumn.setCellValueFactory(new MapValueFactory(ColumnNameMapKey));
-		secondDataColumn.setMinWidth(460);
-		thirdDataColumn.setCellValueFactory(new MapValueFactory(ColumnTimeMapKey));
-		thirdDataColumn.setMinWidth(290);
+	/** Create outer box to centralize task table */
+	private void implementOuterTableBox() {
+		outerTableBox.setAlignment(Pos.CENTER);
+		outerTableBox.getChildren().add(innerTableBox);
+		outerTableBox.setStyle("-fx-background-color: #182733;");
+	}
 
+	/** Create inner box to contain the table view and title of layout */
+	private void implementInnerTableBox() {
+		innerTableBox.setStyle(STYLE_CENTRE_REGION);
+		innerTableBox.setHgrow(tableView, Priority.ALWAYS);
+		innerTableBox.add(_titleNode, 0, 0);
+		innerTableBox.add(tableView, 0, 1);
+	}
+
+	/** Create the table containing the task information */
+	private void implementTable() {
 		tableView = new TableView<>(populateDataInMap());
-		
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		tableView.setEditable(false);
 		tableView.getSelectionModel().setCellSelectionEnabled(false);
-		tableView.getColumns().setAll(firstDataColumn, secondDataColumn, thirdDataColumn);
+
+		if (_shouldDisplayDate) {
+			tableView.getColumns().setAll(indexColumn, nameColumn, timeColumn, dateColumn);
+		} else {
+			tableView.getColumns().setAll(indexColumn, nameColumn, timeColumn);
+		}
+
 		Callback<TableColumn<Map, String>, TableCell<Map, String>> cellFactoryForMap = (
 				TableColumn<Map, String> p) -> new TextFieldTableCell(new StringConverter() {
 					@Override
@@ -1636,505 +1992,200 @@
 					}
 				});
 
-		firstDataColumn.setCellFactory(cellFactoryForMap);
-		secondDataColumn.setCellFactory(cellFactoryForMap);
-		thirdDataColumn.setCellFactory(cellFactoryForMap);
-		
-//		System.out.println("Num of Rows: " + tableView.getItems().size());
-		
-		grid.setHgrow(tableView, Priority.ALWAYS);
-
-		grid.add(_titleNode, 0, 0);
-		grid.add(tableView, 0, 1);
-
-		HBox hbox = new HBox();
-		hbox.setAlignment(Pos.CENTER);
-		hbox.getChildren().add(grid);
-		hbox.setStyle("-fx-background-color: #182733;");
-
-		this.setCenter(hbox);
+		indexColumn.setCellFactory(cellFactoryForMap);
+		nameColumn.setCellFactory(cellFactoryForMap);
+		timeColumn.setCellFactory(cellFactoryForMap);
 	}
 
+	/** Configure columns in table to reflect corresponding data */
+	private void configureColumns() {
+		int indexColWidth = _shouldDisplayDate ? WIDTH_DISPLAY4_WRAPPING_DATACOLUMN_1
+				: WIDTH_DISPLAY3_WRAPPING_DATACOLUMN_1;
+		int nameColWidth = _shouldDisplayDate ? WIDTH_DISPLAY4_WRAPPING_DATACOLUMN_2
+				: WIDTH_DISPLAY3_WRAPPING_DATACOLUMN_2;
+		int timeColWidth = _shouldDisplayDate ? WIDTH_DISPLAY4_WRAPPING_DATACOLUMN_3
+				: WIDTH_DISPLAY3_WRAPPING_DATACOLUMN_3;
+
+		indexColumn.setCellValueFactory(new MapValueFactory(KEY_COLUMN_INDEX));
+		indexColumn.setMinWidth(indexColWidth);
+		nameColumn.setCellValueFactory(new MapValueFactory(KEY_COLUMN_NAME));
+		nameColumn.setMinWidth(nameColWidth);
+		timeColumn.setCellValueFactory(new MapValueFactory(KEY_COLUMN_TIME));
+		timeColumn.setMinWidth(timeColWidth);
+
+		if (_shouldDisplayDate) {
+			dateColumn.setCellValueFactory(new MapValueFactory(KEY_COLUMN_DATE));
+			dateColumn.setMinWidth(WIDTH_DISPLAY4_WRAPPING_DATACOLUMN_4);
+		}
+	}
+
+	/** Fills up the tableView with all the task information */
 	private ObservableList<Map> populateDataInMap() {
 		ObservableList<Map> allData = FXCollections.observableArrayList();
-		for (int i = 1; i < _listSize; i++) {
-			Map<String, String> dataRow = new HashMap<>();
+		if (_shouldDisplayDate) {
+			for (int i = 0; i < _listSize; i++) {
+				Map<String, String> dataRow = new HashMap<>();
 
-			String index = _list.get(i)[0];
-			String name = _list.get(i)[1];
-			String time = _list.get(i)[2];
+				String index = _list.get(i)[INDEX_TASK_INDEX];
+				String name = _list.get(i)[INDEX_TASK_NAME];
+				String time = _list.get(i)[INDEX_TASK_TIME];
+				String date = _list.get(i)[INDEX_TASK_DATE];
 
-			dataRow.put(ColumnIndexMapKey, index);
-			dataRow.put(ColumnNameMapKey, name);
-			dataRow.put(ColumnTimeMapKey, time);
+				dataRow.put(KEY_COLUMN_INDEX, index);
+				dataRow.put(KEY_COLUMN_NAME, name);
+				dataRow.put(KEY_COLUMN_TIME, time);
+				dataRow.put(KEY_COLUMN_DATE, date);
 
-			allData.add(dataRow);
+				allData.add(dataRow);
+			}
+		} else {
+			for (int i = 1; i < _listSize; i++) {
+				Map<String, String> dataRow = new HashMap<>();
+
+				String index = _list.get(i)[INDEX_TASK_INDEX];
+				String name = _list.get(i)[INDEX_TASK_NAME];
+				String time = _list.get(i)[INDEX_TASK_TIME];
+
+				dataRow.put(KEY_COLUMN_INDEX, index);
+				dataRow.put(KEY_COLUMN_NAME, name);
+				dataRow.put(KEY_COLUMN_TIME, time);
+
+				allData.add(dataRow);
+			}
 		}
 		return allData;
 	}
-
-	private void setBottomRegion() {
-		Text feedbackText = createFeedbackLabel();
-
-		BoxFeedback feedbackBox = implementFeedbackBox(feedbackText);
-		BoxInput inputBox = implementInputBox();
-
-		BorderPane userBox = implementUserBox(feedbackBox, inputBox);
-
-		this.setBottom(userBox);
-	}
-
+	
+	/** Implements the title of the layout */
 	private void implementTitle() {
 		_titleLabel = new Label(_titleString);
 		_titleNode = Borders.wrap(_titleLabel).lineBorder().color(Color.AQUAMARINE).build().build();
 	}
 
+	/** Implements the user box containing feedback and input field */
 	private BorderPane implementUserBox(BoxFeedback feedbackBox, BoxInput inputBox) {
 		BorderPane userBox = new BorderPane();
 		userBox.setTop(feedbackBox);
 		userBox.setBottom(inputBox);
-		userBox.setStyle("-fx-background-color: #182733;");
+		userBox.setStyle(STYLE_USER_BOX);
 		return userBox;
 	}
 
+	/** Implements input field for user to key in input and register keypress */
 	private BoxInput implementInputBox() {
 		BoxInput textField = new BoxInput();
 		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent ke) {
 				if (ke.getCode().equals(KeyCode.UP)) {
-					if ((currentScrollIndex + scrollUpIndex) >= 0){
-						tableView.scrollTo(currentScrollIndex + scrollUpIndex);
-						currentScrollIndex = currentScrollIndex + scrollUpIndex;
+					if ((currentScrollIndex + SPEED_SCROLL_UP) >= 0) {
+						tableView.scrollTo(currentScrollIndex + SPEED_SCROLL_UP);
+						currentScrollIndex = currentScrollIndex + SPEED_SCROLL_UP;
 					}
-				} else if (ke.getCode().equals(KeyCode.DOWN)){
-					if ((currentScrollIndex + scrollDownIndex) <= tableView.getItems().size()){
-						tableView.scrollTo(currentScrollIndex + scrollDownIndex);
-						currentScrollIndex = currentScrollIndex + scrollDownIndex;
+				} else if (ke.getCode().equals(KeyCode.DOWN)) {
+					if ((currentScrollIndex + SPEED_SCROLL_DOWN) <= tableView.getItems().size()) {
+						tableView.scrollTo(currentScrollIndex + SPEED_SCROLL_DOWN);
+						currentScrollIndex = currentScrollIndex + SPEED_SCROLL_DOWN;
 					}
-				}  else if (ke.getCode().equals(KeyCode.ESCAPE)){
-					// DISPLAY SUMMARY SCENE
+				} else if (_shouldEnableEscape && ke.getCode().equals(KeyCode.ESCAPE)) {
+					// Displays Category Scene
 					Main.setNumToday(Controller.getNumTodayItems());
 					Main.setNumTomorrow(Controller.getNumTomorrowItems());
 					Main.setNumUpcoming(Controller.getNumUpcomingItems());
 					Main.setNumSomeday(Controller.getNumSomedayItems());
-					Main.displaySummaryScene();
+					Main.displayCategoryScene();
 				}
-				
 				Controller.executeKeyPress(textField, ke);
 			}
 		});
-		TextFields.bindAutoCompletion(textField, "add", "delete", "undo", "search", "mark", "edit");
+		TextFields.bindAutoCompletion(textField, "add", "delete", "undo", "search", "mark", "edit", "exit");
 		return textField;
 	}
 
+	/** Implements feedback box for user to see feedback about their commands */
 	private BoxFeedback implementFeedbackBox(Text feedbackText) {
 		BoxFeedback feedbackBox = new BoxFeedback();
 		feedbackBox.getChildren().add(feedbackText);
 		return feedbackBox;
 	}
 
+	/** Creates label for feedback to display to user */
 	private Text createFeedbackLabel() {
-		 String[] result = _feedbackList.get(0).split(" ", 2);
-		    String first = result[0];
-		Text feedbackText = new Text(_feedbackList.get(0));		
-		feedbackText.setText(_feedbackList.get(0));
-		feedbackText.setWrappingWidth(500);
+		String[] result = _feedbackList.get(0).split(" ", 2);
+
+		String feedbackType = result[0];
+		String feedbackMessage = _feedbackList.get(0);
+		Text feedbackText = new Text(feedbackMessage);
+
+		feedbackText.setText(feedbackMessage);
+		feedbackText.setWrappingWidth(WIDTH_WRAPPING_FEEDBACK);
 		feedbackText.setFill(Color.WHITE);
-		feedbackText.setFont(Font.font("Calibri", 12));
-		if (first.equals("Added")) {
-			feedbackText.setFont(Font.font("Calibri", FontWeight.BOLD, 12));
-		} else if (first.equals("Edited")) {
-			feedbackText.setFont(Font.font("Calibri", FontPosture.ITALIC, 12));
-		} else if (first.equals("Marked") || first.equals("Deleted")) {
+		feedbackText.setFont(Font.font(FONT_FEEDBACK, FONTSIZE_FEEDBACK));
+
+		if (feedbackType.equals("Added")) {
+			feedbackText.setFont(Font.font(FONT_FEEDBACK, FontWeight.BOLD, FONTSIZE_FEEDBACK));
+		} else if (feedbackType.equals("Edited")) {
+			feedbackText.setFont(Font.font(FONT_FEEDBACK, FontPosture.ITALIC, FONTSIZE_FEEDBACK));
+		} else if (feedbackType.equals("Marked") || feedbackType.equals("Deleted")) {
 			feedbackText.setStrikethrough(true);
 			feedbackText.setFill(Color.GREY);
-		} else if (first.equals("Redo")) {
+		} else if (feedbackType.equals("Redo")) {
 			feedbackText.setUnderline(true);
-		} else if (first.equals("Undo")) {
+		} else if (feedbackType.equals("Undo")) {
 			feedbackText.setFill(Color.GREY);
-		} else if (first.equals("Clash")) {
+		} else if (feedbackType.equals("Clash")) {
 			feedbackText.setText(_feedbackList.get(0));
 			feedbackText.setFill(Color.CRIMSON);
 		}
 		return feedbackText;
 	}
-}
-```
-###### \userinterface\LayoutTemplateAll.java
-``` java
-	public LayoutTemplateAll(String title, ArrayList<String[]> list, ArrayList<String> feedbackList) {
-		_titleString = title;
-		_list = list;
-		_feedbackList = feedbackList;
-		setDisplayRegions();
-	}
 
-	/** POPULATING LAYOUT */
-
-	private void setDisplayRegions() {
-		setBottomRegion();
-		setTopRegion();
-		setCenterRegion();
-	}
-
-	/** Set top region to display available shortcuts */
-	private void setTopRegion() {
-		BoxHeader headerBox = new BoxHeader();
-		this.setTop(headerBox);
-	}
-
-	private void setCenterRegion() {
-		implementTitle();
-
-		GridPane grid = new GridPane();
-		grid.setStyle("-fx-background-color: #182733;");
-
-		TableColumn<Map, String> firstDataColumn = new TableColumn<>("No");
-		TableColumn<Map, String> secondDataColumn = new TableColumn<>("Name");
-		TableColumn<Map, String> thirdDataColumn = new TableColumn<>("Time");
-		TableColumn<Map, String> fourthDataColumn = new TableColumn<>("Date");
-
-		firstDataColumn.setCellValueFactory(new MapValueFactory(ColumnIndexMapKey));
-		firstDataColumn.setMinWidth(20);
-		secondDataColumn.setCellValueFactory(new MapValueFactory(ColumnNameMapKey));
-		secondDataColumn.setMinWidth(320);
-		thirdDataColumn.setCellValueFactory(new MapValueFactory(ColumnTimeMapKey));
-		thirdDataColumn.setMinWidth(250);
-		fourthDataColumn.setCellValueFactory(new MapValueFactory(ColumnDateMapKey));
-		fourthDataColumn.setMinWidth(150);
-
-	    tableView = new TableView<>(populateDataInMap());
-		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		tableView.setEditable(false);
-		tableView.getSelectionModel().setCellSelectionEnabled(false);
-		tableView.getColumns().setAll(firstDataColumn, secondDataColumn, thirdDataColumn, fourthDataColumn);
-		Callback<TableColumn<Map, String>, TableCell<Map, String>> cellFactoryForMap = (
-				TableColumn<Map, String> p) -> new TextFieldTableCell(new StringConverter() {
-					@Override
-					public String toString(Object t) {
-						return t.toString();
-					}
-
-					@Override
-					public Object fromString(String string) {
-						return string;
-					}
-				});
-
-		firstDataColumn.setCellFactory(cellFactoryForMap);
-		secondDataColumn.setCellFactory(cellFactoryForMap);
-		thirdDataColumn.setCellFactory(cellFactoryForMap);
-		fourthDataColumn.setCellFactory(cellFactoryForMap);
-		
-		grid.setHgrow(tableView, Priority.ALWAYS);
-
-		grid.add(_titleNode, 0, 0);
-		grid.add(tableView, 0, 1);
-		
-		HBox hbox = new HBox();
-		hbox.setAlignment(Pos.CENTER);
-		hbox.getChildren().add(grid);
-		hbox.setStyle("-fx-background-color: #182733;");
-
-		this.setCenter(hbox);
-	}
-
-	private ObservableList<Map> populateDataInMap() {
-		ObservableList<Map> allData = FXCollections.observableArrayList();
-		for (int i = 0; i < _list.size(); i++) {
-			Map<String, String> dataRow = new HashMap<>();
-			String index = _list.get(i)[0];
-			String name = _list.get(i)[1];
-			String time = _list.get(i)[2];
-			String date = _list.get(i)[3];
-		//	System.out.println(_list.size());
-			
-			dataRow.put(ColumnIndexMapKey, index);
-			dataRow.put(ColumnNameMapKey, name);
-			dataRow.put(ColumnTimeMapKey, time);
-			dataRow.put(ColumnDateMapKey, date);
-
-			allData.add(dataRow);
-		}
-		return allData;
-	}
-
-	private void setBottomRegion() {
-		Text feedbackText = createFeedbackLabel();
-
-		BoxFeedback feedbackBox = implementFeedbackBox(feedbackText);
-		BoxInput inputBox = implementInputBox();
-
-		BorderPane userBox = implementUserBox(feedbackBox, inputBox);
-
-		this.setBottom(userBox);
-	}
-
-	private void implementTitle() {
-		_titleLabel = new Label(_titleString);
-		_titleNode = Borders.wrap(_titleLabel).lineBorder().color(Color.AQUAMARINE).build().build();
-	}
-
-	private BorderPane implementUserBox(BoxFeedback feedbackBox, BoxInput inputBox) {
-		BorderPane userBox = new BorderPane();
-		userBox.setTop(feedbackBox);
-		userBox.setBottom(inputBox);
-		userBox.setStyle("-fx-background-color: #182733;");
-		return userBox;
-	}
-
-	private BoxInput implementInputBox() {
-		BoxInput textField = new BoxInput();
-		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent ke) {
-				if (ke.getCode().equals(KeyCode.UP)) {
-					if ((currentScrollIndex + scrollUpIndex) >= 0){
-						tableView.scrollTo(currentScrollIndex + scrollUpIndex);
-						currentScrollIndex = currentScrollIndex + scrollUpIndex;
-					}
-				} else if (ke.getCode().equals(KeyCode.DOWN)){
-					if ((currentScrollIndex + scrollDownIndex) <= tableView.getItems().size()){
-						tableView.scrollTo(currentScrollIndex + scrollDownIndex);
-						currentScrollIndex = currentScrollIndex + scrollDownIndex;
-					}
-				}
-				Controller.executeKeyPress(textField, ke);
-			}
-		});
-		TextFields.bindAutoCompletion(textField, "add", "delete", "undo", "search", "mark", "edit");
-		return textField;
-	}
-
-	private BoxFeedback implementFeedbackBox(Text feedbackText) {
-		BoxFeedback feedbackBox = new BoxFeedback();
-		feedbackBox.getChildren().add(feedbackText);
-		return feedbackBox;
-	}
-
-	private Text createFeedbackLabel() {
-		 String[] result = _feedbackList.get(0).split(" ", 2);
-		    String first = result[0];
-		   // System.out.println(first);
-		Text feedbackText = new Text(_feedbackList.get(0));		
-		feedbackText.setText(_feedbackList.get(0));
-		feedbackText.setWrappingWidth(500);
-		feedbackText.setFill(Color.WHITE);
-		feedbackText.setFont(Font.font("Calibri", 12));
-		if (first.equals("Added")) {
-			feedbackText.setFont(Font.font("Calibri", FontWeight.BOLD, 12));
-		} else if (first.equals("Edited")) {
-			feedbackText.setFont(Font.font("Calibri", FontPosture.ITALIC, 12));
-		} else if (first.equals("Marked") || first.equals("Deleted")) {
-			feedbackText.setStrikethrough(true);
-			feedbackText.setFill(Color.GREY);
-		} else if (first.equals("Redo")) {
-			feedbackText.setUnderline(true);
-		} else if (first.equals("Undo")) {
-			feedbackText.setFill(Color.GREY);
-		} else if (first.equals("Clash")) {
-			feedbackText.setText(_feedbackList.get(0));
-			feedbackText.setFill(Color.CRIMSON);
-		}
-		return feedbackText;
-	}
-}
-```
-###### \userinterface\LayoutTemplateDate.java
-``` java
-	public LayoutTemplateDate(String title, ArrayList<String[]> list, ArrayList<String> feedbackList) {
-		_titleString = title;
-		_list = list;
-		_feedbackList = feedbackList;
-		setDisplayRegions();
-	}
-
-	/** POPULATING LAYOUT */
-
-	private void setDisplayRegions() {
-		setBottomRegion();
-		setTopRegion();
-		setCenterRegion();
-	}
-
-	/** Set top region to display available shortcuts */
-	private void setTopRegion() {
-		BoxHeader headerBox = new BoxHeader();
-		this.setTop(headerBox);
-	}
-
-	private void setCenterRegion() {
-		implementTitle();
-
-		GridPane grid = new GridPane();
-		grid.setStyle("-fx-background-color: #182733;");
-
-		TableColumn<Map, String> firstDataColumn = new TableColumn<>("No");
-		TableColumn<Map, String> secondDataColumn = new TableColumn<>("Name");
-		TableColumn<Map, String> thirdDataColumn = new TableColumn<>("Time");
-		TableColumn<Map, String> fourthDataColumn = new TableColumn<>("Date");
-
-		firstDataColumn.setCellValueFactory(new MapValueFactory(ColumnIndexMapKey));
-		firstDataColumn.setMinWidth(20);
-		secondDataColumn.setCellValueFactory(new MapValueFactory(ColumnNameMapKey));
-		secondDataColumn.setMinWidth(320);
-		thirdDataColumn.setCellValueFactory(new MapValueFactory(ColumnTimeMapKey));
-		thirdDataColumn.setMinWidth(250);
-		fourthDataColumn.setCellValueFactory(new MapValueFactory(ColumnDateMapKey));
-		fourthDataColumn.setMinWidth(150);
-
-	    tableView = new TableView<>(populateDataInMap());
-		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		tableView.setEditable(false);
-		tableView.getSelectionModel().setCellSelectionEnabled(false);
-		tableView.getColumns().setAll(firstDataColumn, secondDataColumn, thirdDataColumn, fourthDataColumn);
-		Callback<TableColumn<Map, String>, TableCell<Map, String>> cellFactoryForMap = (
-				TableColumn<Map, String> p) -> new TextFieldTableCell(new StringConverter() {
-					@Override
-					public String toString(Object t) {
-						return t.toString();
-					}
-
-					@Override
-					public Object fromString(String string) {
-						return string;
-					}
-				});
-
-		firstDataColumn.setCellFactory(cellFactoryForMap);
-		secondDataColumn.setCellFactory(cellFactoryForMap);
-		thirdDataColumn.setCellFactory(cellFactoryForMap);
-		fourthDataColumn.setCellFactory(cellFactoryForMap);
-		
-		grid.setHgrow(tableView, Priority.ALWAYS);
-
-		grid.add(_titleNode, 0, 0);
-		grid.add(tableView, 0, 1);
-		
-		HBox hbox = new HBox();
-		hbox.setAlignment(Pos.CENTER);
-		hbox.getChildren().add(grid);
-		hbox.setStyle("-fx-background-color: #182733;");
-
-		this.setCenter(hbox);
-	}
-
-	private ObservableList<Map> populateDataInMap() {
-		ObservableList<Map> allData = FXCollections.observableArrayList();
-		for (int i = 0; i < _list.size(); i++) {
-			Map<String, String> dataRow = new HashMap<>();
-			String index = _list.get(i)[0];
-			String name = _list.get(i)[1];
-			String time = _list.get(i)[2];
-			String date = _list.get(i)[3];
-		//	System.out.println(_list.size());
-			
-			dataRow.put(ColumnIndexMapKey, index);
-			dataRow.put(ColumnNameMapKey, name);
-			dataRow.put(ColumnTimeMapKey, time);
-			dataRow.put(ColumnDateMapKey, date);
-
-			allData.add(dataRow);
-		}
-		return allData;
-	}
-
-	private void setBottomRegion() {
-		Text feedbackText = createFeedbackLabel();
-
-		BoxFeedback feedbackBox = implementFeedbackBox(feedbackText);
-		BoxInput inputBox = implementInputBox();
-
-		BorderPane userBox = implementUserBox(feedbackBox, inputBox);
-
-		this.setBottom(userBox);
-	}
-
-	private void implementTitle() {
-		_titleLabel = new Label(_titleString);
-		_titleNode = Borders.wrap(_titleLabel).lineBorder().color(Color.AQUAMARINE).build().build();
-	}
-
-	private BorderPane implementUserBox(BoxFeedback feedbackBox, BoxInput inputBox) {
-		BorderPane userBox = new BorderPane();
-		userBox.setTop(feedbackBox);
-		userBox.setBottom(inputBox);
-		userBox.setStyle("-fx-background-color: #182733;");
-		return userBox;
-	}
-
-	private BoxInput implementInputBox() {
-		BoxInput textField = new BoxInput();
-		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent ke) {
-				if (ke.getCode().equals(KeyCode.UP)) {
-					if ((currentScrollIndex + scrollUpIndex) >= 0){
-						tableView.scrollTo(currentScrollIndex + scrollUpIndex);
-						currentScrollIndex = currentScrollIndex + scrollUpIndex;
-					}
-				} else if (ke.getCode().equals(KeyCode.DOWN)){
-					if ((currentScrollIndex + scrollDownIndex) <= tableView.getItems().size()){
-						tableView.scrollTo(currentScrollIndex + scrollDownIndex);
-						currentScrollIndex = currentScrollIndex + scrollDownIndex;
-					}
-				} else if (ke.getCode().equals(KeyCode.ESCAPE)){
-					// DISPLAY SUMMARY SCENE
-					Main.setNumToday(Controller.getNumTodayItems());
-					Main.setNumTomorrow(Controller.getNumTomorrowItems());
-					Main.setNumUpcoming(Controller.getNumUpcomingItems());
-					Main.setNumSomeday(Controller.getNumSomedayItems());
-					Main.displaySummaryScene();
-				}
-				Controller.executeKeyPress(textField, ke);
-			}
-		});
-		TextFields.bindAutoCompletion(textField, "add", "delete", "undo", "search", "mark", "edit");
-		return textField;
-	}
-
-	private BoxFeedback implementFeedbackBox(Text feedbackText) {
-		BoxFeedback feedbackBox = new BoxFeedback();
-		feedbackBox.getChildren().add(feedbackText);
-		return feedbackBox;
-	}
-
-	private Text createFeedbackLabel() {
-		 String[] result = _feedbackList.get(0).split(" ", 2);
-		    String first = result[0];
-		   // System.out.println(first);
-		Text feedbackText = new Text(_feedbackList.get(0));		
-		feedbackText.setText(_feedbackList.get(0));
-		feedbackText.setWrappingWidth(500);
-		feedbackText.setFill(Color.WHITE);
-		feedbackText.setFont(Font.font("Calibri", 12));
-		if (first.equals("Added")) {
-			feedbackText.setFont(Font.font("Calibri", FontWeight.BOLD, 12));
-		} else if (first.equals("Edited")) {
-			feedbackText.setFont(Font.font("Calibri", FontPosture.ITALIC, 12));
-		} else if (first.equals("Marked") || first.equals("Deleted")) {
-			feedbackText.setStrikethrough(true);
-			feedbackText.setFill(Color.GREY);
-		} else if (first.equals("Redo")) {
-			feedbackText.setUnderline(true);
-		} else if (first.equals("Undo")) {
-			feedbackText.setFill(Color.GREY);
-		} else if (first.equals("Clash")) {
-			feedbackText.setText(_feedbackList.get(0));
-			feedbackText.setFill(Color.CRIMSON);
-		}
-		return feedbackText;
-	}
 }
 ```
 ###### \userinterface\Main.java
 ``` java
-	/*
-	* ===========================================
-	* Main Program
-	* ===========================================
-	*/
+/**
+* The Main class contains the main method to run the entire Clockwork program. Clockwork 
+* functions as a scheduler for the user to schedule tasks with only typed commands and 
+* keypress.
+*/
+public class Main extends Application {
+	
+	/** Application window dimensions */
+	private static int WIDTH_WINDOW_DEFAULT = 900;
+	private static int HEIGHT_WINDOW_DEFAULT = 600;
+
+	/** Lists containing tasks to display in each scene */
+	private static ArrayList<String[]> _todayList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _tomorrowList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _upcomingList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _somedayList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _searchList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _powerList = new ArrayList<String[]>();
+	
+	/** Integer containing number of tasks for each category */
+	private static int _numToday = 0;
+	private static int _numTomorrow = 0;
+	private static int _numUpcoming = 0;
+	private static int _numSomeday = 0;
+	
+	/** Layouts used to display tasks in different scenes */
+	private static LayoutCategory categoryLayout;
+	private static LayoutHelp helpLayout;
+	private static LayoutCalendar calendarLayout;
+	private static LayoutTemplate todayLayout;
+	private static LayoutTemplate tomorrowLayout;
+	private static LayoutTemplate upcomingLayout;
+	private static LayoutTemplate somedayLayout;
+	private static LayoutTemplate searchLayout;
+	private static LayoutTemplate allLayout;
+	
+	/** List to display feedback to user */
+	private static ArrayList<String> _feedback;
+	
+	/** Stage and scene to display to user */
+	private static Scene scene;
+	private static Stage stage;
 	
 	public static void main(String[] args) {
 		initialiseStorage(args);
@@ -2149,12 +2200,6 @@
 		setScene();
 		setStage();
 	}
-	
-	/*
-	* ===========================================
-	* Initialising Methods
-	* ===========================================
-	*/
 	
 	/** Initialise Scene for GUI */
 	private static void setScene(){
@@ -2198,13 +2243,101 @@
 		}
 	}
 	
-	/*
-	* ===========================================
-	* Public Methods
-	* ===========================================
-	*/
+	/** Minimises the window */
+	public static void minimise(){
+		stage.setIconified(true);
+	}
 	
-	public static void setFeedback(ArrayList<String> feedback){
+	/** Displays the help scene */
+	public static void displayHelpScene(){
+		helpLayout = new LayoutHelp();
+		scene = new Scene(helpLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	/** Displays the calendar scene */
+	public static void displayCalendarScene(){
+		calendarLayout = new LayoutCalendar();
+		scene = new Scene(calendarLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	/** Displays the overall category scene */
+	public static void displayCategoryScene(){
+		categoryLayout = new LayoutCategory(_numToday, _numTomorrow, _numUpcoming, _numSomeday);
+		scene = new Scene(categoryLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	/** Displays the category scene for today */
+	public static void displayTodayScene(){
+		_feedback = Controller.getFeedback();
+		todayLayout = new LayoutTemplate("Today", _todayList, _feedback, false, true);
+		scene = new Scene(todayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	/** Displays the category scene for tomorrow */
+	public static void displayTomorrowScene(){
+		_feedback = Controller.getFeedback();
+		tomorrowLayout = new LayoutTemplate("Tomorrow", _tomorrowList, _feedback, false, true);
+		scene = new Scene(tomorrowLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	/** Displays the category scene for upcoming tasks not scheduled today or tomorrow but 
+	 * with a specified date
+	 */
+	public static void displayUpcomingScene(){
+		_feedback = Controller.getFeedback();
+		upcomingLayout = new LayoutTemplate("Upcoming", _upcomingList,  _feedback, true, true);
+		scene = new Scene(upcomingLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	/** Displays the category scene for floating tasks */
+	public static void displaySomedayScene(){
+		_feedback = Controller.getFeedback();
+		somedayLayout = new LayoutTemplate("Someday", _somedayList,  _feedback, false, true);
+		scene = new Scene(somedayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	/** Displays the search scene */
+	public static void displaySearchScene(){
+		_feedback = Controller.getFeedback();
+		searchLayout = new LayoutTemplate("Search", _searchList,  _feedback, true, true);
+		scene = new Scene(searchLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	/** Displays the all tasks scene */
+	public static void displayAllScene(){
+		_feedback = Controller.getFeedback();
+		allLayout = new LayoutTemplate("All Tasks", _powerList,  _feedback, true, false);
+		scene = new Scene(allLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
+		setStage();
+	}
+	
+	public static void setFeedbackList(ArrayList<String> feedback){
 		_feedback = feedback;
 	}
 	
@@ -2244,97 +2377,18 @@
 	public static void setNumSomeday(int numSomeday){
 		_numSomeday = numSomeday;
 	}
-	
-	public static void minimise(){
-		stage.setIconified(true);
-	}
-	
-	public static void displayHelpScene(){
-		helpLayout = new LayoutHelp();
-		scene = new Scene(helpLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
-	public static void displayCalendarScene(){
-		calendarLayout = new LayoutCalendar();
-		scene = new Scene(calendarLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
-	public static void displaySummaryScene(){
-		summaryLayout = new LayoutSummary(_numToday, _numTomorrow, _numUpcoming, _numSomeday);
-		scene = new Scene(summaryLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
-	public static void displayTodayScene(){
-		_feedback = Controller.getFeedback();
-		todayLayout = new LayoutTemplate("Today", _todayList, _feedback);
-		scene = new Scene(todayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
-	public static void displayTomorrowScene(){
-		_feedback = Controller.getFeedback();
-		tomorrowLayout = new LayoutTemplate("Tomorrow", _tomorrowList, _feedback);
-		scene = new Scene(tomorrowLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
-	public static void displayUpcomingScene(){
-		_feedback = Controller.getFeedback();
-		upcomingLayout = new LayoutTemplateDate("Upcoming", _upcomingList,  _feedback);
-		scene = new Scene(upcomingLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
-	public static void displaySomedayScene(){
-		_feedback = Controller.getFeedback();
-		somedayLayout = new LayoutTemplate("Someday", _somedayList,  _feedback);
-		scene = new Scene(somedayLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
-	public static void displaySearchScene(){
-		_feedback = Controller.getFeedback();
-		searchLayout = new LayoutTemplateDate("Search", _searchList,  _feedback);
-		scene = new Scene(searchLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-	
-	public static void displayAllScene(){
-		_feedback = Controller.getFeedback();
-		allLayout = new LayoutTemplateAll("All Tasks", _powerList,  _feedback);
-		scene = new Scene(allLayout, WIDTH_WINDOW_DEFAULT, HEIGHT_WINDOW_DEFAULT);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(Main.class.getResource("clockwork.css").toExternalForm());
-		setStage();
-	}
-
-	
 }
 ```
 ###### \userinterface\UserInterfaceStub.java
 ``` java
-	public static ArrayList<String[]> populateList(ArrayList<String[]> list){
-		
-		list.clear();
+/**
+* The UserInterfaceStub class is used in place of the Logic and Storage component and is mostly 
+* used while testing the GUI to check if the correct information is displayed on GUI.
+*/
+public class UserInterfaceStub {
+	/** Populates the task with placeholder task information */
+	public static ArrayList<String[]> populateList(ArrayList<String[]> taskList){
+		taskList.clear();
 		
 		String[] indivTask = new String[4];
 		
@@ -2343,31 +2397,32 @@
 		indivTask[2] = "17:00 - 19:00";
 		indivTask[3] = "7 Apr 2016";
 		
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
-		list.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
+		taskList.add(indivTask);
 		
-		return list;
+		return taskList;
 	}
 	
+	/** Populates the feedback list with placeholder text and type */
 	public static ArrayList<String> populateFeedbackList(){
 		ArrayList<String> feedbackList = new ArrayList<String>();
 		feedbackList.add("Added");

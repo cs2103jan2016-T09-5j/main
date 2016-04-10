@@ -15,7 +15,7 @@ import logic.ClockWork;
 import logic.DisplayCommand;
 import logic.Todo;
 
-
+//@@author Morgan
 // We decided to do system testing with a text file containing commands 
 // and compare output with expected output.
 // For example: java -jar 048.jar < test_commands.txt > output.txt
@@ -24,7 +24,6 @@ public class SystemsTestZ {
     Collection<Todo> todos;
     ClockWork logic;
 
-    //@@author Morgan
     @Before
     public void setUp() {
     	String fileDirectory = ClockWork.getStorageFileDirFromSettings();

@@ -17,6 +17,7 @@ import com.google.gson.JsonSyntaxException;
 
 import logic.ClockWork;
 
+//@@author Morgan
 /**
  * Processes the custom file directory path specified by user.
  * 
@@ -45,7 +46,6 @@ public class StorageUtils {
 		private static String settingsFilePath;
 		private static File settingsFile;
 		
-		//@@author Morgan
 		/**
 		 * Processes the user-specified path.
 		 * 

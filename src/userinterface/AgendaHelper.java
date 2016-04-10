@@ -20,13 +20,13 @@ import logic.SearchCommand;
 import logic.Todo;
 import storage.Memory;
 
+//@@author Morgan
 /**
  * Creates an agenda, similar to Google cal's, which can be affixed to arbitrary locations.
  * Using a selected date from the calendar view, the agenda will automatically
  * fetch all todos that are listed under that particular day.
  */
 
-//@@author Morgan
 public class AgendaHelper {
 	
 	private Agenda agenda = new Agenda();

@@ -8,9 +8,9 @@ import org.junit.Test;
 import parser.InputStringKeyword;
 import parser.Keywords;
 
+//@@author Prem
 public class InputStringKeywordTest {
 
-	//@@author Prem
 	@Test
 	public void testIsFlag() {
 		String s = "-y";

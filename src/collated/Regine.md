@@ -1,6 +1,14 @@
 # Regine
 ###### \logic\AddCommand.java
 ``` java
+/**
+ * The AddCommand class handles all user commands with "add" as the first
+ * keyword and processes ParsedInput to generate Todo objects and adds them into
+ * memory.
+ */
+
+public class AddCommand extends Command {
+
 	/**
 	 * Creates an AddCommand object.
 	 * 
@@ -88,7 +96,10 @@
 			case 1:
 				Todo timedTodo = new Todo(memory.obtainFreshId(), todoName,
 						dateTimes);
-				
+				DateTime selectedDate = DateTime.now();
+				if(timedTodo.endTime.isBefore(selectedDate)){
+					return new Signal(Signal.ADD_PASTDATE_ERROR, true);
+				}
 				//ClashDetector object warns user of an impending time overlap
 				listOnSameDay = SearchCommand.getTodosOfSameDay(Keywords.DAY, 
 						timedTodo.endTime, memory);
@@ -105,7 +116,10 @@
 			case 2:
 				timedTodo = new Todo(memory.obtainFreshId(), todoName,
 						dateTimes);
-				
+				DateTime selectedDate1 = DateTime.now();
+				if(timedTodo.endTime.isBefore(selectedDate1)){
+					return new Signal(Signal.ADD_PASTDATE_ERROR, true);
+				}
 				//ClashDetector object warns user of an impending time overlap
 				listOnSameDay = SearchCommand.getTodosOfSameDay(Keywords.DAY, 
 						timedTodo.endTime, memory);
@@ -136,56 +150,110 @@
 ```
 ###### \logic\DisplayCategory.java
 ``` java
+/**
+ * The DisplayCategory Class is used to sort out display tasks for GUI 5
+ * categories. Today , Tomorrow, Somedays, Upcoming and lastly, All tasks
+ * 
+ * This class is with DisplayCommand class (logic package) and Controller class
+ * (userinterface package)
+ */
+
+public class DisplayCategory {
+
 	/**
-	 * ArrayList<String[]> sorted in to 5 categories: Today, Tomorrow, Somedays,
+	 * ArrayList<String[]> sorted in to 5 categories: Today, Tomorrow, Someday,
 	 * Upcoming, Command
 	 * 
 	 */
+	private static ArrayList<String[]> todayArrListForGUI = new ArrayList<String[]>();
+	private static ArrayList<String[]> tmrArrListForGUI = new ArrayList<String[]>();
+	private static ArrayList<String[]> somedaysArrListForGUI = new ArrayList<String[]>();
+	private static ArrayList<String[]> upcomingArrListForGUI = new ArrayList<String[]>();
+	private static ArrayList<String[]> allTasksArrListForGUI = new ArrayList<String[]>();
+	private static DateFormat dateFormat = new SimpleDateFormat("EEE dd MMM yyyy");
 
+	/**
+	 * For the Today's date display on the top left corner
+	 */
 	public static String getTodayDate() {
 		Calendar calendar = Calendar.getInstance();
 		String todayAsString = dateFormat.format(calendar.getTime());
 		return todayAsString;
 	}
 
+	private static String getTmrDate() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		String tmrAsString = dateFormat.format(calendar.getTime());
+		return tmrAsString;
+	}
+
+	/**
+	 * For Controller class in userinterface package to get today's ArrayList
+	 * for different categories
+	 */
 	public static ArrayList<String[]> getTodayArrListForGUI() {
 		sortTodayList();
 		return todayArrListForGUI;
 	}
-
+	
+	/**
+	 * For Controller class in userinterface package to get tomorrow's ArrayList
+	 * for different categories
+	 */
 	public static ArrayList<String[]> geTmrArrListForGUI() {
 		sortTmrList();
 		return tmrArrListForGUI;
 	}
 
+	/**
+	 * For Controller class in userinterface package to get Someday's ArrayList
+	 * for different categories
+	 */
 	public static ArrayList<String[]> getSomedaysArrListForGUI() {
 		sortSomedayList();
 		return somedaysArrListForGUI;
 	}
 
+	/**
+	 * For Controller class in userinterface package to get upcoming's ArrayList
+	 * for different categories
+	 */
 	public static ArrayList<String[]> getUpcommingArrListForGUI() {
-		sortUpcommingList();
-		return upcommingArrListForGUI;
+		sortUpcomingList();
+		return upcomingArrListForGUI;
 	}
 
-	public static ArrayList<String[]> getCommandArrListForGUI() {
-		sortCommandList();
-		return commandArrListForGUI;
+	/**
+	 * For Controller class in userinterface package to get allTasks' ArrayList
+	 * for different categories
+	 */
+	public static ArrayList<String[]> getAllTasksArrListForGUI() {
+		sortAllTasksList();
+		return allTasksArrListForGUI;
 	}
 
+	/**
+	 * For Controller class to refresh/clear the ArrayLists
+	 */
 	public static void clearArrListForGUI() {
 		todayArrListForGUI.clear();
 		tmrArrListForGUI.clear();
 		somedaysArrListForGUI.clear();
-		upcommingArrListForGUI.clear();
-		commandArrListForGUI.clear();
+		upcomingArrListForGUI.clear();
+		allTasksArrListForGUI.clear();
 	}
 
+	/**
+	 * Internal logic to sort out today's ArrayList
+	 * return true if the sorted list do not have sorting error and is not empty
+	 * return false if the sorted list have sorting error or it is empty
+	 */
 	private static boolean sortTodayList() {
-		Calendar calendar = Calendar.getInstance();
-		String todayAsString = dateFormat.format(calendar.getTime());
+		String todayAsString = getTodayDate();
 		ArrayList<ArrayList<String[]>> display = taskListProcessor();
 		todayArrListForGUI.clear();
+		
 		try {
 			if (!display.isEmpty()) {
 				for (int i = 0; i < display.size(); i++) {
@@ -202,13 +270,17 @@
 			return false;
 		}
 	}
-
+	
+	/**
+	 * Internal logic to sort out tomorrow's ArrayList
+	 * return true if the sorted list do not have sorting error and is not empty
+	 * return false if the sorted list have sorting error or it is empty
+	 */
 	private static boolean sortTmrList() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_YEAR, 1);
-		String tmrAsString = dateFormat.format(calendar.getTime());
+		String tmrAsString = getTmrDate();
 		ArrayList<ArrayList<String[]>> display = taskListProcessor();
 		tmrArrListForGUI.clear();
+		
 		try {
 			if (!display.isEmpty()) {
 				for (int i = 0; i < display.size(); i++) {
@@ -225,10 +297,16 @@
 			return false;
 		}
 	}
-
+	
+	/**
+	 * Internal logic to sort out someday's ArrayList
+	 * return true if the sorted list do not have sorting error and is not empty
+	 * return false if the sorted list have sorting error or it is empty
+	 */
 	private static boolean sortSomedayList() {
 		ArrayList<ArrayList<String[]>> display = taskListProcessor();
 		somedaysArrListForGUI.clear();
+		
 		try {
 			if (!display.isEmpty()) {
 				for (int i = 0; i < display.size(); i++) {
@@ -245,21 +323,26 @@
 			return false;
 		}
 	}
-
-	private static boolean sortUpcommingList() {
-		Calendar calendar = Calendar.getInstance();
-		String todayAsString = dateFormat.format(calendar.getTime());
-		calendar.add(Calendar.DAY_OF_YEAR, 1);
-		String tmrAsString = dateFormat.format(calendar.getTime());
+	
+	/**
+	 * Internal logic to sort out upcoming's ArrayList
+	 * return true if the sorted list do not have sorting error and is not empty
+	 * return false if the sorted list have sorting error or it is empty
+	 */
+	private static boolean sortUpcomingList() {
+		String todayAsString = getTodayDate();
+		String tmrAsString = getTmrDate();
 		ArrayList<ArrayList<String[]>> display = taskListProcessor();
-		upcommingArrListForGUI.clear();
+		upcomingArrListForGUI.clear();
+		
 		try {
 			if (!display.isEmpty()) {
 				for (int i = 0; i < display.size(); i++) {
 					if (!display.get(i).isEmpty()) {
 						String str = display.get(i).get(1)[3];
-						if (!str.equals("Anytime") && !str.equals(tmrAsString) && !str.equals(todayAsString)) {
-							combineArrList(display.get(i), upcommingArrListForGUI);
+						if (!str.equals("Anytime") && !str.equals(tmrAsString) 
+								&& !str.equals(todayAsString)) {
+							combineArrList(display.get(i), upcomingArrListForGUI);
 						}
 					}
 				}
@@ -270,14 +353,20 @@
 		}
 	}
 
-	private static boolean sortCommandList() {
+	/**
+	 * Internal logic to sort out allTasks's ArrayList
+	 * return true if the sorted list do not have sorting error and is not empty
+	 * return false if the sorted list have sorting error or it is empty
+	 */
+	private static boolean sortAllTasksList() {
 		ArrayList<ArrayList<String[]>> display = taskListProcessor();
-		commandArrListForGUI.clear();
+		allTasksArrListForGUI.clear();
+		
 		try {
 			if (!display.isEmpty()) {
 				for (int i = 0; i < display.size(); i++) {
 					if (!display.get(i).isEmpty()) {
-						combineArrList(display.get(i), commandArrListForGUI);
+						combineArrList(display.get(i), allTasksArrListForGUI);
 					}
 				}
 			}
@@ -287,30 +376,48 @@
 		}
 	}
 
+	/**
+	 * For sortUpcomingList and sortAllTasksList to combine all the sorted
+	 * tasks. sortUpcomingList would combine date of tasks without today & tmr &
+	 * anytime tasks sortAllTaskList would combine date of tasks with all the 4
+	 * categories ( today & tmr & upcoming & anytime )
+	 */
 	private static void combineArrList(ArrayList<String[]> displayAL, ArrayList<String[]> upComingAL) {
 		if (!displayAL.isEmpty()) {
 			for (int i = 1; i < displayAL.size(); i++) {
 				upComingAL.add(displayAL.get(i));
-				// for (int j = 0; j < displayAL.get(i).length; j++) {
-				// System.out.println(displayAL.get(i)[j]);
-				// }
 			}
 		}
 	}
 
+	/****************PROCESS RAW DATA FROM DISPLAYCOMMAND **********/
+	/**
+	 * Use to process the raw tasks from the DisplayCommand class into
+	 * ArrayList<ArrayList<String[]>> which is (1)ArrayList of different date
+	 * and (2)ArrayList of tasks for specific date (3)String[] of index[0] is
+	 * the ID of the task, index[1] is the name of the task, index[2] is the
+	 * time to time taken for the task, index[3] is the date of the task
+	 */
 	private static ArrayList<ArrayList<String[]>> taskListProcessor() {
 		ArrayList<ArrayList<String[]>> list = new ArrayList<ArrayList<String[]>>();
+		
 		try {
 			String[] splitString = DisplayCommand.getArrListForGUI().get(0).split("\\r?\\n");
 			ArrayList<String[]> currList = null;
 			String currDate = "";
+			
 			for (int i = 0; i < splitString.length; i++) {
-				if (splitString[i].length() == 0 || splitString[i].equals(System.getProperty("line.separator"))) {
+				
+				if (splitString[i].length() == 0 
+						|| splitString[i].equals(System.getProperty("line.separator"))) {
 					continue;
 				}
+				
 				if (splitString[i].contains("..")) {
-					if (currList != null && !currList.isEmpty())
+					
+					if (currList != null && !currList.isEmpty()) {
 						list.add(currList);
+					}
 					currList = new ArrayList<String[]>();
 					String dateString = splitString[i];
 					dateString = dateString.replace("...", "");
@@ -323,6 +430,7 @@
 					splitString[i].trim();
 					String[] split = splitString[i].split("~");
 					String[] splitTask = new String[4];
+					
 					for (int j = 0; j < 3; j++) {
 						splitTask[j] = split[j];
 						splitTask[j] = splitTask[j].trim();
@@ -342,6 +450,61 @@
 ```
 ###### \logic\DisplayCommand.java
 ``` java
+public class DisplayCommand extends Command {
+
+    private static Logger logger = LoggerFactory
+            .getLogger(DisplayCommand.class);
+
+    private static final boolean LOGGING = false;
+
+	// Parameters allowed for display command
+    private static final String PARAM_ALL_1 = "all";
+    private static final String PARAM_ALL_2 = "a";
+    private static final String PARAM_COMPLETE_1 = "completed";
+    private static final String PARAM_COMPLETE_2 = "complete";
+    private static final String PARAM_COMPLETE_3 = "c";
+    private static final String PARAM_RULE = "rule";
+
+	// Signals for whether to display pending or completed todos
+	private static final int showPending = 0;
+	private static final int showCompleted = 1;
+	private static final int showAll = 2;
+	
+    private static final String MESSAGE_RULES = "";
+
+	// Max length for the title of todo to be displayed
+    private static final int MAX_CHAR = 30;
+    private static final int TOTAL_LENGTH = 20;
+
+    // Decoration for date section heading
+    private static final String DATE_DECO = ".";
+
+    // Empty field text
+    private static final String EMPTY_FIELD = "NIL";
+
+    // String formats
+    private static final String eventFormat = " %1$s ~ %2$s ~ %3$s - %4$s";
+    private static final String deadLineFormat = " %1$s ~ %2$s ~ %3$s";
+    private static final String floatingFormat = " %1$s ~ %2$s ~ %3$s";
+
+    private static DateTime inOneDay = new DateTime().plusDays(1);
+
+	private static final DateTimeFormatter DateFormatter = DateTimeFormat
+            .forPattern("EEE dd MMM yyyy");
+	private static final DateTimeFormatter TimeFormatter = DateTimeFormat
+			.forPattern("HH:mm");
+
+    private static final String RELATIVE_PERIOD_PREFIX = " in ";
+    private static final String FLOATING_TASK_HEADING = "Anytime";
+    
+    // Relative timing format
+    private static PeriodFormatter formatter = new PeriodFormatterBuilder()
+            .appendHours().appendSuffix("h ")
+            .printZeroNever().appendMinutes().appendSuffix("min ")
+            .printZeroNever().toFormatter();
+    //For GUI display
+    private static  ArrayList<String> arrListForGUI = new ArrayList<String> ();
+    
     /**
      * Creates a DisplayCommand object.
      * 
@@ -353,10 +516,10 @@
     	super(input, memory);
     }
     protected static ArrayList<String> getArrListForGUI(){
-    	return ArrListForGUI;
+    	return arrListForGUI;
     }
     public static void clearArrListForGUI(){
-    	ArrListForGUI.clear();
+    	arrListForGUI.clear();
     }
 
     @Override
@@ -381,12 +544,10 @@
         } else if (param.equals(PARAM_COMPLETE_1) || param.equals(PARAM_COMPLETE_2)
 				|| param.equals(PARAM_COMPLETE_3)) {
             displayString = getDisplayChrono(showCompleted);
-            ArrListForGUI.add(displayString);
-           // System.out.println(displayString);
+            arrListForGUI.add(displayString);
 		} else if (param.equals(PARAM_ALL_1) || param.equals(PARAM_ALL_2)) {
             displayString = getDisplayChrono(showAll);
-            ArrListForGUI.add(displayString);
-			//System.out.println(displayString);
+            arrListForGUI.add(displayString);
         } else if (param.equals(PARAM_RULE)) {
             Collection<RecurringTodoRule> rules = memory.getAllRules();
             // Display message if there are no rules
@@ -394,7 +555,6 @@
                 return new Signal(Signal.DISPLAY_EMPTY_RULE_SIGNAL, true);
             }
             displayString = getDisplayForRules(rules);
-          //  System.out.println(displayString);
         } else {
             // Try to parse the param as the id of a specific todo to show
             // the detail of the todo
@@ -403,7 +563,7 @@
                 int id = Integer.parseInt(param);
                 Todo todo = memory.getTodo(id);
                 displayString = todo.toString();
-                ArrListForGUI.add(displayString);
+                arrListForGUI.add(displayString);
                 System.out.println(displayString);
             } catch (NullTodoException e) {
                 return new Signal(String.format(Signal.DISPLAY_ID_NOT_FOUND,
@@ -439,7 +599,7 @@
     public static void displayDefault(Memory memory) {
         String displayString;
         displayString = getDisplayChrono(memory, showPending);
-        ArrListForGUI.add(displayString);
+        arrListForGUI.add(displayString);
         //System.out.println(displayString);
     }
 
@@ -698,7 +858,6 @@
         return dateString;
     }
 
-
     static class StringUtils {
 
         public static String center(String s, int size) {
@@ -729,6 +888,8 @@
 ```
 ###### \logic\ExitCommand.java
 ``` java
+public class ExitCommand extends Command {
+	
 	/**
 	 * Creates an ExitCommand object.
 	 * 
@@ -755,6 +916,15 @@
 ```
 ###### \logic\SearchCommand.java
 ``` java
+/**
+ * The SearchCommand class handles user input with search commands.
+ * 
+ */
+public class SearchCommand extends Command {
+
+	private static  ArrayList<String> arrListForGUI = new ArrayList<String> ();
+	private static final String REGEX_SPACE = "\\s";
+		
 	/**
 	 * Creates a SearchCommand object.
 	 * 
@@ -767,12 +937,15 @@
 	public SearchCommand(ParsedInput input, Memory memory) {
 		super(input, memory);
 	}
+	
 	protected static ArrayList<String> getArrListForGUI(){
-    	return ArrListForGUI;
+    	return arrListForGUI;
     }
+	
 	public static void clearArrListForGUI(){
-    	ArrListForGUI.clear();
+    	arrListForGUI.clear();
     }
+	
 	/**
 	 * Searches keywords given in parsedInput in the memory. 
 	 */
@@ -817,7 +990,7 @@
 
 		// displays the list of todos that were found
 		String displayString = DisplayCommand.getDisplayChrono(todos, 2);
-		ArrListForGUI.add(displayString);
+		arrListForGUI.add(displayString);
 
 		return new Signal(Signal.SEARCH_SUCCESS_SIGNAL, true);
 	}
@@ -968,71 +1141,86 @@
 		}
 		return todos;
 	}	
-	/**
-	 * Operation queries all of memory and returns events that occur on a specific day of the year. Useful for
-	 * operations including time collisions and time comparators.
-	 * 
-	 * @param typeKey
-	 * @param searchDate
-	 * @param memory
-	 * @return Collection of Todo
-	 * @throws InvalidParamException
-	 */
-	public static Collection<Todo> getTodosOfSameDay(Keywords typeKey, 
-			DateTime searchDate, Memory memory) {
-		
-		Collection<Todo> todos = memory.getAllTodos();
-		Collection<Todo> queriedTodos = new ArrayList<Todo>();
-		
-		for(Todo item: todos) {
-			if(item.endTime != null && searchDate.getDayOfYear() == item.endTime.getDayOfYear()) {
-				queriedTodos.add(item);
-			}
-		}
-
-		return queriedTodos;	
-	}
-}
+	
 ```
 ###### \logic\SearchDisplay.java
 ``` java
-	private static boolean sortSearchList(){
+/**
+ * The SearchDisplay class is used to sort out search result 
+ * and return the search result into an ArrayList before passing it 
+ * to userinterface
+ */
+
+public class SearchDisplay{
+	private static  ArrayList<String[]> searchArrListForGUI = new ArrayList<String[]> ();
+		
+	/**
+	 * Internal logic to sort out search's ArrayList
+	 * return true if the sorted list do not have sorting error and is not empty
+	 * return false if the sorted list have sorting error or it is empty
+	 */
+	private static boolean sortSearchList() {
 		ArrayList<ArrayList<String[]>> display = taskListProcessor();
-		for(int i=0; i<display.size(); i++){
+		
+		for(int i = 0; i < display.size(); i++) {
 			combineArrList(display.get(i), searchArrListForGUI);
     	}
 		 return true;
 	}
-	private static void combineArrList(ArrayList<String[]> displayAL, ArrayList<String[]> upComingAL){
-	    	for(int i=1 ; i < displayAL.size(); i++){
-	    			upComingAL.add(displayAL.get(i));
-	    			for(int j=0; j < displayAL.get(i).length;j++){
-	    		//	System.out.println(displayAL.get(i)[j]);
-	    			}
+	
+	/**
+	 * To combine all the sorted tasks 
+	 */
+	private static void combineArrList(ArrayList<String[]> displayAL, ArrayList<String[]> upComingAL) {
+		for(int i=1 ; i < displayAL.size(); i++){
+			upComingAL.add(displayAL.get(i));
 	    }
 	}
-	public static ArrayList<String[]> getSearchArrListForGUI(){
-	//	System.out.println(SearchCommand.getArrListForGUI().get(0));
+	
+	/**
+	 * For Controller class in userinterface package to get search ArrayList
+	 */
+	public static ArrayList<String[]> getSearchArrListForGUI() {
 		sortSearchList();
 		return searchArrListForGUI;
 	}
-	public static void clearSearchArrListForGUI(){
+	
+	/**
+	 * For Controller class to refresh/clear the search ArrayList
+	 */
+	public static void clearSearchArrListForGUI() {
 		searchArrListForGUI.clear();
 	}
-	private static ArrayList<ArrayList<String[]>> taskListProcessor(){
-     	ArrayList<ArrayList<String[]>> list = new ArrayList<ArrayList<String[]>>();
+	
+	/****************PROCESS RAW DATA FROM SEARCHCOMMAND **********/
+	/**
+	 * Use to process the raw tasks from the DisplayCommand class into
+	 * ArrayList<ArrayList<String[]>> which is (1)ArrayList of different date
+	 * and (2)ArrayList of tasks for specific date (3)String[] of index[0] is
+	 * the ID of the task, index[1] is the name of the task, index[2] is the
+	 * time to time taken for the task, index[3] is the date of the task
+	 */
+	private static ArrayList<ArrayList<String[]>> taskListProcessor() {
+     	ArrayList<ArrayList<String[]>> list = new ArrayList<ArrayList<String[]>> ();
      	clearSearchArrListForGUI();
-     	try{
+     	
+     	try {
      		String[] splitString = SearchCommand.getArrListForGUI().get(0).split("\\r?\\n");	
     		ArrayList<String[]> currList = null;
     		String currDate = "";
-    		for (int i = 0; i < splitString.length; i++){
-    			if (splitString[i].length() == 0 || splitString[i].equals(System.getProperty("line.separator"))){ 
+    		
+    		for (int i = 0; i < splitString.length; i++) {
+    			
+    			if (splitString[i].length() == 0 || splitString[i].equals(System.getProperty("line.separator"))) { 
     				continue;
     		    }
-    			if (splitString[i].contains("..")){
-    				if (currList != null && !currList.isEmpty()) list.add(currList);
-    				currList = new ArrayList<String[]>();
+    			
+    			if (splitString[i].contains("..")) {
+    				
+    				if (currList != null && !currList.isEmpty()){
+    					list.add(currList);
+    				}
+    				currList = new ArrayList<String[]> ();
     				String dateString = splitString[i];
     				dateString = dateString.replace("...", "");
     				dateString = dateString.replace("..", "");
@@ -1053,7 +1241,8 @@
     		}
     		list.add(currList);
     		return list;
-    	}catch(Exception e){
+    	
+     	}catch(Exception e){
     		return list;
     	}
 	}
@@ -1061,27 +1250,69 @@
 ```
 ###### \logic\SignalHandler.java
 ``` java
-    public static ArrayList<String> getArrListForGUI(){
-    	return ArrListForGUI;
+/**
+ * The SignalHandle Class is used as a container for the messages displayed 
+ * that get from the Signal Class and links to userinterface package
+ * 
+ * The Controller Class in the userinterface package would access 
+ * SignalHandler Class to get feedback as a string
+ * which to be display on the userinterface.
+ *
+ */
+
+public class SignalHandler {
+
+    private static  ArrayList<String> arrListForGUI = new ArrayList<String> ();
+        
+    /**
+	 * For Controller class in userinterface package to get feedback's ArrayList
+	 */
+    public static ArrayList<String> getArrListForGUI() {
+    	return arrListForGUI;
     }
+    
+    /**
+	 * For Controller class in userinterface package to clear feedback's ArrayList
+	 */
     public static void clearArrListForGUI(){
-    	ArrListForGUI.clear();
+    	arrListForGUI.clear();
     }
+    
+    /**
+   	 * To get signal feedback and add in to the ArrayList
+   	 */
     public static void printSignal(Signal signal) {
         assert (signal != null);
         String message = signal.toString();
         if (message.equals(Signal.EXIT_SUCCESS)) {
-        	ArrListForGUI.add( message);
+        	arrListForGUI.add( message);
             System.exit(0);
         }
         if (!message.isEmpty()) {
-        	ArrListForGUI.add(message);
+        	arrListForGUI.add(message);
         }
 	}
 }
 ```
 ###### \storage\VolatileMemory.java
 ``` java
+/**
+ * Functions as an auxiliary memory that supports the main memory by providing
+ * the functionality of remembering the states of Todos and RecurringTodoRules,
+ * and allows the undo and redo operation to track and restore the last modified
+ * object.
+ * <p>
+ * The VolatileMemory object should be flushed by calling the flushStacks()
+ * before the main Memory is serialized and saved so that UndoRedo states that
+ * are brought out of context on the next load does not persist.
+ */
+public class VolatileMemory {
+	private Stack<Boolean> undoIsRule;
+	private Stack<Boolean> redoIsRule;
+	private UndoRedoStack<Todo> todoStacks;
+	private UndoRedoStack<RecurringTodoRule> ruleStacks;
+	private static final int STATE_STACK_MAX_SIZE = 5;
+	
 	public VolatileMemory(HashMap<Integer, Todo> allTodos, IDBuffer<Todo> idBuffer, HashMap<Integer, RecurringTodoRule> recurringRules, IDBuffer<RecurringTodoRule> recurringIdBuffer) {
 		this.undoIsRule = new Stack<Boolean>();
 		this.redoIsRule = new Stack<Boolean>();
@@ -1620,6 +1851,12 @@
 ```
 ###### \testcases\DisplayCommandTest.java
 ``` java
+public class DisplayCommandTest {
+
+    Collection<Todo> todos;
+
+    ClockWork logic;
+    
     @After
     public void tearDown() {
         logic.deleteStorageFile();
@@ -1685,6 +1922,14 @@
 ```
 ###### \testcases\MemoryTest.java
 ``` java
+public class MemoryTest {
+
+	private static final String TASK_1 = "Read book";
+	private static final String TASK_2 = "Do laundry";
+	private static final String TASK_3 = "Do homework";
+	Memory memory;
+	Todo todo1, todo2, todo3;
+
 	@Before
 	public void setUp() throws InvalidDateException {
 		memory = new Memory();
@@ -1783,6 +2028,28 @@
 ```
 ###### \userinterface\Controller.java
 ``` java
+/**
+ * The Controller's class is a link between userinterface and logic package
+ * The class would get the userinput from userinterface and pass it on to the logic package.
+ * Next, the logic will pass back ArrayList for display. 
+ * This controller class is also a link to the AgendaHelper by fecthing the details 
+ * from memory package.       
+ */
+
+public class Controller {
+
+	private static Logger _logger = java.util.logging.Logger.getLogger("ClockworkGUIController");
+	private static String _currentUserInput;
+	private static ClockWork _logic;
+	
+	private static ArrayList<String> _feedback = new ArrayList<String>(Arrays.asList(" ", " "));
+	private static ArrayList<String[]> todayList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _tomorrowList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _upcomingList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _somedayList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _searchList = new ArrayList<String[]>();
+	private static ArrayList<String[]> _powerList = new ArrayList<String[]>();
+	
 	/**
 	 * Handle event after key is pressed
 	 * 
@@ -1813,7 +2080,7 @@
 				processEnter(_currentUserInput);
 				textField.clear();
 			}
-		} else if (ke.getCode().equals(KeyCode.F1)){
+		} else if (ke.getCode().equals(KeyCode.F1)) {
 			// HELP SCENE
 			Main.displayHelpScene();
 		} else if (ke.getCode().equals(KeyCode.F2)) {
@@ -1825,52 +2092,60 @@
 			Main.setNumTomorrow(getNumTomorrowItems());
 			Main.setNumUpcoming(getNumUpcomingItems());
 			Main.setNumSomeday(getNumSomedayItems());
-			Main.displaySummaryScene();
+			Main.displayCategoryScene();
 		} else if (ke.getCode().equals(KeyCode.DELETE)) {
 			// MINIMISE
 			Main.minimise();
 		}
 	}
-
+	
+	/**
+	 * This method is used to handle the linkage between logic and GUI.
+	 * userInput is collected from the TextField and passed in on to logic.
+	 * 
+	 * Logic would return the information generated for display: 
+	 * 1. number of items in each category, 2. tasks from each category 
+	 * 3. Signal feedback from the logic (error/successful)  
+	 */
 	public static void processEnter(String userInput) {
 		_logger.log(Level.INFO, "Calling logic to process keypress.");
-		try {
-			
+		
+		try {	
 			String[] keyword = userInput.split(" ");
-			if (keyword[0].equalsIgnoreCase("search")){
+			
+			if (keyword[0].equalsIgnoreCase("search")) {
 				resetSearchLists();
 				ClockWork.ClockworkLogicMain(userInput, _logic);
 				_feedback = SignalHandler.getArrListForGUI();
 				_searchList = SearchDisplay.getSearchArrListForGUI();
+				//DISPLAY SEARCH LIST
 				Main.setSearchList(_searchList);
 				Main.displaySearchScene();
-			} else if(keyword[0].equalsIgnoreCase("add") || keyword[0].equalsIgnoreCase("delete")
+		
+			} else if (keyword[0].equalsIgnoreCase("add") || keyword[0].equalsIgnoreCase("delete")
 					|| keyword[0].equalsIgnoreCase("mark") || keyword[0].equalsIgnoreCase("exit")
 					|| keyword[0].equalsIgnoreCase("redo") || keyword[0].equalsIgnoreCase("undo")
-					|| keyword[0].equalsIgnoreCase("delete") || keyword[0].equalsIgnoreCase("edit")){
+					|| keyword[0].equalsIgnoreCase("delete") || keyword[0].equalsIgnoreCase("edit")) {
 				resetAllLists();
 				ClockWork.ClockworkLogicMain(userInput, _logic);
-				getFourMainLists();
-				_powerList = DisplayCategory.getCommandArrListForGUI();
+				getFiveMainLists();
+				//DISPLAY ALL TASKES WITH CHANGES
 				processDefaultLogicToDisplay();
+			
 			} else if (keyword[0].equalsIgnoreCase("display")) {
+				//DISPLAY ALL TASKES
 				if ( keyword.length == 1 ) {
 					resetDisplayLists();
 					ClockWork.ClockworkLogicMain(userInput, _logic);
-					//getFourMainLists();
-					_powerList = DisplayCategory.getCommandArrListForGUI();
+					getFiveMainLists();
 					processDefaultLogicToDisplay();
 				} else {
-					SignalHandler.clearArrListForGUI();
-					ClockWork.ClockworkLogicMain(userInput, _logic);
-					processDefaultLogicToDisplay();
+					prcoessErrorLogicToDisplay(userInput);
 				}
-			} else {
-				SignalHandler.clearArrListForGUI();
-				ClockWork.ClockworkLogicMain(userInput, _logic);
-				processDefaultLogicToDisplay();
-			}
 			
+			} else {
+				prcoessErrorLogicToDisplay(userInput);
+			}		
 		
 		} catch (Exception ex) {
 			_logger.log(Level.WARNING, "Keypress detected, but failed to process.", ex);
@@ -1878,39 +2153,61 @@
 		_logger.log(Level.INFO, "Sucessfully called logic to process keypress.");
 	}
 	
+	/**
+	 * This is a method to get the Feedback from logic package 
+	 */
 	public static ArrayList<String> getFeedback() {
 		resetFeedbackList();
-		if (!SignalHandler.getArrListForGUI().isEmpty()){
+		
+		if (!SignalHandler.getArrListForGUI().isEmpty() 
+				&& ClashDetector.getArrListForGUI().isEmpty()) {
 			_feedback = SignalHandler.getArrListForGUI();
+		} else if (!ClashDetector.getArrListForGUI().isEmpty()) {
+			_feedback = ClashDetector.getArrListForGUI();
 		}
 		return _feedback;
 	}
 	
+	/**
+	 * Function handles all keyboard presses accordingly
+	 * and change to the specific scene that is pressed
+	 * 
+	 * @param buttom
+	 *            Buttons of the 4 categories: 
+	 *            1. Today
+	 *            2. Tomorrow
+	 *            3. Upcoming
+	 *            4. Somedays
+	 * @param ke
+	 *            Key that is pressed
+	 */
 	public static void redirectScene(Button button, String sceneName) {
 		button.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent ke) {
+				
 				if (ke.getCode().equals(KeyCode.ENTER)) {
 					ClockWork.ClockworkLogicMain("display", _logic);
-					if (sceneName.equals("Today")){
+					
+					if (sceneName.equals("Today")) {
 						todayList = DisplayCategory.getTodayArrListForGUI();
 						Main.setTodayList(todayList);
 						Main.displayTodayScene();
 						Main.displayTodayScene();
-					} else if (sceneName.equals("Tomorrow")){				
+					} else if (sceneName.equals("Tomorrow")) {				
 						_tomorrowList = DisplayCategory.geTmrArrListForGUI();
 						Main.setTomorrowList(_tomorrowList);
 						Main.displayTomorrowScene();
-					} else if (sceneName.equals("Upcoming")){		
+					} else if (sceneName.equals("Upcoming")) {		
 						_upcomingList = DisplayCategory.getUpcommingArrListForGUI();
 						Main.setUpcomingList(_upcomingList);
 						Main.displayUpcomingScene();
-					} else if (sceneName.equals("Someday")){
+					} else if (sceneName.equals("Someday")) {
 						_somedayList = DisplayCategory.getSomedaysArrListForGUI();
 						Main.setSomedayList(_somedayList);
 						Main.displaySomedayScene();
 					} 
-				} 	else if (ke.getCode().equals(KeyCode.F1)){
+				} else if (ke.getCode().equals(KeyCode.F1)) {
 					// HELP SCENE
 					Main.displayHelpScene();
 				} else if (ke.getCode().equals(KeyCode.F2)) {
@@ -1924,20 +2221,48 @@
 		});
 	}
 	
-	public static void resetFeedbackList(){
+	/**
+	 * This method is to allow user to reset the feedback list 
+	 * at initial launch, Main class
+	 */
+	protected static void resetFeedbackList() {
 		_feedback = new ArrayList<String>();
 		_feedback.add("");
 		_feedback.add("");
 	}
 	
-	private static void getFourMainLists(){
+	/**
+	 * To get the five main ArrayLists from logic package:
+	 *            1. Today
+	 *            2. Tomorrow
+	 *            3. Upcoming
+	 *            4. Somedays
+	 *            5. AllTasks
+	 */
+	private static void getFiveMainLists() {
 		todayList = DisplayCategory.getTodayArrListForGUI();
 		_tomorrowList = DisplayCategory.geTmrArrListForGUI();
 		_upcomingList = DisplayCategory.getUpcommingArrListForGUI();
 		_somedayList = DisplayCategory.getSomedaysArrListForGUI();
+		_powerList = DisplayCategory.getAllTasksArrListForGUI();
 	}
 	
-	private static void processDefaultLogicToDisplay(){
+	/**
+	 * This method is a break down to process connection between userinput 
+	 * and logic after key press in processEnter() method.
+	 */
+	private static void prcoessErrorLogicToDisplay(String userInput) {
+		SignalHandler.clearArrListForGUI();
+		ClashDetector.clearArrListForGUI();
+		ClockWork.ClockworkLogicMain(userInput, _logic);
+		processDefaultLogicToDisplay();
+	}
+	
+	/**
+	 * This method is a break down to process connection between userinput 
+	 * and logic after key press in processEnter() method.
+	 */
+	private static void processDefaultLogicToDisplay() {
 		Main.setPowerList(_powerList);
 		Main.displayAllScene();
 		
@@ -1946,7 +2271,11 @@
 		Main.setNumUpcoming(getNumUpcomingItems());
 		Main.setNumSomeday(getNumSomedayItems());
 	}
-	protected static void resetAllLists(){
+	
+	/**
+	 * Reset all the ArrayLists collected from logic output
+	 */
+	protected static void resetAllLists() {
 		SignalHandler.clearArrListForGUI();
 		DisplayCommand.clearArrListForGUI();
 		SearchCommand.clearArrListForGUI();
@@ -1954,54 +2283,86 @@
 	    DisplayCategory.clearArrListForGUI();
 	    SearchDisplay.clearSearchArrListForGUI();
 	}
-	private static void resetSearchLists(){
+	
+	/**
+	 * Reset only those ArrayLists related to search classes 
+	 * collected from logic output
+	 */
+	private static void resetSearchLists() {
+		ClashDetector.clearArrListForGUI();
 		SignalHandler.clearArrListForGUI();
 		SearchCommand.clearArrListForGUI();
 		SearchDisplay.clearSearchArrListForGUI();
 	}
-	private static void resetDisplayLists(){
+	
+	/**
+	 * Reset only those ArrayLists related to display classes 
+	 * collected from logic output
+	 */
+	private static void resetDisplayLists() {
+		ClashDetector.clearArrListForGUI();
 		SignalHandler.clearArrListForGUI();
 		DisplayCommand.clearArrListForGUI();
 		DisplayCategory.clearArrListForGUI();
 	}
-	public static int getNumTodayItems(){
-		if (todayList.isEmpty()){
+	
+	/**
+	 * To get the number of items for today's task list
+	 */
+	public static int getNumTodayItems() {
+		if (todayList.isEmpty()) {
 			return 0;
 		} else {
 			return todayList.size()-1;
 		}
 	}
 	
-	public static int getNumTomorrowItems(){
-		if (_tomorrowList.isEmpty()){
+	/**
+	 * To get the number of items for tomorrow's task list
+	 */
+	public static int getNumTomorrowItems() {
+		if (_tomorrowList.isEmpty()) {
 			return 0;
 		} else {
 			return _tomorrowList.size()-1;
 		}
 	}
 	
-	public static int getNumUpcomingItems(){
-		if (_upcomingList.isEmpty()){
+	/**
+	 * To get the number of items for upcoming's task list
+	 */
+	public static int getNumUpcomingItems() {
+		if (_upcomingList.isEmpty()) {
 			return 0;
 		} else {
 			return _upcomingList.size();
 		}
 	}
 	
-	public static int getNumSomedayItems(){
-		if (_somedayList.isEmpty()){
+	/**
+	 * To get the number of items for Someday's task list
+	 */
+	public static int getNumSomedayItems() {
+		if (_somedayList.isEmpty()) {
 			return 0;
 		} else {
 			return _somedayList.size()-1;
 		}
 	}
     
-	public static String getCurrentUserInput(){
+	/**
+	 * To get UserInput as a string type
+	 */
+	public static String getCurrentUserInput() {
 		return _currentUserInput;
 	}
 	
-	public static void setLogic(ClockWork l){
+	public static void setLogic(ClockWork l) {
 		_logic = l;
+	}
+	
+	public static ClockWork getLogic() {
+		return _logic;
 	}
 	
 }
