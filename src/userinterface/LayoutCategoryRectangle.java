@@ -3,7 +3,7 @@ package userinterface;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-//@@author Rebekah
+//@@author A0129833Y
 /**
 * The LayoutSummaryRectangle class creates the rectangles used in the four boxes of
 * the LayoutSummary class.

@@ -15,7 +15,7 @@ import logic.ClockWork;
 import logic.DisplayCommand;
 import logic.Todo;
 
-//@@author Morgan
+//@@author A0149671W
 // We decided to do system testing with a text file containing commands 
 // and compare output with expected output.
 // For example: java -jar 048.jar < test_commands.txt > output.txt

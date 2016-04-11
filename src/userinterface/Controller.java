@@ -17,7 +17,7 @@ import logic.SearchCommand;
 import logic.SearchDisplay;
 import logic.SignalHandler;
 
-//@@author Regine
+//@@author A0133247L
 /**
  * The Controller's class is a link between userinterface and logic package
  * The class would get the userinput from userinterface and pass it on to the logic package.

@@ -19,7 +19,7 @@ import parser.Keywords;
 import parser.ParsedInput;
 import storage.Memory;
 
-//@@author Regine
+//@@author A0133247L
 /**
  * The SearchCommand class handles user input with search commands.
  * 
@@ -246,7 +246,7 @@ public class SearchCommand extends Command {
 		return todos;
 	}	
 	
-	//@@author Morgan
+	//@@author A0149671W
 	/**
 	 * Operation queries all of memory and returns events that occur on a specific day of the year. Useful for
 	 * operations including time collisions and time comparators.

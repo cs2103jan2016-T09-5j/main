@@ -2,7 +2,7 @@ package logic;
 
 import java.util.ArrayList;
 
-//@@author Regine
+//@@author A0133247L
 /**
  * The SearchDisplay class is used to sort out search result 
  * and return the search result into an ArrayList before passing it 

@@ -19,7 +19,7 @@ import exceptions.NullTodoException;
 import parser.ParsedInput;
 import storage.Memory;
 
-//@@author Regine
+//@@author A0133247L
 public class DisplayCommand extends Command {
 
     private static Logger logger = LoggerFactory

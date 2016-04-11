@@ -18,7 +18,7 @@ import exceptions.InvalidRecurringException;
 import exceptions.InvalidTodoNameException;
 import exceptions.ParsingFailureException;
 
-//@@author Prem
+//@@author A0126219J
 public class Parser {
 	private static final String STRING_MARCH = "march ";
 	private static final String STRING_TO = "to";
@@ -319,7 +319,7 @@ public class Parser {
 		return period;
 	}
 	
-	//@@author Morgan
+	//@@author A0149671W
 	/**
 	 * This method tries to parse the parameters at the given index as a date.
 	 * If parsing as date is not successful and addToName is true, method

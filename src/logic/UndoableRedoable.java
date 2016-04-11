@@ -1,8 +1,6 @@
-
-
 package logic;
 
-//@@author Prem
+//@@author A0126219J
 /**
  * Allows the object to be used in UndoRedoStacks.
  *

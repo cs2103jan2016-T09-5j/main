@@ -16,11 +16,10 @@ import exceptions.NullTodoException;
 import exceptions.StateUndefinedException;
 import logic.RecurringTodoRule;
 import logic.Todo;
-import parser.IDBuffer;
 import parser.Keywords;
 import storage.VolatileMemory;
 
-//@@author Prem
+//@@author A0126219J
 /**
  * Stores all Todos and keeps state information allowing Undo and Redo
  * operations. Maximum number of states that can be stored by Memory is

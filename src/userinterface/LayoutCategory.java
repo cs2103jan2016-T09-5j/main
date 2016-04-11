@@ -17,7 +17,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
-//@@author Rebekah
+//@@author A0129833Y
 /**
 * The LayoutCategory class creates the layout to display the category buttons to the user. The 
 * category button comprising of Today, Tomorrow, Upcoming and Someday can be clicked by pressing

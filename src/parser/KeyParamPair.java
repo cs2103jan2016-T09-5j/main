@@ -1,6 +1,6 @@
 package parser;
 
-//@@author Prem
+//@@author A0126219J
 /**
  * This class stores a Keyword, its string and its parameter. 
  */

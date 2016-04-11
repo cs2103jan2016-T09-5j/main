@@ -20,7 +20,7 @@ import logic.RecurringTodoRule;
 import logic.Signal;
 import logic.Todo;
 
-//@@author Rebekah
+//@@author A0129833Y
 public class EditCommandTest {
 
 	ClockWork logic;

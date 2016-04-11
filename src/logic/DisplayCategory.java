@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-// @@author Regine
+// @@author A0133247L
 /**
  * The DisplayCategory Class is used to sort out display tasks for GUI 5
  * categories. Today , Tomorrow, Somedays, Upcoming and lastly, All tasks

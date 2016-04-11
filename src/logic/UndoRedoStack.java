@@ -6,9 +6,9 @@ import java.util.NoSuchElementException;
 
 import exceptions.ExceptionMessages;
 import exceptions.StateUndefinedException;
-import parser.IDBuffer;
+import storage.IDBuffer;
 
-//@@author Prem
+//@@author A0126219J
 /**
  * Provides the functionality of remembering past states of objects that implement the UndoableRedoable interface. 
  *

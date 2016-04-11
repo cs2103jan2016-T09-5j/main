@@ -2,7 +2,7 @@ package userinterface;
 
 import javafx.scene.layout.BorderPane;
 
-//@@author Rebekah
+//@@author A0129833Y
 /**
 * The BoxHeaderInnerBox class creates the layout to place nodes from the BoxHeader class.
 */

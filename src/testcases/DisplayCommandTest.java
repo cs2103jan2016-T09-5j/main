@@ -12,7 +12,7 @@ import logic.ClockWork;
 import logic.DisplayCommand;
 import logic.Todo;
 
- //@@author Regine
+ //@@author A0133247L
 public class DisplayCommandTest {
 
     Collection<Todo> todos;

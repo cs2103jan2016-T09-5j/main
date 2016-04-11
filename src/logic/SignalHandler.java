@@ -2,7 +2,7 @@ package logic;
 
 import java.util.ArrayList;
 
-//@@author Regine
+//@@author A0133247L
 /**
  * The SignalHandle Class is used as a container for the messages displayed 
  * that get from the Signal Class and links to userinterface package

@@ -21,7 +21,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import jfxtras.scene.control.agenda.Agenda;
 
-//@@author Morgan
+//@@author A0149671W
 public class LayoutCalendar extends BorderPane {
 	
 	private Label currentTime = new DigitalClock();

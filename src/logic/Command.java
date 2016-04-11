@@ -9,7 +9,7 @@ import parser.KeyParamPair;
 import parser.ParsedInput;
 import storage.Memory;
 
-//@@author Prem
+//@@author A0126219J
 public abstract class Command {
 	
 	ParsedInput input;

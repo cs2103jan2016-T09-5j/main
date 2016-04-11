@@ -22,7 +22,7 @@ import storage.Memory;
 import logic.ClockWork;
 import logic.Signal;
 
-//@@author Prem
+//@@author A0126219J
 public class AddCommandTest {
 	Memory memory;
 	ParsedInput input;
@@ -606,7 +606,7 @@ public class AddCommandTest {
 
 	}
 	
-	//@@author Regine
+	//@@author A0133247L
 	/*
 	 * Test adding of events
 	 */

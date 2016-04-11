@@ -13,7 +13,7 @@ import org.joda.time.format.PeriodFormatterBuilder;
 import exceptions.InvalidParamException;
 import storage.Memory;
 
-//@@author Rebekah
+//@@author A0129833Y
 /**
  * The RecurringTodoRule class contains the rules and methods for creating and
  * storing individual Todos

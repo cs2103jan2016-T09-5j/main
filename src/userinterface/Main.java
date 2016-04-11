@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import logic.ClockWork;
 import storage.StorageUtils;
 
-//@@author Rebekah
+//@@author A0129833Y
 /**
 * The Main class contains the main method to run the entire Clockwork program. Clockwork 
 * functions as a scheduler for the user to schedule tasks with only typed commands and 

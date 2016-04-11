@@ -12,7 +12,7 @@ import logic.Signal;
 
 import static org.junit.Assert.assertEquals;
 
-//@@author Prem
+//@@author A0126219J
 public class MarkCommandTest {
 	private ClockWork logic;
 	private static final String COMMAND_1 = "add floatingTask";

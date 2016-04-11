@@ -1,4 +1,3 @@
-
 package parser;
 
 import java.util.ArrayList;
@@ -7,7 +6,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
-//@@author Morgan
+//@@author A0149671W
 public class ParsedInput {
 
 	private Keywords type;

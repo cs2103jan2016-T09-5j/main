@@ -3,7 +3,7 @@ package logic;
 import parser.ParsedInput;
 import storage.Memory;
 
-//@@author Regine
+//@@author A0133247L
 public class ExitCommand extends Command {
 	
 	/**

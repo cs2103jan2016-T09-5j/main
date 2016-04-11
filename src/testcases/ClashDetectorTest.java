@@ -1,6 +1,6 @@
 package testcases;
 
-//@@author Morgan
+//@@author A0149671W
 public class ClashDetectorTest {
 
 }

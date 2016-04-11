@@ -20,7 +20,7 @@ import parser.Keywords;
 import parser.ParsedInput;
 import parser.Parser;
 
-//@@author Prem
+//@@author A0126219J
 public class ParserTest {
 
 	@Test
@@ -534,7 +534,7 @@ public class ParserTest {
 		assertEquals(parsed6, Parser.parseInput(add6));
 	}
 	
-	//@@author Rebekah
+	//@@author A0129833Y
 	@Test
 	public void testAddRecurringEvent() throws InvalidRecurringException,
 			InvalidTodoNameException, ParsingFailureException {

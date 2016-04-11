@@ -2,7 +2,7 @@ package userinterface;
 
 import java.util.ArrayList;
 
-//@@author Rebekah
+//@@author A0129833Y
 /**
 * The UserInterfaceStub class is used in place of the Logic and Storage component and is mostly 
 * used while testing the GUI to check if the correct information is displayed on GUI.

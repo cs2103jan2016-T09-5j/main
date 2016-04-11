@@ -1,6 +1,6 @@
 package exceptions;
 
-//@@author Prem
+//@@author A0126219J
 public final class ExceptionMessages {
 	/**
 	 * Exception messages. Used to construct new exceptions.

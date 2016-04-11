@@ -12,7 +12,7 @@ import org.joda.time.format.DateTimeFormatter;
 import exceptions.ExceptionMessages;
 import exceptions.NotRecurringException;
 
-//@@author Prem
+//@@author A0126219J
 /**
  * Stores parameters of a Todo using org.joda.time.DateTime objects. A Todo can
  * be subdivided into 3 different subtypes namely Task, Deadline, or Event,
@@ -298,7 +298,7 @@ public class Todo implements UndoableRedoable<Todo> {
 		return type;
 	}
 	
-	//@@author Morgan
+	//@@author A0149671W
 	public Integer getRecurringId() throws NotRecurringException {
 		if (recurringId == null) {
 			throw new NotRecurringException(

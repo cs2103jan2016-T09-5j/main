@@ -3,7 +3,7 @@ package logic;
 import parser.ParsedInput;
 import storage.Memory;
 
-//@@author Morgan
+//@@author A0149671W
 /**
  * The EmailCommand class handles all user commands with "email" as the first
  * keyword and processes parsed input to detect when users want to be notified

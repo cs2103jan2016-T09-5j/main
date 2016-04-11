@@ -4,7 +4,7 @@ import exceptions.StateUndefinedException;
 import parser.ParsedInput;
 import storage.Memory;
 
-//@@author Prem
+//@@author A0126219J
 /**
  * Restores the last stored state in memory.
  */

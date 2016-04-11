@@ -12,7 +12,7 @@ import storage.Memory;
 import storage.StorageHandler;
 import storage.StorageUtils;
 
-//@@author Prem
+//@@author A0126219J
 public class ClockWork {
 	private static ClockWork logic;
 	private static String fileDirectory;

@@ -17,7 +17,7 @@ import com.google.gson.JsonSyntaxException;
 
 import logic.ClockWork;
 
-//@@author Morgan
+//@@author A0149671W
 /**
  * Processes the custom file directory path specified by user.
  * 

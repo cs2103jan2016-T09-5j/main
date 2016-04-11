@@ -10,7 +10,7 @@ import exceptions.StateUndefinedException;
 import logic.Todo;
 import storage.Memory;
 
-//@@author Regine
+//@@author A0133247L
 public class MemoryTest {
 
 	private static final String TASK_1 = "Read book";

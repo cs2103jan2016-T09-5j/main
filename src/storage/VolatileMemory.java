@@ -10,9 +10,8 @@ import exceptions.StateUndefinedException;
 import logic.RecurringTodoRule;
 import logic.Todo;
 import logic.UndoRedoStack;
-import parser.IDBuffer;
 
-//@@author Regine
+//@@author A0133247L
 /**
  * Functions as an auxiliary memory that supports the main memory by providing
  * the functionality of remembering the states of Todos and RecurringTodoRules,

@@ -3,7 +3,7 @@ package userinterface;
 import javafx.geometry.Insets;
 import javafx.scene.layout.StackPane;
 
-//@@author Rebekah
+//@@author A0129833Y
 /**
  * The BoxFeedback class creates the layout to display feedback based
  * on the user input to the user.

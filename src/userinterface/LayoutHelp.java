@@ -20,7 +20,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-//@@author Rebekah
+//@@author A0129833Y
 /**
 * The LayoutHelp class creates the layout to display help to the user. The available command 
 * types the user can use, as well as the input format to call the commands are shown in this 

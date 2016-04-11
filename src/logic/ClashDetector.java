@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Scanner;
 import org.joda.time.DateTime;
 
-//@@author Morgan
+//@@author A0149671W
 public class ClashDetector {
 	private Collection<Todo> onDateTodos;
 	private Todo attemptedTodo;

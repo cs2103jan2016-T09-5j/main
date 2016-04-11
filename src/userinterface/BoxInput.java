@@ -2,7 +2,7 @@ package userinterface;
 
 import javafx.scene.control.TextField;
 
-//@@author Rebekah
+//@@author A0129833Y
 /**
 * The BoxInput class creates the textfield for user input and links the textfield 
 * to the Controller class to handle user input and key events.

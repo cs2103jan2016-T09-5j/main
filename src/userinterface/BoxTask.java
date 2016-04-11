@@ -3,7 +3,7 @@ package userinterface;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 
-//@@author Rebekah
+//@@author A0129833Y
 /**
  * The BoxTask class creates the layout used to contain the nodes used to display
  * user tasks to the user.

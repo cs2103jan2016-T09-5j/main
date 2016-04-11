@@ -2,7 +2,7 @@ package parser;
 import java.util.HashMap;
 import java.util.Map;
 
-//@@author Morgan
+//@@author A0149671W
 public class InputStringKeyword {
 	
 	private static final String KEY_ADD = "add";

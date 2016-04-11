@@ -14,7 +14,7 @@ import logic.RecurringTodoRule;
 import parser.Parser;
 import storage.Memory;
 
-//@@author Prem
+//@@author A0126219J
 public class RecurringTodoRuleTest {
 
 	@Test

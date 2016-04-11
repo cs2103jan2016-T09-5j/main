@@ -32,7 +32,7 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
-//@@author Rebekah
+//@@author A0129833Y
 /**
  * The LayoutTemplate class creates the layout to display the table containing
  * all tasks to the user.

@@ -8,7 +8,7 @@ import org.junit.Test;
 import parser.InputStringKeyword;
 import parser.Keywords;
 
-//@@author Prem
+//@@author A0126219J
 public class InputStringKeywordTest {
 
 	@Test

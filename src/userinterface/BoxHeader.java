@@ -10,7 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import logic.DisplayCategory;
 
-//@@author Rebekah
+//@@author A0129833Y
 /**
  * The BoxHeader class creates the layout to display the date, and available shortcuts
  * the user may use by using FontAwesome icons.

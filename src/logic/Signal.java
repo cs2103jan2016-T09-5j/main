@@ -1,6 +1,6 @@
 package logic;
 
-//@@author Prem
+//@@author A0126219J
 /**
  * The Signal Class is used as a container for the messages displayed to the
  * user at the end of an operation.

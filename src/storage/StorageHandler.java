@@ -28,7 +28,7 @@ import com.google.gson.JsonSyntaxException;
 
 import logic.ClockWork;
 
-//@@author Prem
+//@@author A0126219J
 /**
  * Handles the storing of an instance of Memory into a file in JSON formatting,
  * as well as the retrieving of an instance of Memory from a file in JSON
